@@ -1,0 +1,43 @@
+SVN für Cloud - arbeit an gleichem Dokument möglich
+
+oberer ARD - Simulation des Hauses
+
+Leute heizen, Isolierung nicht optimal, Feuchtigkeit, Frischlufteinlassen - Austausch, Mischen, Wärmeaustausch (warm -> kalt), Wärmetauscherhaushalt,
+
+Heizung einschalten, Wärmetauscher fördern lassen, Wirkungsgrad einstellen muss selber in Software im unteren Arduino eingestellt werden.
+
+Arduino NANO
+Prozessor Old Bootloader?
+COM Ports können verschieden sein.
+
+Zahlen am Ausgang COM Port 
+Im Kommando Feld 
+bspw
+V=1 Verbose?
+
+ohne Buchstaben kann mit Excel bspw Grafik erstellt werden
+Buchstaben als Bezeichnung erscheinen
+
+Party Modus, Feuchtigkeit - noch nicht realisiert
+
+Regelung
+Dummy soweit
+noch keine Regelung enthalten
+
+H Heizung (in Prozent)
+über Kommando in Regel Arduino im COM
+Änderung der Luftfeuchtigkeit
+Warme Luft kann mehr Wasser aufnehmen
+Gleiche Wassermenge wird bei wärmerer Luft weniger
+Thermodynamik!
+
+Fehlermeldung am Ende?
+
+Ideen:
+
+Sprachsteuerung? Google / IFTTT / Alexa über Webhook
+LED Fading bei kritischen Situationen wie CO2 Überkonzentration / Frost
+Wettervorhersage einbeziehen? Frost entgegenheizen / Heizung vor warmen Tag abstellen
+Machine learning? An Simulation anpassen - Auch als realer Controller gewünscht
+
+
