@@ -47,7 +47,7 @@ The Controller running on an Arduino will transfer manual commands from the
 USB/COM port to the I²C port and displays the outcome from a connected house simulation.
 
 <table border="0" width="80%">
-<tr><td> H=n </td><td> heating power in % </td></tr>
+<tr><td> H=n </td><td> heating power in % </td></tr>      //commands can be handled by both plant and controller
 <tr><td> E=n </td><td> heat exchanger amount setting in % </td></tr>
 <tr><td> e=n </td><td> heat exchanger transfer setting in % </td></tr>
 <tr><td> P=n </td><td> no of persons </td></tr>
@@ -64,8 +64,8 @@ USB/COM port to the I²C port and displays the outcome from a connected house si
 <tr><td> o? </td><td> outside humidity </td></tr>
 <tr><td> C? </td><td> amount of CO2 </td></tr>
 <tr><td> k? </td><td> heating energy tally </td></tr>
-<tr><td> S? </td><td> get temperature setpoint </td></tr>
-<tr><td> w? </td><td> get winter or summer setting </td></tr>
+<tr><td> S? </td><td> get temperature setpoint </td></tr> //similar to soll, defined in plant
+<tr><td> w? </td><td> get winter or summer setting </td></tr> //w is boolean variable for winter, 1 is winter, 0 summer
 <tr><td> W? </td><td> get warning if any </td></tr>
 <tr><td> f? </td><td> get fixed outside state </td></tr>
 <tr><td> R </td><td> (re)init </td></tr>
@@ -101,6 +101,8 @@ double          dIndoorTemperature = 0.0;       ///< indoor temperature in °C
 double          dIndoorHumidity = 0.0;          ///< indoor humidity in %
 int             nWarnings = 0;                  ///< warning bits
 bool            bVerbose = true;                ///< local verbose flag
+double          soll = 20.0;                    //Soll temperature, temperature aimed for in all tasks
+
 
 //! Banner and version number
 const char      szBanner[] = "# House Air Conditioner Controller V3.04";
@@ -124,7 +126,7 @@ void setup()
 {
   pinMode(LEDpin, OUTPUT);                      // init arduino LED pin as an output
 
-  Serial.begin(115200);                         // set up serial port for 9600 Baud
+  Serial.begin(9600);                         // set up serial port for 9600 Baud
 #if defined (__AVR_ATmega32U4__)
   while ( ! Serial )                            // wait for serial port, ATmega32U4 chips only
     ;
@@ -133,7 +135,7 @@ void setup()
 
   msecPreviousMillis = millis();                // init global timing
 
-  I2C_Master_Setup(I2C_FREQUENCY);              // start I²C master
+  I2C_Master_Setup(I2C_FREQUENCY);              // start I²C master //100000L frequency
 }
 
 //! Check if a command has been typed
@@ -235,7 +237,7 @@ If more command types have been issued in function CreateNextSteadyCommand() the
 */
 bool InterpreteResponse(char szResponse[])
 {
-  if ( szResponse[1] == '=' )
+  if ( szResponse[1] == '=' ) //szResponse is a string sent by the plant. Since the 2nd letter always has to be a "=" to be a proper response, it can be used as a responsecheck by the controller
   {                                             // seems to be a valid response
     switch ( szResponse[0] )
     {
@@ -287,6 +289,8 @@ void ShowData()
 void Task_10ms()
 {
   ;                                              // nothing to do so far
+
+  
 }
 
 //! Function Task_100ms called every 100 msec
@@ -348,6 +352,24 @@ void Task_100ms()
   }
   else if ( nResult == -4 )
     ;//Serial.println("no response yet");
+
+
+
+//Additions
+/*
+*szCommand = 0; //Cleaning the command array
+if(dIndoorTemperature < soll){ //Soll temperature is aimed
+ 
+  *szCommand = 'H=20';
+  I2C_SendRequest(I2C_PLANT_ADDR, szCommand); 
+  
+}else{
+  *szCommand = 'H=0';
+  I2C_SendRequest(I2C_PLANT_ADDR, szCommand); 
+}
+
+*/
+
 }
 
 //! Function Task_1s called every 1 sec
