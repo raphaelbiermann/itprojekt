@@ -39,5 +39,5 @@ Sprachsteuerung? Google / IFTTT / Alexa über Webhook
 LED Fading bei kritischen Situationen wie CO2 Überkonzentration / Frost
 Wettervorhersage einbeziehen? Frost entgegenheizen / Heizung vor warmen Tag abstellen
 Machine learning? An Simulation anpassen - Auch als realer Controller gewünscht
-
+Ein Array aus IR Receivern kann als Personencounter genutzt werden, Personen die einen Raum betreten / verlassen werden über einen Counter erfasst
 
