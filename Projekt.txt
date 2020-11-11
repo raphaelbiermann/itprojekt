@@ -41,3 +41,12 @@ Wettervorhersage einbeziehen? Frost entgegenheizen / Heizung vor warmen Tag abst
 Machine learning? An Simulation anpassen - Auch als realer Controller gewünscht
 
 
+
+Variable Heizung an aus?
+Switch case abfrage
+
+Neue Routine Regelung
+In task 100 oder 1s am ende oder am Anfang
+
+
+
