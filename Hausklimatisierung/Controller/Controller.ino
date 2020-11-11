@@ -81,6 +81,7 @@ USB/COM port to the I²C port and displays the outcome from a connected house si
 // include I²C connection
 #include "I2C_Master.h" //prepared i2c protocol for string exchange
 #include "string.h"
+
 using namespace std;
                                                 // time management
 //! for 10 msec detection
@@ -139,7 +140,7 @@ void setup()
   while ( ! Serial )                            // wait for serial port, ATmega32U4 chips only
     ;
 #endif
-  Serial.println(szBanner);                     // show banner and version
+  //Serial.println(szBanner);                     // show banner and version
 
   msecPreviousMillis = millis();                // init global timing, counts milliseconds +1 
 
@@ -208,26 +209,24 @@ The index is incremented in every call and reset to zero after all commands have
 \returns true if a command has been created
 */
 
+
 void ReglerHeizung(){ //double variable for radiator is being defined 
   double cTemp = dIndoorTemperature;
   
   
   dHeating = 0; //Standard
-  if(cTemp >=20){
+  if(cTemp < soll-1){
+    dHeating = 100;
+  }
+  if(cTemp > soll){
     dHeating = 0;
   }
-  if(cTemp < 20){
-    dHeating = 50;
-  }
-  if(cTemp < 17){
-    dHeating = 90;
-  }
-  if(cTemp < 13){
-    dHeating = 100;
+  if(cTemp >= 19 && cTemp <= 20){ //quadratic function in given interval with transformation for the last 2 degrees
+   dHeating = -100*(cTemp-19)+100;
   }
 
 char intstr[5]; //converting int to string in 2 steps, saved in intstr
-itoa(dHeating, intstr, 10); 
+itoa(dHeating, intstr, 10); //source, target, decimal
 
 strcpy(cHeating, "H="); 
 strcat(cHeating, intstr); //preparing command
@@ -307,14 +306,11 @@ Remember, each character at 9600 Baud requires about 1 msec.
 */
 void ShowData()
 {                                               // just to show a result
-  if ( bVerbose )
+/*  if ( bVerbose )
     Serial.print("T=");
   Serial.print(dTime/60);                       // time in hours
   Serial.print(" ");
-  if ( bVerbose )
-    Serial.print("I=");
-  Serial.print(dIndoorTemperature);
-  Serial.print(" ");
+  
   if ( bVerbose )
     Serial.print("i=");
   Serial.print(dIndoorHumidity);
@@ -323,7 +319,10 @@ void ShowData()
     Serial.print("W=0x");
   Serial.print(nWarnings, HEX);
   Serial.println("");
- 
+ */if ( bVerbose )
+    Serial.print("I=");
+  Serial.print(dIndoorTemperature);
+  Serial.print(" ");
   
 }
 
