@@ -10,8 +10,8 @@ Arduino NANO
 Prozessor Old Bootloader?
 COM Ports können verschieden sein.
 
-Zahlen am Ausgang COM Port 
-Im Kommando Feld 
+Zahlen am Ausgang COM Port
+Im Kommando Feld
 bspw
 V=1 Verbose?
 
@@ -47,6 +47,3 @@ Switch case abfrage
 
 Neue Routine Regelung
 In task 100 oder 1s am ende oder am Anfang
-
-
-
