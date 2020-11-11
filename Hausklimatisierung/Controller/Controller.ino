@@ -47,7 +47,7 @@ The Controller running on an Arduino will transfer manual commands from the
 USB/COM port to the I²C port and displays the outcome from a connected house simulation.
 
 <table border="0" width="80%">
-<tr><td> H=n </td><td> heating power in % </td></tr>
+<tr><td> H=n </td><td> heating power in % </td></tr>      //commands can be handled by both plant and controller
 <tr><td> E=n </td><td> heat exchanger amount setting in % </td></tr>
 <tr><td> e=n </td><td> heat exchanger transfer setting in % </td></tr>
 <tr><td> P=n </td><td> no of persons </td></tr>
@@ -64,8 +64,8 @@ USB/COM port to the I²C port and displays the outcome from a connected house si
 <tr><td> o? </td><td> outside humidity </td></tr>
 <tr><td> C? </td><td> amount of CO2 </td></tr>
 <tr><td> k? </td><td> heating energy tally </td></tr>
-<tr><td> S? </td><td> get temperature setpoint </td></tr>
-<tr><td> w? </td><td> get winter or summer setting </td></tr>
+<tr><td> S? </td><td> get temperature setpoint </td></tr> //similar to soll, defined in plant
+<tr><td> w? </td><td> get winter or summer setting </td></tr> //w is boolean variable for winter, 1 is winter, 0 summer
 <tr><td> W? </td><td> get warning if any </td></tr>
 <tr><td> f? </td><td> get fixed outside state </td></tr>
 <tr><td> R </td><td> (re)init </td></tr>
@@ -79,7 +79,7 @@ USB/COM port to the I²C port and displays the outcome from a connected house si
 // include standard I²C library
 #include "Wire.h"
 // include I²C connection
-#include "I2C_Master.h"
+#include "I2C_Master.h" //prepared i2c protocol for string exchange
 
                                                 // time management
 //! for 10 msec detection
@@ -91,7 +91,7 @@ int             nCount100msec = 0;
 
                                                 // I2C
 //! Address for I²C slave
-const int       I2C_PLANT_ADDR = 10;
+const int       I2C_PLANT_ADDR = 10;  //more slaves possible with other adresses, master doesnt have adress
 //! standard 100KHz for I²C
 const long      I2C_FREQUENCY = 100000L;
 
@@ -101,7 +101,10 @@ double          dIndoorTemperature = 0.0;       ///< indoor temperature in °C
 double          dIndoorHumidity = 0.0;          ///< indoor humidity in %
 int             nWarnings = 0;                  ///< warning bits
 bool            bVerbose = true;                ///< local verbose flag
-
+double          soll = 20.0;                    //Soll temperature, temperature aimed for in all tasks
+double          dHeating;                       //Temperature for radiator heat
+String          sHeating;                       //String for radiator heat command
+const char * cHeating;
 //! Banner and version number
 const char      szBanner[] = "# House Air Conditioner Controller V3.04";
 //! usual Arduino pin 13 LED
@@ -113,7 +116,7 @@ Toggle digital IO port.
 
 \param nPin IO pin number
 */
-void ToggleDigitalIOPort(int nPin)
+void ToggleDigitalIOPort(int nPin) 
 {
   //// read, invert, write
   digitalWrite(nPin, ! digitalRead(nPin));      // read, invert, write
@@ -131,9 +134,9 @@ void setup()
 #endif
   Serial.println(szBanner);                     // show banner and version
 
-  msecPreviousMillis = millis();                // init global timing
+  msecPreviousMillis = millis();                // init global timing, counts milliseconds +1 
 
-  I2C_Master_Setup(I2C_FREQUENCY);              // start I²C master
+  I2C_Master_Setup(I2C_FREQUENCY);              // start I²C master //100000L frequency
 }
 
 //! Check if a command has been typed
@@ -144,7 +147,7 @@ Check if a command has been typed over COM-Port.
 \param nCommandLengthMax size of szCommand
 \returns true if a command has been typed
 */
-bool CheckIfTypedAvailable(char szCommand[], int nCommandLengthMax)
+bool CheckIfTypedAvailable(char szCommand[], int nCommandLengthMax) //if command manually typed, command is parameter char szcommand
 {
   *szCommand = 0;                               // initially empty result
   if ( Serial.available() > 0 )
@@ -197,7 +200,7 @@ The index is incremented in every call and reset to zero after all commands have
 \param szCommand storage for a typed command
 \returns true if a command has been created
 */
-bool CreateNextSteadyCommand(char szCommand[])
+bool CreateNextSteadyCommand(char szCommand[]) //for automatic output, the values have to be requested first, this function is called every 100ms 
 {
   *szCommand = 0;                               // initially empty
 
@@ -216,7 +219,11 @@ bool CreateNextSteadyCommand(char szCommand[])
   case 4:                                       // request warnings
     strcpy(szCommand, "W?");                    // build command
     break;
-  // more cases for other requests or settings
+  // more cases for other requests or settings 
+  case 5:
+    strcpy(szCommand, cHeating);                 // build command
+    break;
+  
   default:
     nIndex = 0;                                 // start over
     break;
@@ -233,14 +240,14 @@ If more command types have been issued in function CreateNextSteadyCommand() the
 \param szResponse storage for a typed command
 \returns true if response has been used
 */
-bool InterpreteResponse(char szResponse[])
+bool InterpreteResponse(char szResponse[]) //saving responses in local variables
 {
-  if ( szResponse[1] == '=' )
+  if ( szResponse[1] == '=' ) //szResponse is a string sent by the plant. Since the 2nd letter always has to be a "=" to be a proper response, it can be used as a responsecheck by the controller
   {                                             // seems to be a valid response
     switch ( szResponse[0] )
     {
     case 'T':                                   // got a fresh dTime value
-      dTime = atof(szResponse+2);               // convert response part after '=' to double
+      dTime = atof(szResponse+2);               // convert response part after '=' to double //the +2 is for selecting chars after = sign
       return true;                              // done
     case 'I':                                   // got a fresh indoor temperature value
       dIndoorTemperature = atof(szResponse+2);  // convert response part after '=' to double
@@ -249,9 +256,9 @@ bool InterpreteResponse(char szResponse[])
       dIndoorHumidity = atof(szResponse+2);     // convert response part after '=' to double
       return true;                              // done
     case 'W':                                   // got a fresh warning bits value
-      nWarnings = atoi(szResponse+2);           // convert response part after '=' to integer
+      nWarnings = atoi(szResponse+2);           // convert response part after '=' to integer //the bits the warning consists of are important for handling errors
       return true;                              // done
-    // more cases may follow
+    // more cases may follow //understand responses for manual questions
     }
   }
   return false;                                 // response not handled
@@ -281,27 +288,37 @@ void ShowData()
     Serial.print("W=0x");
   Serial.print(nWarnings, HEX);
   Serial.println("");
+  if ( bVerbose )
+    Serial.print("H=");
+  Serial.print(cHeating);
+  Serial.println("");
 }
 
 //! Function Task_10ms called every 10 msec
-void Task_10ms()
+void Task_10ms()  //no delays allowed in automatisation
 {
   ;                                              // nothing to do so far
+
+  
 }
 
 //! Function Task_100ms called every 100 msec
 /*!
 I²C communication and keyboard input.
  */
-void Task_100ms()
+void Task_100ms() //most important, has to be done under 100ms
 {
   static char  szCommand[I2C_DATA_MAX+1];       // buffer for commands
   static char  szResponse[I2C_DATA_MAX+1];      // buffer for responses
   static bool  bOperatesCommand = false;        // flag tells if request is under way
 
+
+
+
+
   if ( ! bOperatesCommand )                     // if not busy at working on a current command
   {
-    if ( CheckIfTypedAvailable(szCommand, I2C_DATA_MAX+1) )
+    if ( CheckIfTypedAvailable(szCommand, I2C_DATA_MAX+1) ) //check for manual command, command is saved in szcommand
     {
       bOperatesCommand = true;                  // we have a new manual command to work on
       if ( FilterLocalCommands(szCommand) )
@@ -313,12 +330,12 @@ void Task_100ms()
     }
   }
 
-  if ( bOperatesCommand )                       // working on a current command
+  if ( bOperatesCommand )                        // working on a current command //If Command still available, send it to plant
   {
     *szResponse = 0;                            // clean response
     int           nRes;
-    nRes = I2C_SendRequest(I2C_PLANT_ADDR, szCommand); // request something from I²C slave
-    if ( nRes == -2 )
+    nRes = I2C_SendRequest(I2C_PLANT_ADDR, szCommand); // request command from I²C slave //SENDING COMMAND
+    if ( nRes == -2 )       //error handling
       Serial.println("request too long");
     if ( *szCommand == 'R' )                    // handle special "reset" request
       bOperatesCommand = false;                 // no response expected after reset
@@ -326,7 +343,7 @@ void Task_100ms()
 
   long          nResponseTime;
   int           nSlaveNo;
-  int           nResult = I2C_GetResponse(&nSlaveNo, szResponse, &nResponseTime);
+  int           nResult = I2C_GetResponse(&nSlaveNo, szResponse, &nResponseTime); //saving the slave response in szResponse (char array), slave adress important (for display?)
   if ( nResult >= 0 )
   {
     if ( ! InterpreteResponse(szResponse) )     // use response we got
@@ -348,19 +365,52 @@ void Task_100ms()
   }
   else if ( nResult == -4 )
     ;//Serial.println("no response yet");
+
+
+
+//Additions
+ReglerHeizung();
+
 }
+
+void ReglerHeizung(){ //double variable for radiator is being defined 
+  double cTemp = dIndoorTemperature;
+  if(cTemp >=20){
+    dHeating = 0;
+  }
+  if(cTemp < 19){
+    dHeating = 50;
+  }
+  if(cTemp < 17){
+    dHeating = 70;
+  }
+  if(cTemp < 13){
+    dHeating = 100;
+  }
+
+sHeating = "H=";
+sHeating += dHeating; //preparing string for command
+const char * cHeating = sHeating.c_str(); //converting string to const char 
+}
+
+
+
 
 //! Function Task_1s called every 1 sec
 /*!
 Use communication verbose flag (-v) to remove all but pure values.
 This allows to use the integrated Arduino serial plotter or an external software like gnuplot.
 */
-void Task_1s()
+void Task_1s() //everything not so often needed
 {
   ToggleDigitalIOPort(LEDpin);                  // toggle output to LED
 
   ShowData();                                   // possibly remove later
+
+  
 }
+
+
 
 //! Usual arduino steadily called function
 /*!
@@ -371,7 +421,7 @@ This function will be called again and again as fast as possible.
 It will dispatch the CPU power between tasks which are expected to be executed in some regular intervals.
 Such intervals are often called sampling time.
 */
-void loop()
+void loop() //calling primitive functions, mainly responsible for timing
 {
   long  msecCurrentMillis = millis();
   if ( ( msecCurrentMillis - msecPreviousMillis ) < 10 )
@@ -379,7 +429,7 @@ void loop()
   msecPreviousMillis = msecCurrentMillis;
 
   Task_10ms();                                  // call user 10 msec function
-  if ( ++nCount10msec >= 10 )
+  if ( ++nCount10msec >= 10 ) //counted how often task 10ms was called, 10* is 100ms
   {
     nCount10msec = 0;
     Task_100ms();                               // call user 100 msec function
@@ -390,6 +440,6 @@ void loop()
     }
   }
 
-  I2C_Master_Steady();                          // give background processing a chance
-  delay(1);
+  I2C_Master_Steady();                          // give background processing a chance //often calling to check for slave responses
+  delay(1); //1ms
 }
