@@ -102,8 +102,9 @@ double          dIndoorHumidity = 0.0;          ///< indoor humidity in %
 int             nWarnings = 0;                  ///< warning bits
 bool            bVerbose = true;                ///< local verbose flag
 double          soll = 20.0;                    //Soll temperature, temperature aimed for in all tasks
-double          dHeating;
-
+double          dHeating;                       //Temperature for radiator heat
+String          sHeating;                       //String for radiator heat command
+const char * cHeating;
 //! Banner and version number
 const char      szBanner[] = "# House Air Conditioner Controller V3.04";
 //! usual Arduino pin 13 LED
@@ -219,7 +220,9 @@ bool CreateNextSteadyCommand(char szCommand[]) //for automatic output, the value
     strcpy(szCommand, "W?");                    // build command
     break;
   // more cases for other requests or settings 
-  
+  case 5:
+    strcpy(szCommand, cHeating);                 // build command
+    break;
   
   default:
     nIndex = 0;                                 // start over
@@ -284,6 +287,10 @@ void ShowData()
   if ( bVerbose )
     Serial.print("W=0x");
   Serial.print(nWarnings, HEX);
+  Serial.println("");
+  if ( bVerbose )
+    Serial.print("H=");
+  Serial.print(cHeating);
   Serial.println("");
 }
 
@@ -362,13 +369,30 @@ void Task_100ms() //most important, has to be done under 100ms
 
 
 //Additions
-
+ReglerHeizung();
 
 }
 
 void ReglerHeizung(){ //double variable for radiator is being defined 
-  
+  double cTemp = dIndoorTemperature;
+  if(cTemp >=20){
+    dHeating = 0;
+  }
+  if(cTemp < 19){
+    dHeating = 50;
+  }
+  if(cTemp < 17){
+    dHeating = 70;
+  }
+  if(cTemp < 13){
+    dHeating = 100;
+  }
+
+sHeating = "H=";
+sHeating += dHeating; //preparing string for command
+const char * cHeating = sHeating.c_str(); //converting string to const char 
 }
+
 
 
 
@@ -382,6 +406,8 @@ void Task_1s() //everything not so often needed
   ToggleDigitalIOPort(LEDpin);                  // toggle output to LED
 
   ShowData();                                   // possibly remove later
+
+  
 }
 
 
