@@ -81,6 +81,7 @@ USB/COM port to the I²C port and displays the outcome from a connected house si
 // include I²C connection
 #include "I2C_Master.h" //prepared i2c protocol for string exchange
 #include "string.h"
+#include "ArduinoQueue.h"
 
 using namespace std;
                                                 // time management
@@ -106,11 +107,12 @@ bool            bVerbose = true;                ///< local verbose flag
 
 //Own Variables
 
-double          soll = 20.0;                    //Soll temperature, temperature aimed for in all tasks
+double          soll = 20.0;                    //Setpoint temperature, temperature aimed for in all tasks
+double          nTOffset=-3.0;                   //Difference between actual endtemp and setpoint
 int             dHeating;                       //percentage for radiator heat
 String          sHeating;                       //String for radiator heat command
 char            cHeating[5];
-
+ArduinoQueue<int> tempHistory;
 
 
 //! Banner and version number
@@ -209,28 +211,44 @@ The index is incremented in every call and reset to zero after all commands have
 \returns true if a command has been created
 */
 
+void SaveTemps(){
+  tempHistory.enqueue((soll-nTOffset)-dIndoorTemperature);
+}
 
 void ReglerHeizung(){ //double variable for radiator is being defined 
   double cTemp = dIndoorTemperature;
   
+  int tDiff, t1, t2;
+  t1=tempHistory.dequeue(); 
+  t2=tempHistory.dequeue();
   
-  dHeating = 0; //Standard
-  if(cTemp < soll-1){
+  //PAnteil
+  double tFehler = (soll-nTOffset)-cTemp;
+  int pAnteil = 10;
+  //Serial.println(tFehler);
+  //IAnteil
+  
+  double iIntegral = (t1+t2);
+  double iAnteil = 2;
+  //Serial.println(iIntegral*iAnteil);
+
+  dHeating = pAnteil * tFehler + iAnteil * iIntegral;
+  /*if(dHeating > 100){ //limiter
     dHeating = 100;
   }
-  if(cTemp > soll){
+  if(dHeating < 0){
     dHeating = 0;
   }
-  if(cTemp >= 19 && cTemp <= 20){ //quadratic function in given interval with transformation for the last 2 degrees
-   dHeating = -100*(cTemp-19)+100;
+  if(dHeating == soll){
+    dHeating = 0;
   }
-
-char intstr[5]; //converting int to string in 2 steps, saved in intstr
+  */
+/*char intstr[5]; //converting int to string in 2 steps, saved in intstr
 itoa(dHeating, intstr, 10); //source, target, decimal
 
 strcpy(cHeating, "H="); 
 strcat(cHeating, intstr); //preparing command
-
+*/
 
 }
 
@@ -255,7 +273,8 @@ bool CreateNextSteadyCommand(char szCommand[]) //for automatic output, the value
     break;
   // more cases for other requests or settings 
   case 5:                                       // request warnings
-    strcpy(szCommand, cHeating);                    // build command
+    strcpy(szCommand, "H=");                // build command
+    itoa(dHeating, szCommand+2, 10);
     break;
   
   default:
@@ -323,6 +342,10 @@ void ShowData()
     Serial.print("I=");
   Serial.print(dIndoorTemperature);
   Serial.print(" ");
+  if ( bVerbose )
+    Serial.print("P=");
+  Serial.print(cHeating);
+  Serial.print(" ");
   
 }
 
@@ -330,7 +353,7 @@ void ShowData()
 void Task_10ms()  //no delays allowed in automatisation
 {
   ;                                              // nothing to do so far
-
+SaveTemps();
   
 }
 
@@ -380,7 +403,7 @@ void Task_100ms() //most important, has to be done under 100ms
   {
     if ( ! InterpreteResponse(szResponse) )     // use response we got
     {
-#if 1                                           // possibly disable
+#if 1                                           // possibly disable //Response for entered command
       Serial.print(" -> ");                     // show not handled command and response
       Serial.println(szResponse);
 #endif
@@ -401,7 +424,8 @@ void Task_100ms() //most important, has to be done under 100ms
 
 
 //Additions
-ReglerHeizung();
+ReglerHeizung(); //Calling radiator for temperature response
+
 
 }
 
@@ -421,6 +445,7 @@ void Task_1s() //everything not so often needed
 
   ShowData();                                   // possibly remove later
 
+  
   
 }
 
