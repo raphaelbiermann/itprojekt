@@ -233,16 +233,16 @@ void ReglerHeizung(){ //double variable for radiator is being defined
   //Serial.println(iIntegral*iAnteil);
 
   dHeating = pAnteil * tFehler + iAnteil * iIntegral;
-  /*if(dHeating > 100){ //limiter
+  if(dHeating > 100){ //limiter
     dHeating = 100;
   }
   if(dHeating < 0){
     dHeating = 0;
   }
-  if(dHeating == soll){
+  /*if(dHeating == soll){
     dHeating = 0;
-  }
-  */
+  }*/
+  
 /*char intstr[5]; //converting int to string in 2 steps, saved in intstr
 itoa(dHeating, intstr, 10); //source, target, decimal
 
