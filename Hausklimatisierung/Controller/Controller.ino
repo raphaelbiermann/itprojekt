@@ -108,7 +108,7 @@ bool            bVerbose = true;                ///< local verbose flag
 //Own Variables
 
 double          soll = 20.0;                    //Setpoint temperature, temperature aimed for in all tasks
-double          nTOffset=-3.0;                   //Difference between actual endtemp and setpoint
+double          nTOffset=-3.5;                   //Difference between actual endtemp and setpoint
 int             dHeating;                       //percentage for radiator heat
 String          sHeating;                       //String for radiator heat command
 char            cHeating[5];
