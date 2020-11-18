@@ -110,8 +110,6 @@ bool            bVerbose = true;                ///< local verbose flag
 double          soll = 20.0;                    //Setpoint temperature, temperature aimed for in all tasks
 double          nTOffset=-3.5;                   //Difference between actual endtemp and setpoint
 int             dHeating;                       //percentage for radiator heat
-String          sHeating;                       //String for radiator heat command
-char            cHeating[5];
 ArduinoQueue<int> tempHistory;
 
 
@@ -212,7 +210,7 @@ The index is incremented in every call and reset to zero after all commands have
 */
 
 void SaveTemps(){
-  tempHistory.enqueue((soll-nTOffset)-dIndoorTemperature);
+  tempHistory.enqueue((soll-nTOffset)-dIndoorTemperature); //last temperature differences are documented
 }
 
 void ReglerHeizung(){ //double variable for radiator is being defined 
@@ -342,10 +340,7 @@ void ShowData()
     Serial.print("I=");
   Serial.print(dIndoorTemperature);
   Serial.print(" ");
-  if ( bVerbose )
-    Serial.print("P=");
-  Serial.print(cHeating);
-  Serial.print(" ");
+
   
 }
 
