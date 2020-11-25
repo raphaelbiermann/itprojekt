@@ -214,7 +214,7 @@ void SaveTemps(){
 }
 
 void ReglerHeizung(){ //double variable for radiator is being defined 
-  double cTemp = dIndoorTemperature;
+  double cTemp = dIndoorTemperature; 
   
   int tDiff, t1, t2;
   t1=tempHistory.dequeue(); 
@@ -237,16 +237,7 @@ void ReglerHeizung(){ //double variable for radiator is being defined
   if(dHeating < 0){
     dHeating = 0;
   }
-  /*if(dHeating == soll){
-    dHeating = 0;
-  }*/
-  
-/*char intstr[5]; //converting int to string in 2 steps, saved in intstr
-itoa(dHeating, intstr, 10); //source, target, decimal
-
-strcpy(cHeating, "H="); 
-strcat(cHeating, intstr); //preparing command
-*/
+ 
 
 }
 
