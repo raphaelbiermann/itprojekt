@@ -1,0 +1,14 @@
+Logbuch
+
+Davor
+-Quelltext zum Verständnis durchkommentiert
+-
+
+11.11.20
+-Heizungssteuerung anfangen
+--Lineare Heizungssteuerung führt zu einer Sinus Schwingung der Indoor Temperatur
+--Lösung für Heizungssteuerung suchen!
+
+18.11.20
+-Sinusschwingung der Indoortemperatur durch einen PI Regler beseitigt
+--Ausblick: PI Regler auch für die anderen Elemente einsetzen!
