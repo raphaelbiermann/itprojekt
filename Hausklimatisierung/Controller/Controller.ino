@@ -253,13 +253,13 @@ double cTemp = dIndoorTemperature;
   t2=tempHistory.dequeue();
   
   //PAnteil
-  double tFehler = (soll-nTOffset)-cTemp;
-  int pAnteil = 10;
+  double tFehler = -((soll)-cTemp);
+  int pAnteil = 30;
   //Serial.println(tFehler);
   //IAnteil
   
   double iIntegral = (t1+t2);
-  double iAnteil = 2;
+  double iAnteil = 8;
   if(nWinter == 0){
   dAC = pAnteil * tFehler + iAnteil * iIntegral;
   if(dAC > 100){ //limiter
@@ -303,6 +303,10 @@ bool CreateNextSteadyCommand(char szCommand[]) //for automatic output, the value
     break;
     case 6:                                       // request winter setting
     strcpy(szCommand, "w?");                    // build command
+    break;
+    case 7:                                       // send AC setting
+    strcpy(szCommand, "F=");                // build command
+    itoa(dAC, szCommand+2, 10);
     break;
   
   default:
@@ -453,7 +457,7 @@ void Task_100ms() //most important, has to be done under 100ms
 
 //Additions
 ReglerHeizung(); //Calling radiator for temperature response
-
+ACController();
 
 }
 
