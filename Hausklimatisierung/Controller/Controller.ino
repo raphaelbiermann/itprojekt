@@ -487,6 +487,8 @@ void Task_1s() //everything not so often needed
   ShowData();                                   // possibly remove later
 
 
+
+//LCD Management
 lcd.clear();
   lcd.setCursor(0, 0);//Hier wird die Position des ersten Zeichens festgelegt. In diesem Fall bedeutet (0,0) das erste Zeichen in der ersten Zeile. 
 lcd.print("T=");
