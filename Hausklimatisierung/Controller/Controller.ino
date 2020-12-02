@@ -112,6 +112,9 @@ double          nTOffset=-3.5;                   //Difference between actual end
 int             dHeating;                       //percentage for radiator heat
 ArduinoQueue<int> tempHistory;
 
+int             nWinter=0;
+double          dAC;
+
 
 //! Banner and version number
 const char      szBanner[] = "# House Air Conditioner Controller V3.04";
@@ -230,6 +233,7 @@ void ReglerHeizung(){ //double variable for radiator is being defined
   double iAnteil = 2;
   //Serial.println(iIntegral*iAnteil);
 
+if(nWinter == 1){
   dHeating = pAnteil * tFehler + iAnteil * iIntegral;
   if(dHeating > 100){ //limiter
     dHeating = 100;
@@ -237,9 +241,41 @@ void ReglerHeizung(){ //double variable for radiator is being defined
   if(dHeating < 0){
     dHeating = 0;
   }
- 
-
+}else{
+  dHeating = 0;
 }
+}
+
+void ACController(){
+double cTemp = dIndoorTemperature; 
+   int tDiff, t1, t2;
+  t1=tempHistory.dequeue(); 
+  t2=tempHistory.dequeue();
+  
+  //PAnteil
+  double tFehler = (soll-nTOffset)-cTemp;
+  int pAnteil = 10;
+  //Serial.println(tFehler);
+  //IAnteil
+  
+  double iIntegral = (t1+t2);
+  double iAnteil = 2;
+  if(nWinter == 0){
+  dAC = pAnteil * tFehler + iAnteil * iIntegral;
+  if(dAC > 100){ //limiter
+    dAC = 100;
+  }
+  if(dAC < 0){
+    dAC = 0;
+  }
+}else{
+  dAC = 0;
+}
+
+  
+}
+
+
 
 bool CreateNextSteadyCommand(char szCommand[]) //for automatic output, the values have to be requested first, this function is called every 100ms 
 {
@@ -264,6 +300,9 @@ bool CreateNextSteadyCommand(char szCommand[]) //for automatic output, the value
   case 5:                                       // request warnings
     strcpy(szCommand, "H=");                // build command
     itoa(dHeating, szCommand+2, 10);
+    break;
+    case 6:                                       // request winter setting
+    strcpy(szCommand, "w?");                    // build command
     break;
   
   default:
@@ -300,6 +339,9 @@ bool InterpreteResponse(char szResponse[]) //saving responses in local variables
     case 'W':                                   // got a fresh warning bits value
       nWarnings = atoi(szResponse+2);           // convert response part after '=' to integer //the bits the warning consists of are important for handling errors
       return true;                              // done
+    case 'w':                                   // got a fresh warning bits value
+      nWinter = atoi(szResponse+2);           // convert response part after '=' to integer //the bits the warning consists of are important for handling errors
+      return true;  
     // more cases may follow //understand responses for manual questions
     }
   }
