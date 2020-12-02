@@ -82,6 +82,8 @@ USB/COM port to the I²C port and displays the outcome from a connected house si
 #include "I2C_Master.h" //prepared i2c protocol for string exchange
 #include "string.h"
 #include "ArduinoQueue.h"
+#include "LiquidCrystal_I2C.h"
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 using namespace std;
                                                 // time management
@@ -112,6 +114,9 @@ double          nTOffset=-3.5;                   //Difference between actual end
 int             dHeating;                       //percentage for radiator heat
 ArduinoQueue<int> tempHistory;
 
+int             nWinter=0;
+double          dAC;
+
 
 //! Banner and version number
 const char      szBanner[] = "# House Air Conditioner Controller V3.04";
@@ -141,10 +146,15 @@ void setup()
     ;
 #endif
   //Serial.println(szBanner);                     // show banner and version
-
+  
   msecPreviousMillis = millis();                // init global timing, counts milliseconds +1 
 
   I2C_Master_Setup(I2C_FREQUENCY);              // start I²C master //100000L frequency
+
+  //Own Additions 
+  lcd.init(); //Im Setup wird der LCD gestartet 
+lcd.backlight();
+  
 }
 
 //! Check if a command has been typed
@@ -230,6 +240,7 @@ void ReglerHeizung(){ //double variable for radiator is being defined
   double iAnteil = 2;
   //Serial.println(iIntegral*iAnteil);
 
+if(nWinter == 1){
   dHeating = pAnteil * tFehler + iAnteil * iIntegral;
   if(dHeating > 100){ //limiter
     dHeating = 100;
@@ -237,9 +248,41 @@ void ReglerHeizung(){ //double variable for radiator is being defined
   if(dHeating < 0){
     dHeating = 0;
   }
- 
-
+}else{
+  dHeating = 0;
 }
+}
+
+void ACController(){
+double cTemp = dIndoorTemperature; 
+   int tDiff, t1, t2;
+  t1=tempHistory.dequeue(); 
+  t2=tempHistory.dequeue();
+  
+  //PAnteil
+  double tFehler = -((soll)-cTemp);
+  int pAnteil = 30;
+  //Serial.println(tFehler);
+  //IAnteil
+  
+  double iIntegral = (t1+t2);
+  double iAnteil = 8;
+  if(nWinter == 0){
+  dAC = pAnteil * tFehler + iAnteil * iIntegral;
+  if(dAC > 100){ //limiter
+    dAC = 100;
+  }
+  if(dAC < 0){
+    dAC = 0;
+  }
+}else{
+  dAC = 0;
+}
+
+  
+}
+
+
 
 bool CreateNextSteadyCommand(char szCommand[]) //for automatic output, the values have to be requested first, this function is called every 100ms 
 {
@@ -264,6 +307,13 @@ bool CreateNextSteadyCommand(char szCommand[]) //for automatic output, the value
   case 5:                                       // request warnings
     strcpy(szCommand, "H=");                // build command
     itoa(dHeating, szCommand+2, 10);
+    break;
+    case 6:                                       // request winter setting
+    strcpy(szCommand, "w?");                    // build command
+    break;
+    case 7:                                       // send AC setting
+    strcpy(szCommand, "F=");                // build command
+    itoa(dAC, szCommand+2, 10);
     break;
   
   default:
@@ -300,6 +350,9 @@ bool InterpreteResponse(char szResponse[]) //saving responses in local variables
     case 'W':                                   // got a fresh warning bits value
       nWarnings = atoi(szResponse+2);           // convert response part after '=' to integer //the bits the warning consists of are important for handling errors
       return true;                              // done
+    case 'w':                                   // got a fresh warning bits value
+      nWinter = atoi(szResponse+2);           // convert response part after '=' to integer //the bits the warning consists of are important for handling errors
+      return true;  
     // more cases may follow //understand responses for manual questions
     }
   }
@@ -411,6 +464,8 @@ void Task_100ms() //most important, has to be done under 100ms
 
 //Additions
 ReglerHeizung(); //Calling radiator for temperature response
+ACController();
+
 
 
 }
@@ -431,7 +486,31 @@ void Task_1s() //everything not so often needed
 
   ShowData();                                   // possibly remove later
 
-  
+
+
+//LCD Management
+lcd.clear();
+  lcd.setCursor(0, 0);//Hier wird die Position des ersten Zeichens festgelegt. In diesem Fall bedeutet (0,0) das erste Zeichen in der ersten Zeile. 
+lcd.print("T=");
+lcd.print(dIndoorTemperature);
+lcd.print("C");
+lcd.setCursor(9,0);
+lcd.print("SP=");
+lcd.print(soll); 
+
+
+lcd.setCursor(0, 1); // In diesem Fall bedeutet (0,1) das erste Zeichen in der zweiten Zeile.
+if(nWinter == 1){
+ 
+lcd.print("H="); 
+lcd.print(dHeating);
+lcd.print("%");
+}
+if(nWinter == 0){
+  lcd.print("AC="); 
+lcd.print(dAC);
+lcd.print("%");
+}
   
 }
 
@@ -448,6 +527,13 @@ Such intervals are often called sampling time.
 */
 void loop() //calling primitive functions, mainly responsible for timing
 {
+
+
+
+
+
+
+  
   long  msecCurrentMillis = millis();
   if ( ( msecCurrentMillis - msecPreviousMillis ) < 10 )
     return;
