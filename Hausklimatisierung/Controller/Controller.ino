@@ -82,6 +82,8 @@ USB/COM port to the I²C port and displays the outcome from a connected house si
 #include "I2C_Master.h" //prepared i2c protocol for string exchange
 #include "string.h"
 #include "ArduinoQueue.h"
+#include "LiquidCrystal_I2C.h"
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 using namespace std;
                                                 // time management
@@ -144,10 +146,15 @@ void setup()
     ;
 #endif
   //Serial.println(szBanner);                     // show banner and version
-
+  
   msecPreviousMillis = millis();                // init global timing, counts milliseconds +1 
 
   I2C_Master_Setup(I2C_FREQUENCY);              // start I²C master //100000L frequency
+
+  //Own Additions 
+  lcd.init(); //Im Setup wird der LCD gestartet 
+lcd.backlight();
+  
 }
 
 //! Check if a command has been typed
@@ -459,6 +466,8 @@ void Task_100ms() //most important, has to be done under 100ms
 ReglerHeizung(); //Calling radiator for temperature response
 ACController();
 
+
+
 }
 
 
@@ -477,7 +486,27 @@ void Task_1s() //everything not so often needed
 
   ShowData();                                   // possibly remove later
 
-  
+
+
+  lcd.setCursor(0, 0);//Hier wird die Position des ersten Zeichens festgelegt. In diesem Fall bedeutet (0,0) das erste Zeichen in der ersten Zeile. 
+lcd.print("T=");
+lcd.print(dIndoorTemperature);
+lcd.print("C");
+lcd.setCursor(9,0);
+lcd.print("SP=");
+lcd.print(soll); 
+lcd.setCursor(0, 1);// In diesem Fall bedeutet (0,1) das erste Zeichen in der zweiten Zeile. 
+
+if(nWinter == 1){
+lcd.print("H="); 
+lcd.print(dHeating);
+lcd.print("%");
+}
+//if(nWinter == 0){
+//  lcd.print("AC="); 
+//lcd.print(dAC);
+//lcd.print("%");
+//}
   
 }
 
@@ -494,6 +523,13 @@ Such intervals are often called sampling time.
 */
 void loop() //calling primitive functions, mainly responsible for timing
 {
+
+
+
+
+
+
+  
   long  msecCurrentMillis = millis();
   if ( ( msecCurrentMillis - msecPreviousMillis ) < 10 )
     return;
