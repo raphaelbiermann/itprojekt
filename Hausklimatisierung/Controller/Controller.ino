@@ -487,7 +487,7 @@ void Task_1s() //everything not so often needed
   ShowData();                                   // possibly remove later
 
 
-
+lcd.clear();
   lcd.setCursor(0, 0);//Hier wird die Position des ersten Zeichens festgelegt. In diesem Fall bedeutet (0,0) das erste Zeichen in der ersten Zeile. 
 lcd.print("T=");
 lcd.print(dIndoorTemperature);
@@ -495,18 +495,20 @@ lcd.print("C");
 lcd.setCursor(9,0);
 lcd.print("SP=");
 lcd.print(soll); 
-lcd.setCursor(0, 1);// In diesem Fall bedeutet (0,1) das erste Zeichen in der zweiten Zeile. 
 
+
+lcd.setCursor(0, 1); // In diesem Fall bedeutet (0,1) das erste Zeichen in der zweiten Zeile.
 if(nWinter == 1){
+ 
 lcd.print("H="); 
 lcd.print(dHeating);
 lcd.print("%");
 }
-//if(nWinter == 0){
-//  lcd.print("AC="); 
-//lcd.print(dAC);
-//lcd.print("%");
-//}
+if(nWinter == 0){
+  lcd.print("AC="); 
+lcd.print(dAC);
+lcd.print("%");
+}
   
 }
 
