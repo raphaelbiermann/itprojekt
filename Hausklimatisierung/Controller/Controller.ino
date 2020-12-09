@@ -82,8 +82,8 @@ USB/COM port to the I²C port and displays the outcome from a connected house si
 #include "I2C_Master.h" //prepared i2c protocol for string exchange
 #include "string.h"
 #include "ArduinoQueue.h"
-#include "LiquidCrystal_I2C.h"
-LiquidCrystal_I2C lcd(0x27, 16, 2);
+#include "LiquidCrystal_I2C.h"  //loaded i2c protocol for display
+LiquidCrystal_I2C lcd(0x27, 16, 2); //initialising display
 
 using namespace std;
                                                 // time management
@@ -109,13 +109,29 @@ bool            bVerbose = true;                ///< local verbose flag
 
 //Own Variables
 
+
+
+int             humiditysp = 50;                      //setpoint for optimal humidity (should be 40-60%)             
 double          soll = 20.0;                    //Setpoint temperature, temperature aimed for in all tasks
 double          nTOffset=-3.5;                   //Difference between actual endtemp and setpoint
 int             dHeating;                       //percentage for radiator heat
 ArduinoQueue<int> tempHistory;
+ArduinoQueue<int> humidityHistory;
+
+
 
 int             nWinter=0;
 double          dAC;
+double          dOutdoorTemperature;
+double          dOutdoorHumidity;
+
+double          dHET; //Heat exchanger transfer
+double          dHEA; //Heat exchanger amount
+
+bool            bHeatingOn=0;                 //Overwrite system value for Heating
+bool            bACOn=0;
+
+double          dCO2; //should be <1000
 
 
 //! Banner and version number
@@ -240,7 +256,7 @@ void ReglerHeizung(){ //double variable for radiator is being defined
   double iAnteil = 2;
   //Serial.println(iIntegral*iAnteil);
 
-if(nWinter == 1){
+if(nWinter == 1 or bHeatingOn == 1){
   dHeating = pAnteil * tFehler + iAnteil * iIntegral;
   if(dHeating > 100){ //limiter
     dHeating = 100;
@@ -267,7 +283,7 @@ double cTemp = dIndoorTemperature;
   
   double iIntegral = (t1+t2);
   double iAnteil = 8;
-  if(nWinter == 0){
+  if(nWinter == 0 or bACOn == 1){
   dAC = pAnteil * tFehler + iAnteil * iIntegral;
   if(dAC > 100){ //limiter
     dAC = 100;
@@ -281,6 +297,66 @@ double cTemp = dIndoorTemperature;
 
   
 }
+
+
+void SaveHumidity(){
+  humidityHistory.enqueue(dIndoorHumidity);
+}
+
+void HEController(){
+
+double cHumidity = dIndoorHumidity; 
+   int hDiff, h1, h2;
+  h1=humidityHistory.dequeue(); 
+  h2=humidityHistory.dequeue();
+
+double hFehler = humiditysp-cHumidity;
+int pAnteil = 5;
+
+double hIntegral = (h1 + h2);
+double iAnteil = 3;    
+
+
+if(dIndoorHumidity > dOutdoorHumidity && dAC < 20 && dHeating < 20){
+  dHEA = pAnteil * hFehler + iAnteil * hIntegral;
+  
+  
+  
+  if(dHEA < 0){ //limiter
+  dHEA = 0;
+  }
+  if(dHEA > 100){
+  dHEA = 100;
+  }
+  
+}else{
+  dHEA = 0;
+}
+if(dCO2 > 1000){ //if CO2 Value is higher than advised 1000 ppm
+  dHEA = 100;
+}
+
+}
+
+  
+
+void sounds(){
+  int millis1;
+  //tone(8, 150);
+//Serial.println(dCO2);
+//CO2 Warning
+if(dCO2 > 1000){
+  tone(8, 100);
+}else{
+  noTone(8);
+}
+}
+
+
+  
+
+
+
 
 
 
@@ -308,12 +384,29 @@ bool CreateNextSteadyCommand(char szCommand[]) //for automatic output, the value
     strcpy(szCommand, "H=");                // build command
     itoa(dHeating, szCommand+2, 10);
     break;
-    case 6:                                       // request winter setting
+  case 6:                                       // request winter setting
     strcpy(szCommand, "w?");                    // build command
     break;
-    case 7:                                       // send AC setting
+  case 7:                                       // send AC setting
     strcpy(szCommand, "F=");                // build command
     itoa(dAC, szCommand+2, 10);
+    break;
+  case 8:                                       // request outside temperature
+    strcpy(szCommand, "O?");                    // build command
+    break;
+  case 9:                                       // request outside humidity
+    strcpy(szCommand, "o?");                    // build command
+    break;
+  case 10:                                       // send Heat exchanger amount setting
+    strcpy(szCommand, "E=");                // build command
+    itoa(dHEA, szCommand+2, 10);
+    break;
+   case 11:                                       // send Heat exchanger amount setting
+    strcpy(szCommand, "e=");                // build command
+    itoa(dHET, szCommand+2, 10);
+    break;
+  case 12:                                       // request outside humidity
+    strcpy(szCommand, "C?");                    // build command
     break;
   
   default:
@@ -350,9 +443,18 @@ bool InterpreteResponse(char szResponse[]) //saving responses in local variables
     case 'W':                                   // got a fresh warning bits value
       nWarnings = atoi(szResponse+2);           // convert response part after '=' to integer //the bits the warning consists of are important for handling errors
       return true;                              // done
-    case 'w':                                   // got a fresh warning bits value
-      nWinter = atoi(szResponse+2);           // convert response part after '=' to integer //the bits the warning consists of are important for handling errors
+    case 'w':                                   // got a fresh winter value
+      nWinter = atoi(szResponse+2);          
       return true;  
+    case 'O':                                   // got a fresh Outdoor temperature value
+      dOutdoorTemperature = atoi(szResponse+2);           
+      return true;   
+    case 'o':                                   // got a fresh Outdoor humidity value
+      dOutdoorHumidity = atoi(szResponse+2);           
+      return true;
+    case 'C':                                   // got a fresh CO2 value
+      dCO2 = atoi(szResponse+2);           
+      return true;       
     // more cases may follow //understand responses for manual questions
     }
   }
@@ -392,8 +494,8 @@ void ShowData()
 void Task_10ms()  //no delays allowed in automatisation
 {
   ;                                              // nothing to do so far
-SaveTemps();
-  
+SaveTemps();          //Saving current temp every 10ms
+SaveHumidity();        //Saving current indoor humidity every 10ms
 }
 
 //! Function Task_100ms called every 100 msec
@@ -465,7 +567,7 @@ void Task_100ms() //most important, has to be done under 100ms
 //Additions
 ReglerHeizung(); //Calling radiator for temperature response
 ACController();
-
+HEController();
 
 
 }
@@ -486,10 +588,14 @@ void Task_1s() //everything not so often needed
 
   ShowData();                                   // possibly remove later
 
-
+sounds();
 
 //LCD Management
+
+
 lcd.clear();
+
+//1st Row
   lcd.setCursor(0, 0);//Hier wird die Position des ersten Zeichens festgelegt. In diesem Fall bedeutet (0,0) das erste Zeichen in der ersten Zeile. 
 lcd.print("T=");
 lcd.print(dIndoorTemperature);
@@ -498,7 +604,7 @@ lcd.setCursor(9,0);
 lcd.print("SP=");
 lcd.print(soll); 
 
-
+//2nd Row
 lcd.setCursor(0, 1); // In diesem Fall bedeutet (0,1) das erste Zeichen in der zweiten Zeile.
 if(nWinter == 1){
  
@@ -508,13 +614,22 @@ lcd.print("%");
 }
 if(nWinter == 0){
   lcd.print("AC="); 
-lcd.print(dAC);
+
+lcd.print((int)dAC);
 lcd.print("%");
 }
+
+lcd.print(" h=");
+lcd.print((int)dIndoorHumidity);
+lcd.print("%");
   
+
+
+
+//Buzzer Management
+
+
 }
-
-
 
 //! Usual arduino steadily called function
 /*!
