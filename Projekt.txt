@@ -49,3 +49,13 @@ Switch case abfrage
 
 Neue Routine Regelung
 In task 100 oder 1s am ende oder am Anfang
+
+
+
+
+Erklärungen:
+Team Work:
+Github vereint SVN und Diffs wie bspw. WinMerge: Änderungen am Code können auf die Zeile überprüft werden, wenn der Code am Ende zusammengeführt wird.
+
+
+

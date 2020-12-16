@@ -81,9 +81,9 @@ USB/COM port to the I²C port and displays the outcome from a connected house si
 // include I²C connection
 #include "I2C_Master.h" //prepared i2c protocol for string exchange
 #include "string.h"
-#include "ArduinoQueue.h"
+#include "ArduinoQueue.h" //loaded datastructure queue for saving stamps
 #include "LiquidCrystal_I2C.h"  //loaded i2c protocol for display
-LiquidCrystal_I2C lcd(0x27, 16, 2); //initialising display
+LiquidCrystal_I2C lcd(0x27, 16, 2); //initialising display with i2c adress 0x27, 16 characters, 2 rows
 
 using namespace std;
                                                 // time management
@@ -124,6 +124,8 @@ int             nWinter=0;
 double          dAC;
 double          dOutdoorTemperature;
 double          dOutdoorHumidity;
+int             Tcounter = 0;
+
 
 double          dHET; //Heat exchanger transfer
 double          dHEA; //Heat exchanger amount
@@ -256,7 +258,7 @@ void ReglerHeizung(){ //double variable for radiator is being defined
   double iAnteil = 2;
   //Serial.println(iIntegral*iAnteil);
 
-if(nWinter == 1 or bHeatingOn == 1){
+
   dHeating = pAnteil * tFehler + iAnteil * iIntegral;
   if(dHeating > 100){ //limiter
     dHeating = 100;
@@ -264,9 +266,8 @@ if(nWinter == 1 or bHeatingOn == 1){
   if(dHeating < 0){
     dHeating = 0;
   }
-}else{
-  dHeating = 0;
-}
+
+ 
 }
 
 void ACController(){
@@ -283,7 +284,7 @@ double cTemp = dIndoorTemperature;
   
   double iIntegral = (t1+t2);
   double iAnteil = 8;
-  if(nWinter == 0 or bACOn == 1){
+  
   dAC = pAnteil * tFehler + iAnteil * iIntegral;
   if(dAC > 100){ //limiter
     dAC = 100;
@@ -291,51 +292,134 @@ double cTemp = dIndoorTemperature;
   if(dAC < 0){
     dAC = 0;
   }
+
+
+}
+
+
+
+
+
+
+
+
+  
+
+
+//for future drying or moisturising air
+void SaveHumidity(){  //saves current humidity
+  humidityHistory.enqueue(dIndoorHumidity);
+}
+
+void HEControllerHeat(){
+
+ double cTemp = dIndoorTemperature; 
+  
+  int tDiff, t1, t2;
+  t1=tempHistory.dequeue(); 
+  t2=tempHistory.dequeue();
+  
+  //PAnteil
+  double tFehler = (soll-nTOffset)-cTemp;
+  int pAnteil = 10;
+  //Serial.println(tFehler);
+  //IAnteil
+  
+  double iIntegral = (t1+t2);
+  double iAnteil = 2;
+
+dHEA = tFehler * pAnteil + iIntegral*iAnteil;
+
+if(dHEA > 100){ //limiter
+    dHEA = 100;
+  }
+  if(dHEA < 0){
+    dHEA = 0;
+  }
+  
+    
+}
+
+void HEControllerCool(){
+
+double cTemp = dIndoorTemperature; 
+   int tDiff, t1, t2;
+  t1=tempHistory.dequeue(); 
+  t2=tempHistory.dequeue();
+  
+  //PAnteil
+  double tFehler = -((soll)-cTemp);
+  int pAnteil = 30;
+  //Serial.println(tFehler);
+  //IAnteil
+  
+  double iIntegral = (t1+t2);
+  double iAnteil = 8;
+  if(nWinter == 0 or bACOn == 1){
+  dHEA = pAnteil * tFehler + iAnteil * iIntegral;
+   if(dHEA > 100){ //limiter
+    dHEA = 100;
+  }
+  if(dHEA < 0){
+    dHEA = 0;
+  }
+dHET = dHEA; 
+}
+}
+
+
+
+void thermostat(){ //negative Counter means summer
+  
+  if(dIndoorTemperature < soll+1){
+    Tcounter++;
+  }
+  else{
+    Tcounter--;
+  }
+  if(Tcounter > 30){
+    Tcounter = 0;
+  }
+  if (Tcounter < -30){
+    Tcounter = 0;
+  }
+  Serial.println(Tcounter);
+}
+
+
+
+void logic(){
+
+double dTolerance=3;
+
+if((dIndoorTemperature < soll+dTolerance) and Tcounter > 0){
+  ReglerHeizung();
+  if(dIndoorTemperature < dOutdoorTemperature){
+    HEControllerHeat();
+  }else{
+    dHEA=0; //heat exchanger amount
+    dHET=0; //heat transfer
+  }
+}else{
+  dHeating = 0;
+}
+
+if((dIndoorTemperature > soll+dTolerance) and Tcounter < 0 ){
+  ACController();
+  if(dIndoorTemperature > dOutdoorTemperature){
+    HEControllerCool();
+  }else{
+    dHEA=0; //heat exchanger amount
+    dHET=0; //heat transfer
+  }
 }else{
   dAC = 0;
 }
 
+
+
+
   
-}
-
-
-void SaveHumidity(){
-  humidityHistory.enqueue(dIndoorHumidity);
-}
-
-void HEController(){
-
-double cHumidity = dIndoorHumidity; 
-   int hDiff, h1, h2;
-  h1=humidityHistory.dequeue(); 
-  h2=humidityHistory.dequeue();
-
-double hFehler = humiditysp-cHumidity;
-int pAnteil = 5;
-
-double hIntegral = (h1 + h2);
-double iAnteil = 3;    
-
-
-if(dIndoorHumidity > dOutdoorHumidity && dAC < 20 && dHeating < 20){
-  dHEA = pAnteil * hFehler + iAnteil * hIntegral;
-  
-  
-  
-  if(dHEA < 0){ //limiter
-  dHEA = 0;
-  }
-  if(dHEA > 100){
-  dHEA = 100;
-  }
-  
-}else{
-  dHEA = 0;
-}
-if(dCO2 > 1000){ //if CO2 Value is higher than advised 1000 ppm
-  dHEA = 100;
-}
-
 }
 
   
@@ -345,8 +429,8 @@ void sounds(){
   //tone(8, 150);
 //Serial.println(dCO2);
 //CO2 Warning
-if(dCO2 > 1000){
-  tone(8, 100);
+if(dCO2 > 100){
+  tone(8, 300);
 }else{
   noTone(8);
 }
@@ -495,7 +579,7 @@ void Task_10ms()  //no delays allowed in automatisation
 {
   ;                                              // nothing to do so far
 SaveTemps();          //Saving current temp every 10ms
-SaveHumidity();        //Saving current indoor humidity every 10ms
+//SaveHumidity();        //Saving current indoor humidity every 10ms
 }
 
 //! Function Task_100ms called every 100 msec
@@ -565,10 +649,10 @@ void Task_100ms() //most important, has to be done under 100ms
 
 
 //Additions
-ReglerHeizung(); //Calling radiator for temperature response
-ACController();
-HEController();
-
+//ReglerHeizung(); //Calling radiator for temperature response
+//ACController();
+//HEController();
+logic();
 
 }
 
@@ -588,7 +672,9 @@ void Task_1s() //everything not so often needed
 
   ShowData();                                   // possibly remove later
 
-sounds();
+
+  thermostat();
+//sounds();
 
 //LCD Management
 
@@ -623,7 +709,8 @@ lcd.print(" h=");
 lcd.print((int)dIndoorHumidity);
 lcd.print("%");
   
-
+lcd.print(" W=");
+lcd.print(nWarnings);
 
 
 //Buzzer Management
