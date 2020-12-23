@@ -238,7 +238,7 @@ The index is incremented in every call and reset to zero after all commands have
 */
 
 void SaveTemps(){
-  tempHistory.enqueue((soll-nTOffset)-dIndoorTemperature); //last temperature differences are documented
+  tempHistory.enqueue((soll)-dIndoorTemperature); //last temperature differences are documented
 }
 
 void ReglerHeizung(){ //double variable for radiator is being defined 
@@ -278,12 +278,12 @@ double cTemp = dIndoorTemperature;
   
   //PAnteil
   double tFehler = -((soll)-cTemp);
-  int pAnteil = 30;
+  int pAnteil = 20;
   //Serial.println(tFehler);
   //IAnteil
   
-  double iIntegral = (t1+t2);
-  double iAnteil = 8;
+  double iIntegral = -(t1+t2);
+  double iAnteil = 11;
   
   dAC = pAnteil * tFehler + iAnteil * iIntegral;
   if(dAC > 100){ //limiter
@@ -355,7 +355,7 @@ double cTemp = dIndoorTemperature;
   
   double iIntegral = (t1+t2);
   double iAnteil = 8;
-  if(nWinter == 0 or bACOn == 1){
+  
   dHEA = pAnteil * tFehler + iAnteil * iIntegral;
    if(dHEA > 100){ //limiter
     dHEA = 100;
@@ -365,23 +365,23 @@ double cTemp = dIndoorTemperature;
   }
 dHET = dHEA; 
 }
-}
+
 
 
 
 void thermostat(){ //negative Counter means summer
   
-  if(dIndoorTemperature < soll+1){
-    Tcounter++;
+  if(dIndoorTemperature < soll-1){
+    Tcounter=Tcounter+2;
   }
-  else{
+  if(dIndoorTemperature > soll+1){
     Tcounter--;
   }
-  if(Tcounter > 30){
-    Tcounter = 0;
+  if(Tcounter > 20){
+    Tcounter = 20;
   }
-  if (Tcounter < -30){
-    Tcounter = 0;
+  if (Tcounter < -20){
+    Tcounter = -20;
   }
   Serial.println(Tcounter);
 }
@@ -392,7 +392,7 @@ void logic(){
 
 double dTolerance=3;
 
-if((dIndoorTemperature < soll+dTolerance) and Tcounter > 0){
+if((dIndoorTemperature < soll) and Tcounter > 0 or (nWinter == 1 and Tcounter >7)){
   ReglerHeizung();
   if(dIndoorTemperature < dOutdoorTemperature){
     HEControllerHeat();
@@ -404,7 +404,7 @@ if((dIndoorTemperature < soll+dTolerance) and Tcounter > 0){
   dHeating = 0;
 }
 
-if((dIndoorTemperature > soll+dTolerance) and Tcounter < 0 ){
+if((dIndoorTemperature > soll) and Tcounter < 0 or (nWinter == 0 and Tcounter < -7)){
   ACController();
   if(dIndoorTemperature > dOutdoorTemperature){
     HEControllerCool();
@@ -692,18 +692,18 @@ lcd.print(soll);
 
 //2nd Row
 lcd.setCursor(0, 1); // In diesem Fall bedeutet (0,1) das erste Zeichen in der zweiten Zeile.
-if(nWinter == 1){
+
  
 lcd.print("H="); 
 lcd.print(dHeating);
 lcd.print("%");
-}
-if(nWinter == 0){
+
+
   lcd.print("AC="); 
 
 lcd.print((int)dAC);
 lcd.print("%");
-}
+
 
 lcd.print(" h=");
 lcd.print((int)dIndoorHumidity);

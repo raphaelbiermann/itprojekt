@@ -12,3 +12,6 @@ Davor
 18.11.20
 -Sinusschwingung der Indoortemperatur durch einen PI Regler beseitigt
 --Ausblick: PI Regler auch für die anderen Elemente einsetzen!
+
+16.12.20
+
