@@ -383,7 +383,7 @@ void thermostat(){ //negative Counter means summer
   if (Tcounter < -20){
     Tcounter = -20;
   }
-  Serial.println(Tcounter);
+  //Serial.println(Tcounter);
 }
 
 
@@ -553,11 +553,11 @@ Remember, each character at 9600 Baud requires about 1 msec.
 */
 void ShowData()
 {                                               // just to show a result
-/*  if ( bVerbose )
+ if ( bVerbose )
     Serial.print("T=");
   Serial.print(dTime/60);                       // time in hours
   Serial.print(" ");
-  
+/*  
   if ( bVerbose )
     Serial.print("i=");
   Serial.print(dIndoorHumidity);
@@ -568,7 +568,7 @@ void ShowData()
   Serial.println("");
  */if ( bVerbose )
     Serial.print("I=");
-  Serial.print(dIndoorTemperature);
+  Serial.println(dIndoorTemperature);
   Serial.print(" ");
 
   
@@ -628,7 +628,7 @@ void Task_100ms() //most important, has to be done under 100ms
   {
     if ( ! InterpreteResponse(szResponse) )     // use response we got
     {
-#if 1                                           // possibly disable //Response for entered command
+#if 0                                           // possibly disable //Response for entered command
       Serial.print(" -> ");                     // show not handled command and response
       Serial.println(szResponse);
 #endif
