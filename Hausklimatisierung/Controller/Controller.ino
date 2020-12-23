@@ -371,8 +371,8 @@ dHET = dHEA;
 
 void thermostat(){ //negative Counter means summer
   
-  if(dIndoorTemperature < soll-1){
-    Tcounter=Tcounter+2;
+  if(dIndoorTemperature < soll-1){ //tolerance frame
+    Tcounter++;
   }
   if(dIndoorTemperature > soll+1){
     Tcounter--;
