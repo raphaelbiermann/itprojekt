@@ -1,0 +1,14 @@
+digraph "HEControllerCool"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="HEControllerCool",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="logic",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#a891ab028bd00ce90bbf291a355410e1e",tooltip=" "];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Task_100ms",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#a4bb576321c9eff71b400cb7f4d58fede",tooltip="Function Task_100ms called every 100 msec."];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="loop",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#afe461d27b9c48d5921c00d521181f12f",tooltip="Usual arduino steadily called function."];
+}

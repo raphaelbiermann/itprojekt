@@ -1,0 +1,30 @@
+The Controller running on an Arduino will transfer manual commands from the U\+S\+B/\+C\+OM port to the I²C port and displays the outcome from a connected house simulation.
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+H=n &heating power in \%  //commands can be handled by both plant and controller \\\cline{1-2}
+E=n &heat exchanger amount setting in \%  \\\cline{1-2}
+e=n &heat exchanger transfer setting in \%  \\\cline{1-2}
+P=n &no of persons  \\\cline{1-2}
+S=n &temperature setpoint  \\\cline{1-2}
+w=x &winter or summer  \\\cline{1-2}
+f=x &fixed outside state  \\\cline{1-2}
+T? &get simulation time in seconds  \\\cline{1-2}
+I? &inside temperature  \\\cline{1-2}
+O? &outside temperature  \\\cline{1-2}
+H? &get heater setting in \%  \\\cline{1-2}
+E? &get heat exchanger amount  \\\cline{1-2}
+e? &get heat exchanger transfer in \%  \\\cline{1-2}
+i? &inside humidity  \\\cline{1-2}
+o? &outside humidity  \\\cline{1-2}
+C? &amount of C\+O2  \\\cline{1-2}
+k? &heating energy tally  \\\cline{1-2}
+S? &get temperature setpoint  //similar to soll, defined in plant \\\cline{1-2}
+w? &get winter or summer setting  //w is boolean variable for winter, 1 is winter, 0 summer \\\cline{1-2}
+W? &get warning if any  \\\cline{1-2}
+f? &get fixed outside state  \\\cline{1-2}
+R &(re)init  \\\cline{1-2}
+V=x &verbose on/off for the house  \\\cline{1-2}
+v=x &verbose on/off for the controller  \\\cline{1-2}
+\end{longtabu}

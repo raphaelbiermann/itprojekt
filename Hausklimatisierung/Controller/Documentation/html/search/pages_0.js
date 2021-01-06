@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['i2c_20master_29',['I2C Master',['../_i2_c__master.html',1,'']]]
+  ['manual_20commands_103',['Manual Commands',['../_commands.html',1,'']]]
 ];

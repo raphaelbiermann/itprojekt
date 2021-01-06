@@ -1,0 +1,725 @@
+\hypertarget{_controller_8ino}{}\doxysection{Controller.\+ino File Reference}
+\label{_controller_8ino}\index{Controller.ino@{Controller.ino}}
+{\ttfamily \#include \char`\"{}Arduino.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Wire.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}I2\+C\+\_\+\+Master.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}string.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Arduino\+Queue.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Liquid\+Crystal\+\_\+\+I2\+C.\+h\char`\"{}}\newline
+Include dependency graph for Controller.\+ino\+:
+% FIG 0
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+Liquid\+Crystal\+\_\+\+I2C \mbox{\hyperlink{_controller_8ino_ae084e1bc8ccb35ea289ba0ca4972ea6d}{lcd}} (0x27, 16, 2)
+\begin{DoxyCompactList}\small\item\em initialising display with i2c adress 0x27, 16 characters, 2 rows \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_controller_8ino_a92c4579a209bbd8bc56592f8c2958895}{Toggle\+Digital\+I\+O\+Port}} (int n\+Pin)
+\begin{DoxyCompactList}\small\item\em Toggle digital IO port. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_controller_8ino_a4fc01d736fe50cf5b977f755b675f11d}{setup}} ()
+\begin{DoxyCompactList}\small\item\em usual arduino init function \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{_controller_8ino_aef8d57dbdb05a99caac118882b35d56c}{Check\+If\+Typed\+Available}} (char sz\+Command\mbox{[}$\,$\mbox{]}, int n\+Command\+Length\+Max)
+\begin{DoxyCompactList}\small\item\em Check if a command has been typed. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{_controller_8ino_a90328c9dde97401383a88ad666622063}{Filter\+Local\+Commands}} (char sz\+Command\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Filter local commands. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_controller_8ino_a3a410b938064846305d0a0f41b05bd7f}{Save\+Temps}} ()
+\begin{DoxyCompactList}\small\item\em Create next steady transmitted command. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_controller_8ino_a090aec666da0a428e48e596f9460a5ec}{Regler\+Heizung}} ()
+\item 
+void \mbox{\hyperlink{_controller_8ino_ab10f597b51a01881bc3bfda2edc9daa2}{A\+C\+Controller}} ()
+\item 
+void \mbox{\hyperlink{_controller_8ino_a4de942d9efe53022e129b2760a11efdb}{Save\+Humidity}} ()
+\item 
+void \mbox{\hyperlink{_controller_8ino_aa4542df6529eb717fdc0a3105fe8a6f2}{H\+E\+Controller\+Heat}} ()
+\item 
+void \mbox{\hyperlink{_controller_8ino_afd15f02b5b76c27ce9d24b1202353803}{H\+E\+Controller\+Cool}} ()
+\item 
+void \mbox{\hyperlink{_controller_8ino_aa28090f2d59ec6e36525dd17cf21dc58}{thermostat}} ()
+\item 
+void \mbox{\hyperlink{_controller_8ino_a891ab028bd00ce90bbf291a355410e1e}{logic}} ()
+\item 
+void \mbox{\hyperlink{_controller_8ino_a314881965417ddb0745f987c175471c3}{sounds}} ()
+\item 
+bool \mbox{\hyperlink{_controller_8ino_a573a9b79ee6a7e720f5ecc4bbfcb0c87}{Create\+Next\+Steady\+Command}} (char sz\+Command\mbox{[}$\,$\mbox{]})
+\item 
+bool \mbox{\hyperlink{_controller_8ino_a3005755a1cc32c4a6537fc8c5c0fa3cb}{Interprete\+Response}} (char sz\+Response\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Interpret an I²C response from the plant. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_controller_8ino_afb707179a2ceeebf05387778b0aedeb5}{Show\+Data}} ()
+\begin{DoxyCompactList}\small\item\em Show some data values. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_controller_8ino_a70040c12b70c4183813492f54c34afc3}{Task\+\_\+10ms}} ()
+\begin{DoxyCompactList}\small\item\em Function Task\+\_\+10ms called every 10 msec. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_controller_8ino_a4bb576321c9eff71b400cb7f4d58fede}{Task\+\_\+100ms}} ()
+\begin{DoxyCompactList}\small\item\em Function Task\+\_\+100ms called every 100 msec. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_controller_8ino_acc7e9ffdda03efaa08f8d3b4f372efbf}{Task\+\_\+1s}} ()
+\begin{DoxyCompactList}\small\item\em Function Task\+\_\+1s called every 1 sec. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_controller_8ino_afe461d27b9c48d5921c00d521181f12f}{loop}} ()
+\begin{DoxyCompactList}\small\item\em Usual arduino steadily called function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+unsigned long \mbox{\hyperlink{_controller_8ino_a5bf8233d173fda02920f536243bc9dd5}{msec\+Previous\+Millis}} = 0
+\begin{DoxyCompactList}\small\item\em for 10 msec detection \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{_controller_8ino_a6d4fd5facb822ead7e6e65d5d40977cf}{n\+Count10msec}} = 0
+\begin{DoxyCompactList}\small\item\em counter for 10 msec up to 100 msec \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{_controller_8ino_a5feafbc5e3579057d55fe2fae408063a}{n\+Count100msec}} = 0
+\begin{DoxyCompactList}\small\item\em counter for 100 msec up to 1sec \end{DoxyCompactList}\item 
+const int \mbox{\hyperlink{_controller_8ino_adc774ee2beace907193615671b407a3f}{I2\+C\+\_\+\+P\+L\+A\+N\+T\+\_\+\+A\+D\+DR}} = 10
+\begin{DoxyCompactList}\small\item\em Address for I²C slave. \end{DoxyCompactList}\item 
+const long \mbox{\hyperlink{_controller_8ino_a9f0f16962255937cbc323045fc01be17}{I2\+C\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+CY}} = 100000L
+\begin{DoxyCompactList}\small\item\em standard 100K\+Hz for I²C \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{_controller_8ino_a9e49ee13da0fb0395a25a3003409bf58}{d\+Time}} = 0.\+0
+\begin{DoxyCompactList}\small\item\em simulation time in min \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{_controller_8ino_a62325a1f2084f7e9c44ab036c06a46c6}{d\+Indoor\+Temperature}} = 0.\+0
+\begin{DoxyCompactList}\small\item\em indoor temperature in °C \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{_controller_8ino_abef2741815dd29248096b646738fb238}{d\+Indoor\+Humidity}} = 0.\+0
+\begin{DoxyCompactList}\small\item\em indoor humidity in \% \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{_controller_8ino_a3071e858c7958a3a60677921dbbdf9e6}{n\+Warnings}} = 0
+\begin{DoxyCompactList}\small\item\em warning bits \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{_controller_8ino_ad0fc9bc4e88662c79c9d563df8cd4097}{b\+Verbose}} = true
+\begin{DoxyCompactList}\small\item\em local verbose flag \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{_controller_8ino_a7ad25723a2644496babaf1a09edca79d}{humiditysp}} = 50
+\begin{DoxyCompactList}\small\item\em setpoint for optimal humidity (should be 40-\/60\%) ~\newline
+ \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{_controller_8ino_ad6a8971f459a4f33b495b6bc61c28022}{soll}} = 20.\+0
+\begin{DoxyCompactList}\small\item\em Setpoint temperature, temperature aimed for in all tasks. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{_controller_8ino_ae782d5485075ca7387b32a20b1595a1f}{n\+T\+Offset}} =-\/3.\+5
+\begin{DoxyCompactList}\small\item\em Difference between actual endtemp and setpoint. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{_controller_8ino_a2cd2658fd81b2cdccce398b93efa1300}{d\+Heating}}
+\begin{DoxyCompactList}\small\item\em percentage for radiator heat \end{DoxyCompactList}\item 
+Arduino\+Queue$<$ int $>$ \mbox{\hyperlink{_controller_8ino_ad9b836e0035cff045207e8cd18d64665}{temp\+History}}
+\item 
+Arduino\+Queue$<$ int $>$ \mbox{\hyperlink{_controller_8ino_a42b9218ab3ccd5fad8f4822fb8c5c821}{humidity\+History}}
+\item 
+int \mbox{\hyperlink{_controller_8ino_a5c918eefadc81b4a78e0d1660e595d8c}{n\+Winter}} =0
+\begin{DoxyCompactList}\small\item\em needed in order to know if its winter or summer \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{_controller_8ino_aad943e6144061b3dc9ec2410ac7863f2}{d\+AC}}
+\begin{DoxyCompactList}\small\item\em AC level in percentage. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{_controller_8ino_a625d658de5fc8402b1f646c4bf4decc7}{d\+Outdoor\+Temperature}}
+\begin{DoxyCompactList}\small\item\em outdoor temperature for comparing with indoor temperature \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{_controller_8ino_a8bcd73eee3bb6d3d5213c2238983d99f}{d\+Outdoor\+Humidity}}
+\begin{DoxyCompactList}\small\item\em outdoor humidity for exchanging \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{_controller_8ino_a430c145c8cfac8c25b7619556a8f5bd2}{Tcounter}} = 0
+\begin{DoxyCompactList}\small\item\em Counter used in thermostat function in order to enable a soft switch between radiator and ac. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{_controller_8ino_a6bb05a2ac6752c4e89e9fdc2153b963e}{lcdmode}}
+\begin{DoxyCompactList}\small\item\em used for deciding what to show on the display \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{_controller_8ino_a7ef095c53364830a1f31966029a156c5}{d\+H\+ET}}
+\begin{DoxyCompactList}\small\item\em Heat exchanger transfer. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{_controller_8ino_a6f8d9e3bf345cfe79f66bcb3b1ea227c}{d\+H\+EA}}
+\begin{DoxyCompactList}\small\item\em Heat exchanger amount. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{_controller_8ino_a1407a9778bed349633e7a263cc741e94}{b\+Heating\+On}} =0
+\item 
+bool \mbox{\hyperlink{_controller_8ino_a7154dde0a61f659f7f2a3b71f53e76b8}{b\+A\+C\+On}} =0
+\item 
+double \mbox{\hyperlink{_controller_8ino_a6b52146dd1f01d495c6f1b9a0455d228}{d\+C\+O2}}
+\item 
+const char \mbox{\hyperlink{_controller_8ino_a2695b485ae7f65013b402aa867bc5955}{sz\+Banner}} \mbox{[}$\,$\mbox{]} = \char`\"{}\# House Air Conditioner Controller V3.\+04\char`\"{}
+\begin{DoxyCompactList}\small\item\em Banner and version number. \end{DoxyCompactList}\item 
+const int \mbox{\hyperlink{_controller_8ino_a82504a11fb254521fd47f38bc9140370}{L\+E\+Dpin}} = 13
+\begin{DoxyCompactList}\small\item\em usual Arduino pin 13 L\+ED \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+mainpage Controller
+
+Simple house air conditioner Controller.
+
+The Controller running on an Arduino will transfer manual commands from the U\+S\+B/\+C\+OM port to the physical ports or to the I²C port and displays the outcome from a connected plant.
+
+Initially this controller program is just a dummy to get you started.
+
+The controller uses a simple non-\/preemptive multitasking.
+
+Sections\+:
+\begin{DoxyItemize}
+\item \mbox{\hyperlink{_controller_8ino}{Controller }}
+\item \mbox{\hyperlink{_commands}{Manual Commands }}
+\item \mbox{\hyperlink{}{I2\+C\+\_\+\+Master }}
+\end{DoxyItemize}
+
+Arduinos for Plant (top) and controller (below).
+
+
+
+When using multiple I2C slaves note that Master.\+Send\+Request(...) serves only one slave at a time.
+
+
+\begin{DoxyPre}
+(c)2013-\/2020 Ingenieurbüro Dr. Friedrich Haase
+             Consulting -\/ Automatisierungstechnik
+\end{DoxyPre}
+
+
+
+\begin{DoxyPre}
+Versions
+July 2014 Dr. Haase  created
+Sept 2015 Dr. Haase  converted for IT project
+Sept 2015 Dr. Haase  some minor corrections
+Oct 2016  Dr. Haase  exchanged toFloat and toInt by atof and atoi
+Sept 2017 Dr. Haase  minor improvements
+Aug  2018 Dr. Haase  minor improvements
+Jan 2020  Dr. Haase  redesigned for better C/C++ coding
+Mai 2020  Dr. Haase  party mode
+Aug 2020  Dr. Haase  complete redesign
+\end{DoxyPre}
+ 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_controller_8ino_ab10f597b51a01881bc3bfda2edc9daa2}\label{_controller_8ino_ab10f597b51a01881bc3bfda2edc9daa2}} 
+\index{Controller.ino@{Controller.ino}!ACController@{ACController}}
+\index{ACController@{ACController}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{ACController()}{ACController()}}
+{\footnotesize\ttfamily void A\+C\+Controller (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function uses a simple integral and linear regulator to control the AC unit. It\textquotesingle{}s basically a copy of the radiator function with inverted heat analysis in order to get a higher AC level in percentage when the temperature inside is higher than the setpoint. Here is the caller graph for this function\+:
+% FIG 1
+\mbox{\Hypertarget{_controller_8ino_aef8d57dbdb05a99caac118882b35d56c}\label{_controller_8ino_aef8d57dbdb05a99caac118882b35d56c}} 
+\index{Controller.ino@{Controller.ino}!CheckIfTypedAvailable@{CheckIfTypedAvailable}}
+\index{CheckIfTypedAvailable@{CheckIfTypedAvailable}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{CheckIfTypedAvailable()}{CheckIfTypedAvailable()}}
+{\footnotesize\ttfamily bool Check\+If\+Typed\+Available (\begin{DoxyParamCaption}\item[{char}]{sz\+Command\mbox{[}$\,$\mbox{]},  }\item[{int}]{n\+Command\+Length\+Max }\end{DoxyParamCaption})}
+
+
+
+Check if a command has been typed. 
+
+Check if a command has been typed over C\+O\+M-\/\+Port.
+
+
+\begin{DoxyParams}{Parameters}
+{\em sz\+Command} & storage for a typed command \\
+\hline
+{\em n\+Command\+Length\+Max} & size of sz\+Command \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if a command has been typed 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+% FIG 2
+\mbox{\Hypertarget{_controller_8ino_a573a9b79ee6a7e720f5ecc4bbfcb0c87}\label{_controller_8ino_a573a9b79ee6a7e720f5ecc4bbfcb0c87}} 
+\index{Controller.ino@{Controller.ino}!CreateNextSteadyCommand@{CreateNextSteadyCommand}}
+\index{CreateNextSteadyCommand@{CreateNextSteadyCommand}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{CreateNextSteadyCommand()}{CreateNextSteadyCommand()}}
+{\footnotesize\ttfamily bool Create\+Next\+Steady\+Command (\begin{DoxyParamCaption}\item[{char}]{sz\+Command\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+% FIG 3
+\mbox{\Hypertarget{_controller_8ino_a90328c9dde97401383a88ad666622063}\label{_controller_8ino_a90328c9dde97401383a88ad666622063}} 
+\index{Controller.ino@{Controller.ino}!FilterLocalCommands@{FilterLocalCommands}}
+\index{FilterLocalCommands@{FilterLocalCommands}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{FilterLocalCommands()}{FilterLocalCommands()}}
+{\footnotesize\ttfamily bool Filter\+Local\+Commands (\begin{DoxyParamCaption}\item[{char}]{sz\+Command\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Filter local commands. 
+
+Work on local commands which should not be transfered to the house. 
+\begin{DoxyParams}{Parameters}
+{\em sz\+Command} & command to check \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if a command was a local command 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+% FIG 4
+\mbox{\Hypertarget{_controller_8ino_afd15f02b5b76c27ce9d24b1202353803}\label{_controller_8ino_afd15f02b5b76c27ce9d24b1202353803}} 
+\index{Controller.ino@{Controller.ino}!HEControllerCool@{HEControllerCool}}
+\index{HEControllerCool@{HEControllerCool}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{HEControllerCool()}{HEControllerCool()}}
+{\footnotesize\ttfamily void H\+E\+Controller\+Cool (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+The Heat Exchanger is useful when the outside temperature is desired inside the house This function uses the heat exchanger as a substitude to the air conditioner when the outside temperature is lower. Here is the caller graph for this function\+:
+% FIG 5
+\mbox{\Hypertarget{_controller_8ino_aa4542df6529eb717fdc0a3105fe8a6f2}\label{_controller_8ino_aa4542df6529eb717fdc0a3105fe8a6f2}} 
+\index{Controller.ino@{Controller.ino}!HEControllerHeat@{HEControllerHeat}}
+\index{HEControllerHeat@{HEControllerHeat}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{HEControllerHeat()}{HEControllerHeat()}}
+{\footnotesize\ttfamily void H\+E\+Controller\+Heat (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+The Heat Exchanger is useful when the outside temperature is desired inside the house This function uses the heat exchanger as a substitude to the radiator when the outside temperature is higher.
+
+Its a straight copy of the radiator function since it should be controlled with the same regulator to achieve the setpoint temperature.
+
+Heat exchanger amount (airflow) and heat exchanger transfer (heat) are set to the same level. Here is the caller graph for this function\+:
+% FIG 6
+\mbox{\Hypertarget{_controller_8ino_a3005755a1cc32c4a6537fc8c5c0fa3cb}\label{_controller_8ino_a3005755a1cc32c4a6537fc8c5c0fa3cb}} 
+\index{Controller.ino@{Controller.ino}!InterpreteResponse@{InterpreteResponse}}
+\index{InterpreteResponse@{InterpreteResponse}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{InterpreteResponse()}{InterpreteResponse()}}
+{\footnotesize\ttfamily bool Interprete\+Response (\begin{DoxyParamCaption}\item[{char}]{sz\+Response\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Interpret an I²C response from the plant. 
+
+Interpret an I²C response from the plant.
+
+If more command types have been issued in function \mbox{\hyperlink{_controller_8ino_a573a9b79ee6a7e720f5ecc4bbfcb0c87}{Create\+Next\+Steady\+Command()}} the responses from the plant will return here.
+
+
+\begin{DoxyParams}{Parameters}
+{\em sz\+Response} & storage for a typed command \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if response has been used 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+% FIG 7
+\mbox{\Hypertarget{_controller_8ino_ae084e1bc8ccb35ea289ba0ca4972ea6d}\label{_controller_8ino_ae084e1bc8ccb35ea289ba0ca4972ea6d}} 
+\index{Controller.ino@{Controller.ino}!lcd@{lcd}}
+\index{lcd@{lcd}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{lcd()}{lcd()}}
+{\footnotesize\ttfamily Liquid\+Crystal\+\_\+\+I2C lcd (\begin{DoxyParamCaption}\item[{0x27}]{,  }\item[{16}]{,  }\item[{2}]{ }\end{DoxyParamCaption})}
+
+
+
+initialising display with i2c adress 0x27, 16 characters, 2 rows 
+
+Here is the caller graph for this function\+:
+% FIG 8
+\mbox{\Hypertarget{_controller_8ino_a891ab028bd00ce90bbf291a355410e1e}\label{_controller_8ino_a891ab028bd00ce90bbf291a355410e1e}} 
+\index{Controller.ino@{Controller.ino}!logic@{logic}}
+\index{logic@{logic}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{logic()}{logic()}}
+{\footnotesize\ttfamily void logic (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Basic logic for what to do\+: This function decides based on the temperature conditions inside and outside, whether to turn on the radiator or air-\/conditioner. It relies on Tcounter, which is gives a margin before turning on the AC or radiator in both winter and summer. This is an upgrade considering most thermostat manufacturers actually rely on a winter or summer mode in order to decide, which unit has to be turned on. Here is the call graph for this function\+:
+% FIG 9
+Here is the caller graph for this function\+:
+% FIG 10
+\mbox{\Hypertarget{_controller_8ino_afe461d27b9c48d5921c00d521181f12f}\label{_controller_8ino_afe461d27b9c48d5921c00d521181f12f}} 
+\index{Controller.ino@{Controller.ino}!loop@{loop}}
+\index{loop@{loop}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily void loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Usual arduino steadily called function. 
+
+Usual arduino steadily called function.
+
+This function will be called again and again as fast as possible.
+
+It will dispatch the C\+PU power between tasks which are expected to be executed in some regular intervals. Such intervals are often called sampling time. Here is the call graph for this function\+:
+% FIG 11
+\mbox{\Hypertarget{_controller_8ino_a090aec666da0a428e48e596f9460a5ec}\label{_controller_8ino_a090aec666da0a428e48e596f9460a5ec}} 
+\index{Controller.ino@{Controller.ino}!ReglerHeizung@{ReglerHeizung}}
+\index{ReglerHeizung@{ReglerHeizung}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{ReglerHeizung()}{ReglerHeizung()}}
+{\footnotesize\ttfamily void Regler\+Heizung (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+% FIG 12
+\mbox{\Hypertarget{_controller_8ino_a4de942d9efe53022e129b2760a11efdb}\label{_controller_8ino_a4de942d9efe53022e129b2760a11efdb}} 
+\index{Controller.ino@{Controller.ino}!SaveHumidity@{SaveHumidity}}
+\index{SaveHumidity@{SaveHumidity}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{SaveHumidity()}{SaveHumidity()}}
+{\footnotesize\ttfamily void Save\+Humidity (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+for future drying or moisturising air \mbox{\Hypertarget{_controller_8ino_a3a410b938064846305d0a0f41b05bd7f}\label{_controller_8ino_a3a410b938064846305d0a0f41b05bd7f}} 
+\index{Controller.ino@{Controller.ino}!SaveTemps@{SaveTemps}}
+\index{SaveTemps@{SaveTemps}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{SaveTemps()}{SaveTemps()}}
+{\footnotesize\ttfamily void Save\+Temps (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Create next steady transmitted command. 
+
+Create next of steadily transmitted requests or commands to the plant.
+
+Assume the buffer is large enough for all automatically created commands.
+
+The state machine here may be expanded to support more commands. Commands are created to cyclically transmit and/or request values to or from the plant.
+
+Please note the state value n\+Index has to be static to remain in existence after leaving the function. The index is incremented in every call and reset to zero after all commands have been generated once.
+
+
+\begin{DoxyParams}{Parameters}
+{\em sz\+Command} & storage for a typed command \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if a command has been created 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+% FIG 13
+\mbox{\Hypertarget{_controller_8ino_a4fc01d736fe50cf5b977f755b675f11d}\label{_controller_8ino_a4fc01d736fe50cf5b977f755b675f11d}} 
+\index{Controller.ino@{Controller.ino}!setup@{setup}}
+\index{setup@{setup}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{setup()}{setup()}}
+{\footnotesize\ttfamily void setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+usual arduino init function 
+
+Here is the call graph for this function\+:
+% FIG 14
+\mbox{\Hypertarget{_controller_8ino_afb707179a2ceeebf05387778b0aedeb5}\label{_controller_8ino_afb707179a2ceeebf05387778b0aedeb5}} 
+\index{Controller.ino@{Controller.ino}!ShowData@{ShowData}}
+\index{ShowData@{ShowData}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{ShowData()}{ShowData()}}
+{\footnotesize\ttfamily void Show\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Show some data values. 
+
+Show some data values
+
+Remember, each character at 9600 Baud requires about 1 msec. Here is the caller graph for this function\+:
+% FIG 15
+\mbox{\Hypertarget{_controller_8ino_a314881965417ddb0745f987c175471c3}\label{_controller_8ino_a314881965417ddb0745f987c175471c3}} 
+\index{Controller.ino@{Controller.ino}!sounds@{sounds}}
+\index{sounds@{sounds}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{sounds()}{sounds()}}
+{\footnotesize\ttfamily void sounds (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Experimental warning sounds for events like too high C\+O2 Concentration / warning bits \mbox{\Hypertarget{_controller_8ino_a4bb576321c9eff71b400cb7f4d58fede}\label{_controller_8ino_a4bb576321c9eff71b400cb7f4d58fede}} 
+\index{Controller.ino@{Controller.ino}!Task\_100ms@{Task\_100ms}}
+\index{Task\_100ms@{Task\_100ms}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{Task\_100ms()}{Task\_100ms()}}
+{\footnotesize\ttfamily void Task\+\_\+100ms (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function Task\+\_\+100ms called every 100 msec. 
+
+I²C communication and keyboard input. Here is the call graph for this function\+:
+% FIG 16
+Here is the caller graph for this function\+:
+% FIG 17
+\mbox{\Hypertarget{_controller_8ino_a70040c12b70c4183813492f54c34afc3}\label{_controller_8ino_a70040c12b70c4183813492f54c34afc3}} 
+\index{Controller.ino@{Controller.ino}!Task\_10ms@{Task\_10ms}}
+\index{Task\_10ms@{Task\_10ms}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{Task\_10ms()}{Task\_10ms()}}
+{\footnotesize\ttfamily void Task\+\_\+10ms (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function Task\+\_\+10ms called every 10 msec. 
+
+Here is the call graph for this function\+:
+% FIG 18
+Here is the caller graph for this function\+:
+% FIG 19
+\mbox{\Hypertarget{_controller_8ino_acc7e9ffdda03efaa08f8d3b4f372efbf}\label{_controller_8ino_acc7e9ffdda03efaa08f8d3b4f372efbf}} 
+\index{Controller.ino@{Controller.ino}!Task\_1s@{Task\_1s}}
+\index{Task\_1s@{Task\_1s}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{Task\_1s()}{Task\_1s()}}
+{\footnotesize\ttfamily void Task\+\_\+1s (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function Task\+\_\+1s called every 1 sec. 
+
+Use communication verbose flag (-\/v) to remove all but pure values. This allows to use the integrated Arduino serial plotter or an external software like gnuplot. Here is the call graph for this function\+:
+% FIG 20
+Here is the caller graph for this function\+:
+% FIG 21
+\mbox{\Hypertarget{_controller_8ino_aa28090f2d59ec6e36525dd17cf21dc58}\label{_controller_8ino_aa28090f2d59ec6e36525dd17cf21dc58}} 
+\index{Controller.ino@{Controller.ino}!thermostat@{thermostat}}
+\index{thermostat@{thermostat}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{thermostat()}{thermostat()}}
+{\footnotesize\ttfamily void thermostat (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Works similar to a thermostat with a heat sensitive bending metal. Since the AC should not just turn on after the temperature rises above a certain level, we need a counter to give each unit a margin, in which it can operate without turning off. Here is the caller graph for this function\+:
+% FIG 22
+\mbox{\Hypertarget{_controller_8ino_a92c4579a209bbd8bc56592f8c2958895}\label{_controller_8ino_a92c4579a209bbd8bc56592f8c2958895}} 
+\index{Controller.ino@{Controller.ino}!ToggleDigitalIOPort@{ToggleDigitalIOPort}}
+\index{ToggleDigitalIOPort@{ToggleDigitalIOPort}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{ToggleDigitalIOPort()}{ToggleDigitalIOPort()}}
+{\footnotesize\ttfamily void Toggle\+Digital\+I\+O\+Port (\begin{DoxyParamCaption}\item[{int}]{n\+Pin }\end{DoxyParamCaption})}
+
+
+
+Toggle digital IO port. 
+
+Toggle digital IO port.
+
+
+\begin{DoxyParams}{Parameters}
+{\em n\+Pin} & IO pin number \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:
+% FIG 23
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{_controller_8ino_a7154dde0a61f659f7f2a3b71f53e76b8}\label{_controller_8ino_a7154dde0a61f659f7f2a3b71f53e76b8}} 
+\index{Controller.ino@{Controller.ino}!bACOn@{bACOn}}
+\index{bACOn@{bACOn}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{bACOn}{bACOn}}
+{\footnotesize\ttfamily bool b\+A\+C\+On =0}
+
+\mbox{\Hypertarget{_controller_8ino_a1407a9778bed349633e7a263cc741e94}\label{_controller_8ino_a1407a9778bed349633e7a263cc741e94}} 
+\index{Controller.ino@{Controller.ino}!bHeatingOn@{bHeatingOn}}
+\index{bHeatingOn@{bHeatingOn}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{bHeatingOn}{bHeatingOn}}
+{\footnotesize\ttfamily bool b\+Heating\+On =0}
+
+\mbox{\Hypertarget{_controller_8ino_ad0fc9bc4e88662c79c9d563df8cd4097}\label{_controller_8ino_ad0fc9bc4e88662c79c9d563df8cd4097}} 
+\index{Controller.ino@{Controller.ino}!bVerbose@{bVerbose}}
+\index{bVerbose@{bVerbose}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{bVerbose}{bVerbose}}
+{\footnotesize\ttfamily bool b\+Verbose = true}
+
+
+
+local verbose flag 
+
+\mbox{\Hypertarget{_controller_8ino_aad943e6144061b3dc9ec2410ac7863f2}\label{_controller_8ino_aad943e6144061b3dc9ec2410ac7863f2}} 
+\index{Controller.ino@{Controller.ino}!dAC@{dAC}}
+\index{dAC@{dAC}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{dAC}{dAC}}
+{\footnotesize\ttfamily double d\+AC}
+
+
+
+AC level in percentage. 
+
+\mbox{\Hypertarget{_controller_8ino_a6b52146dd1f01d495c6f1b9a0455d228}\label{_controller_8ino_a6b52146dd1f01d495c6f1b9a0455d228}} 
+\index{Controller.ino@{Controller.ino}!dCO2@{dCO2}}
+\index{dCO2@{dCO2}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{dCO2}{dCO2}}
+{\footnotesize\ttfamily double d\+C\+O2}
+
+\mbox{\Hypertarget{_controller_8ino_a6f8d9e3bf345cfe79f66bcb3b1ea227c}\label{_controller_8ino_a6f8d9e3bf345cfe79f66bcb3b1ea227c}} 
+\index{Controller.ino@{Controller.ino}!dHEA@{dHEA}}
+\index{dHEA@{dHEA}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{dHEA}{dHEA}}
+{\footnotesize\ttfamily double d\+H\+EA}
+
+
+
+Heat exchanger amount. 
+
+\mbox{\Hypertarget{_controller_8ino_a2cd2658fd81b2cdccce398b93efa1300}\label{_controller_8ino_a2cd2658fd81b2cdccce398b93efa1300}} 
+\index{Controller.ino@{Controller.ino}!dHeating@{dHeating}}
+\index{dHeating@{dHeating}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{dHeating}{dHeating}}
+{\footnotesize\ttfamily int d\+Heating}
+
+
+
+percentage for radiator heat 
+
+\mbox{\Hypertarget{_controller_8ino_a7ef095c53364830a1f31966029a156c5}\label{_controller_8ino_a7ef095c53364830a1f31966029a156c5}} 
+\index{Controller.ino@{Controller.ino}!dHET@{dHET}}
+\index{dHET@{dHET}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{dHET}{dHET}}
+{\footnotesize\ttfamily double d\+H\+ET}
+
+
+
+Heat exchanger transfer. 
+
+\mbox{\Hypertarget{_controller_8ino_abef2741815dd29248096b646738fb238}\label{_controller_8ino_abef2741815dd29248096b646738fb238}} 
+\index{Controller.ino@{Controller.ino}!dIndoorHumidity@{dIndoorHumidity}}
+\index{dIndoorHumidity@{dIndoorHumidity}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{dIndoorHumidity}{dIndoorHumidity}}
+{\footnotesize\ttfamily double d\+Indoor\+Humidity = 0.\+0}
+
+
+
+indoor humidity in \% 
+
+\mbox{\Hypertarget{_controller_8ino_a62325a1f2084f7e9c44ab036c06a46c6}\label{_controller_8ino_a62325a1f2084f7e9c44ab036c06a46c6}} 
+\index{Controller.ino@{Controller.ino}!dIndoorTemperature@{dIndoorTemperature}}
+\index{dIndoorTemperature@{dIndoorTemperature}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{dIndoorTemperature}{dIndoorTemperature}}
+{\footnotesize\ttfamily double d\+Indoor\+Temperature = 0.\+0}
+
+
+
+indoor temperature in °C 
+
+\mbox{\Hypertarget{_controller_8ino_a8bcd73eee3bb6d3d5213c2238983d99f}\label{_controller_8ino_a8bcd73eee3bb6d3d5213c2238983d99f}} 
+\index{Controller.ino@{Controller.ino}!dOutdoorHumidity@{dOutdoorHumidity}}
+\index{dOutdoorHumidity@{dOutdoorHumidity}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{dOutdoorHumidity}{dOutdoorHumidity}}
+{\footnotesize\ttfamily double d\+Outdoor\+Humidity}
+
+
+
+outdoor humidity for exchanging 
+
+\mbox{\Hypertarget{_controller_8ino_a625d658de5fc8402b1f646c4bf4decc7}\label{_controller_8ino_a625d658de5fc8402b1f646c4bf4decc7}} 
+\index{Controller.ino@{Controller.ino}!dOutdoorTemperature@{dOutdoorTemperature}}
+\index{dOutdoorTemperature@{dOutdoorTemperature}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{dOutdoorTemperature}{dOutdoorTemperature}}
+{\footnotesize\ttfamily double d\+Outdoor\+Temperature}
+
+
+
+outdoor temperature for comparing with indoor temperature 
+
+\mbox{\Hypertarget{_controller_8ino_a9e49ee13da0fb0395a25a3003409bf58}\label{_controller_8ino_a9e49ee13da0fb0395a25a3003409bf58}} 
+\index{Controller.ino@{Controller.ino}!dTime@{dTime}}
+\index{dTime@{dTime}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{dTime}{dTime}}
+{\footnotesize\ttfamily double d\+Time = 0.\+0}
+
+
+
+simulation time in min 
+
+\mbox{\Hypertarget{_controller_8ino_a42b9218ab3ccd5fad8f4822fb8c5c821}\label{_controller_8ino_a42b9218ab3ccd5fad8f4822fb8c5c821}} 
+\index{Controller.ino@{Controller.ino}!humidityHistory@{humidityHistory}}
+\index{humidityHistory@{humidityHistory}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{humidityHistory}{humidityHistory}}
+{\footnotesize\ttfamily Arduino\+Queue$<$int$>$ humidity\+History}
+
+\mbox{\Hypertarget{_controller_8ino_a7ad25723a2644496babaf1a09edca79d}\label{_controller_8ino_a7ad25723a2644496babaf1a09edca79d}} 
+\index{Controller.ino@{Controller.ino}!humiditysp@{humiditysp}}
+\index{humiditysp@{humiditysp}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{humiditysp}{humiditysp}}
+{\footnotesize\ttfamily int humiditysp = 50}
+
+
+
+setpoint for optimal humidity (should be 40-\/60\%) ~\newline
+ 
+
+\mbox{\Hypertarget{_controller_8ino_a9f0f16962255937cbc323045fc01be17}\label{_controller_8ino_a9f0f16962255937cbc323045fc01be17}} 
+\index{Controller.ino@{Controller.ino}!I2C\_FREQUENCY@{I2C\_FREQUENCY}}
+\index{I2C\_FREQUENCY@{I2C\_FREQUENCY}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{I2C\_FREQUENCY}{I2C\_FREQUENCY}}
+{\footnotesize\ttfamily const long I2\+C\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+CY = 100000L}
+
+
+
+standard 100K\+Hz for I²C 
+
+\mbox{\Hypertarget{_controller_8ino_adc774ee2beace907193615671b407a3f}\label{_controller_8ino_adc774ee2beace907193615671b407a3f}} 
+\index{Controller.ino@{Controller.ino}!I2C\_PLANT\_ADDR@{I2C\_PLANT\_ADDR}}
+\index{I2C\_PLANT\_ADDR@{I2C\_PLANT\_ADDR}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{I2C\_PLANT\_ADDR}{I2C\_PLANT\_ADDR}}
+{\footnotesize\ttfamily const int I2\+C\+\_\+\+P\+L\+A\+N\+T\+\_\+\+A\+D\+DR = 10}
+
+
+
+Address for I²C slave. 
+
+\mbox{\Hypertarget{_controller_8ino_a6bb05a2ac6752c4e89e9fdc2153b963e}\label{_controller_8ino_a6bb05a2ac6752c4e89e9fdc2153b963e}} 
+\index{Controller.ino@{Controller.ino}!lcdmode@{lcdmode}}
+\index{lcdmode@{lcdmode}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{lcdmode}{lcdmode}}
+{\footnotesize\ttfamily int lcdmode}
+
+
+
+used for deciding what to show on the display 
+
+\mbox{\Hypertarget{_controller_8ino_a82504a11fb254521fd47f38bc9140370}\label{_controller_8ino_a82504a11fb254521fd47f38bc9140370}} 
+\index{Controller.ino@{Controller.ino}!LEDpin@{LEDpin}}
+\index{LEDpin@{LEDpin}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{LEDpin}{LEDpin}}
+{\footnotesize\ttfamily const int L\+E\+Dpin = 13}
+
+
+
+usual Arduino pin 13 L\+ED 
+
+\mbox{\Hypertarget{_controller_8ino_a5bf8233d173fda02920f536243bc9dd5}\label{_controller_8ino_a5bf8233d173fda02920f536243bc9dd5}} 
+\index{Controller.ino@{Controller.ino}!msecPreviousMillis@{msecPreviousMillis}}
+\index{msecPreviousMillis@{msecPreviousMillis}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{msecPreviousMillis}{msecPreviousMillis}}
+{\footnotesize\ttfamily unsigned long msec\+Previous\+Millis = 0}
+
+
+
+for 10 msec detection 
+
+\mbox{\Hypertarget{_controller_8ino_a5feafbc5e3579057d55fe2fae408063a}\label{_controller_8ino_a5feafbc5e3579057d55fe2fae408063a}} 
+\index{Controller.ino@{Controller.ino}!nCount100msec@{nCount100msec}}
+\index{nCount100msec@{nCount100msec}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{nCount100msec}{nCount100msec}}
+{\footnotesize\ttfamily int n\+Count100msec = 0}
+
+
+
+counter for 100 msec up to 1sec 
+
+\mbox{\Hypertarget{_controller_8ino_a6d4fd5facb822ead7e6e65d5d40977cf}\label{_controller_8ino_a6d4fd5facb822ead7e6e65d5d40977cf}} 
+\index{Controller.ino@{Controller.ino}!nCount10msec@{nCount10msec}}
+\index{nCount10msec@{nCount10msec}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{nCount10msec}{nCount10msec}}
+{\footnotesize\ttfamily int n\+Count10msec = 0}
+
+
+
+counter for 10 msec up to 100 msec 
+
+\mbox{\Hypertarget{_controller_8ino_ae782d5485075ca7387b32a20b1595a1f}\label{_controller_8ino_ae782d5485075ca7387b32a20b1595a1f}} 
+\index{Controller.ino@{Controller.ino}!nTOffset@{nTOffset}}
+\index{nTOffset@{nTOffset}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{nTOffset}{nTOffset}}
+{\footnotesize\ttfamily double n\+T\+Offset =-\/3.\+5}
+
+
+
+Difference between actual endtemp and setpoint. 
+
+\mbox{\Hypertarget{_controller_8ino_a3071e858c7958a3a60677921dbbdf9e6}\label{_controller_8ino_a3071e858c7958a3a60677921dbbdf9e6}} 
+\index{Controller.ino@{Controller.ino}!nWarnings@{nWarnings}}
+\index{nWarnings@{nWarnings}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{nWarnings}{nWarnings}}
+{\footnotesize\ttfamily int n\+Warnings = 0}
+
+
+
+warning bits 
+
+\mbox{\Hypertarget{_controller_8ino_a5c918eefadc81b4a78e0d1660e595d8c}\label{_controller_8ino_a5c918eefadc81b4a78e0d1660e595d8c}} 
+\index{Controller.ino@{Controller.ino}!nWinter@{nWinter}}
+\index{nWinter@{nWinter}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{nWinter}{nWinter}}
+{\footnotesize\ttfamily int n\+Winter =0}
+
+
+
+needed in order to know if its winter or summer 
+
+\mbox{\Hypertarget{_controller_8ino_ad6a8971f459a4f33b495b6bc61c28022}\label{_controller_8ino_ad6a8971f459a4f33b495b6bc61c28022}} 
+\index{Controller.ino@{Controller.ino}!soll@{soll}}
+\index{soll@{soll}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{soll}{soll}}
+{\footnotesize\ttfamily double soll = 20.\+0}
+
+
+
+Setpoint temperature, temperature aimed for in all tasks. 
+
+\mbox{\Hypertarget{_controller_8ino_a2695b485ae7f65013b402aa867bc5955}\label{_controller_8ino_a2695b485ae7f65013b402aa867bc5955}} 
+\index{Controller.ino@{Controller.ino}!szBanner@{szBanner}}
+\index{szBanner@{szBanner}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{szBanner}{szBanner}}
+{\footnotesize\ttfamily const char sz\+Banner\mbox{[}$\,$\mbox{]} = \char`\"{}\# House Air Conditioner Controller V3.\+04\char`\"{}}
+
+
+
+Banner and version number. 
+
+\mbox{\Hypertarget{_controller_8ino_a430c145c8cfac8c25b7619556a8f5bd2}\label{_controller_8ino_a430c145c8cfac8c25b7619556a8f5bd2}} 
+\index{Controller.ino@{Controller.ino}!Tcounter@{Tcounter}}
+\index{Tcounter@{Tcounter}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{Tcounter}{Tcounter}}
+{\footnotesize\ttfamily int Tcounter = 0}
+
+
+
+Counter used in thermostat function in order to enable a soft switch between radiator and ac. 
+
+\mbox{\Hypertarget{_controller_8ino_ad9b836e0035cff045207e8cd18d64665}\label{_controller_8ino_ad9b836e0035cff045207e8cd18d64665}} 
+\index{Controller.ino@{Controller.ino}!tempHistory@{tempHistory}}
+\index{tempHistory@{tempHistory}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{tempHistory}{tempHistory}}
+{\footnotesize\ttfamily Arduino\+Queue$<$int$>$ temp\+History}
+

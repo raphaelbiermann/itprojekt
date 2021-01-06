@@ -1,5 +1,5 @@
-/*! \mainpage Controller
-
+/*! mainpage Controller
+@file Controller.ino
 Simple house air conditioner Controller.
 
 The Controller running on an Arduino will transfer manual commands from the 
@@ -83,7 +83,7 @@ USB/COM port to the I²C port and displays the outcome from a connected house si
 #include "string.h"
 #include "ArduinoQueue.h" //loaded datastructure queue for saving stamps
 #include "LiquidCrystal_I2C.h"  //loaded i2c protocol for display
-LiquidCrystal_I2C lcd(0x27, 16, 2); //initialising display with i2c adress 0x27, 16 characters, 2 rows
+LiquidCrystal_I2C lcd(0x27, 16, 2); ///<initialising display with i2c adress 0x27, 16 characters, 2 rows
 
 using namespace std;
                                                 // time management
@@ -111,24 +111,24 @@ bool            bVerbose = true;                ///< local verbose flag
 
 
 
-int             humiditysp = 50;                      //setpoint for optimal humidity (should be 40-60%)             
-double          soll = 20.0;                    //Setpoint temperature, temperature aimed for in all tasks
-double          nTOffset=-3.5;                   //Difference between actual endtemp and setpoint
-int             dHeating;                       //percentage for radiator heat
+int             humiditysp = 50;                      ///<setpoint for optimal humidity (should be 40-60%)             
+double          soll = 20.0;                    ///<Setpoint temperature, temperature aimed for in all tasks
+double          nTOffset=-3.5;                   ///<Difference between actual endtemp and setpoint
+int             dHeating;                       ///<percentage for radiator heat
 ArduinoQueue<int> tempHistory;
 ArduinoQueue<int> humidityHistory;
 
 
 
-int             nWinter=0;
-double          dAC;
-double          dOutdoorTemperature;
-double          dOutdoorHumidity;
-int             Tcounter = 0;
+int             nWinter=0; ///< needed in order to know if its winter or summer
+double          dAC; ///< AC level in percentage
+double          dOutdoorTemperature; ///< outdoor temperature for comparing with indoor temperature
+double          dOutdoorHumidity; ///< outdoor humidity for exchanging
+int             Tcounter = 0; ///< Counter used in thermostat function in order to enable a soft switch between radiator and ac
+int             lcdmode; ///< used for deciding what to show on the display
 
-
-double          dHET; //Heat exchanger transfer
-double          dHEA; //Heat exchanger amount
+double          dHET; ///<Heat exchanger transfer
+double          dHEA; ///<Heat exchanger amount
 
 bool            bHeatingOn=0;                 //Overwrite system value for Heating
 bool            bACOn=0;
@@ -270,6 +270,15 @@ void ReglerHeizung(){ //double variable for radiator is being defined
  
 }
 
+/*!
+ * This function uses a simple integral and linear regulator to control the AC unit.
+ * It's basically a copy of the radiator function with inverted heat analysis in order to get a higher AC level in percentage when the temperature inside is higher than
+ * the setpoint.
+ * 
+ *
+ * 
+ */
+
 void ACController(){
 double cTemp = dIndoorTemperature; 
    int tDiff, t1, t2;
@@ -306,10 +315,22 @@ double cTemp = dIndoorTemperature;
   
 
 
-//for future drying or moisturising air
+/*!for future drying or moisturising air
+ * 
+ */
 void SaveHumidity(){  //saves current humidity
   humidityHistory.enqueue(dIndoorHumidity);
 }
+
+
+/*!
+ * The Heat Exchanger is useful when the outside temperature is desired inside the house
+ * This function uses the heat exchanger as a substitude to the radiator when the outside temperature is higher.
+ * 
+ * Its a straight copy of the radiator function since it should be controlled with the same regulator to achieve the setpoint temperature.
+ * 
+ * Heat exchanger amount (airflow) and heat exchanger transfer (heat) are set to the same level.
+ */
 
 void HEControllerHeat(){
 
@@ -340,6 +361,11 @@ if(dHEA > 100){ //limiter
     
 }
 
+/*!
+ * The Heat Exchanger is useful when the outside temperature is desired inside the house
+ * This function uses the heat exchanger as a substitude to the air conditioner when the outside temperature is lower.
+ */
+
 void HEControllerCool(){
 
 double cTemp = dIndoorTemperature; 
@@ -367,6 +393,11 @@ dHET = dHEA;
 }
 
 
+/*!
+ * Works similar to a thermostat with a heat sensitive bending metal. Since the AC should not just turn on after the temperature rises above a certain level,
+ * we need a counter to give each unit a margin, in which it can operate without turning off.
+ * 
+ */
 
 
 void thermostat(){ //negative Counter means summer
@@ -388,12 +419,22 @@ void thermostat(){ //negative Counter means summer
 
 
 
+/*!
+ * Basic logic for what to do: 
+ * This function decides based on the temperature conditions inside and outside, whether to turn on the radiator or air-conditioner.
+ * It relies on Tcounter, which is gives a margin before turning on the AC or radiator in both winter and summer.
+ * This is an upgrade considering most thermostat manufacturers actually rely on a winter or summer mode in order to decide, which 
+ * unit has to be turned on.
+ * 
+ */
+
 void logic(){
 
 double dTolerance=3;
 
 if((dIndoorTemperature < soll) and Tcounter > 0 or (nWinter == 1 and Tcounter >7)){
   ReglerHeizung();
+  lcdmode=1;
   if(dIndoorTemperature < dOutdoorTemperature){
     HEControllerHeat();
   }else{
@@ -406,6 +447,7 @@ if((dIndoorTemperature < soll) and Tcounter > 0 or (nWinter == 1 and Tcounter >7
 
 if((dIndoorTemperature > soll) and Tcounter < 0 or (nWinter == 0 and Tcounter < -7)){
   ACController();
+  lcdmode=0;
   if(dIndoorTemperature > dOutdoorTemperature){
     HEControllerCool();
   }else{
@@ -422,8 +464,9 @@ if((dIndoorTemperature > soll) and Tcounter < 0 or (nWinter == 0 and Tcounter < 
   
 }
 
-  
-
+ /*! 
+  * Experimental warning sounds for events like too high CO2 Concentration / warning bits
+*/
 void sounds(){
   int millis1;
   //tone(8, 150);
@@ -553,11 +596,11 @@ Remember, each character at 9600 Baud requires about 1 msec.
 */
 void ShowData()
 {                                               // just to show a result
- if ( bVerbose )
+/* if ( bVerbose )
     Serial.print("T=");
   Serial.print(dTime/60);                       // time in hours
   Serial.print(" ");
-/*  
+ 
   if ( bVerbose )
     Serial.print("i=");
   Serial.print(dIndoorHumidity);
@@ -693,17 +736,17 @@ lcd.print(soll);
 //2nd Row
 lcd.setCursor(0, 1); // In diesem Fall bedeutet (0,1) das erste Zeichen in der zweiten Zeile.
 
- 
+if(lcdmode == 1){ 
 lcd.print("H="); 
 lcd.print(dHeating);
 lcd.print("%");
-
-
+}
+if(lcdmode == 0){
   lcd.print("AC="); 
 
 lcd.print((int)dAC);
 lcd.print("%");
-
+}
 
 lcd.print(" h=");
 lcd.print((int)dIndoorHumidity);

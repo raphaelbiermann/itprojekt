@@ -24,16 +24,14 @@
 */
 var NAVTREE =
 [
-  [ "ITProjekt", "index.html", [
-    [ "I2C Master", "_i2_c__master.html", null ],
+  [ "IT Projekt - Hausklimatisierung", "index.html", [
+    [ "Manual Commands", "_commands.html", null ],
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
-        [ "Variables", "globals_vars.html", null ],
-        [ "Enumerations", "globals_enum.html", null ],
-        [ "Enumerator", "globals_eval.html", null ]
+        [ "Variables", "globals_vars.html", null ]
       ] ]
     ] ]
   ] ]
@@ -41,7 +39,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_i2_c___master_8cpp.html"
+"_commands.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

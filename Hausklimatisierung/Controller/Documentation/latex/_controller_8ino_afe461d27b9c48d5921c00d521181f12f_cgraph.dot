@@ -1,0 +1,42 @@
+digraph "loop"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="loop",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Usual arduino steadily called function."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="Task_100ms",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#a4bb576321c9eff71b400cb7f4d58fede",tooltip="Function Task_100ms called every 100 msec."];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="CheckIfTypedAvailable",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#aef8d57dbdb05a99caac118882b35d56c",tooltip="Check if a command has been typed."];
+  Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid"];
+  Node4 [label="CreateNextSteadyCommand",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#a573a9b79ee6a7e720f5ecc4bbfcb0c87",tooltip=" "];
+  Node2 -> Node5 [color="midnightblue",fontsize="10",style="solid"];
+  Node5 [label="FilterLocalCommands",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#a90328c9dde97401383a88ad666622063",tooltip="Filter local commands."];
+  Node2 -> Node6 [color="midnightblue",fontsize="10",style="solid"];
+  Node6 [label="InterpreteResponse",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#a3005755a1cc32c4a6537fc8c5c0fa3cb",tooltip="Interpret an I²C response from the plant."];
+  Node2 -> Node7 [color="midnightblue",fontsize="10",style="solid"];
+  Node7 [label="logic",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#a891ab028bd00ce90bbf291a355410e1e",tooltip=" "];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid"];
+  Node8 [label="ACController",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#ab10f597b51a01881bc3bfda2edc9daa2",tooltip=" "];
+  Node7 -> Node9 [color="midnightblue",fontsize="10",style="solid"];
+  Node9 [label="HEControllerCool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#afd15f02b5b76c27ce9d24b1202353803",tooltip=" "];
+  Node7 -> Node10 [color="midnightblue",fontsize="10",style="solid"];
+  Node10 [label="HEControllerHeat",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#aa4542df6529eb717fdc0a3105fe8a6f2",tooltip=" "];
+  Node7 -> Node11 [color="midnightblue",fontsize="10",style="solid"];
+  Node11 [label="ReglerHeizung",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#a090aec666da0a428e48e596f9460a5ec",tooltip=" "];
+  Node1 -> Node12 [color="midnightblue",fontsize="10",style="solid"];
+  Node12 [label="Task_10ms",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#a70040c12b70c4183813492f54c34afc3",tooltip="Function Task_10ms called every 10 msec."];
+  Node12 -> Node13 [color="midnightblue",fontsize="10",style="solid"];
+  Node13 [label="SaveTemps",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#a3a410b938064846305d0a0f41b05bd7f",tooltip="Create next steady transmitted command."];
+  Node1 -> Node14 [color="midnightblue",fontsize="10",style="solid"];
+  Node14 [label="Task_1s",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#acc7e9ffdda03efaa08f8d3b4f372efbf",tooltip="Function Task_1s called every 1 sec."];
+  Node14 -> Node15 [color="midnightblue",fontsize="10",style="solid"];
+  Node15 [label="lcd",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#ae084e1bc8ccb35ea289ba0ca4972ea6d",tooltip="initialising display with i2c adress 0x27, 16 characters, 2 rows"];
+  Node14 -> Node16 [color="midnightblue",fontsize="10",style="solid"];
+  Node16 [label="ShowData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#afb707179a2ceeebf05387778b0aedeb5",tooltip="Show some data values."];
+  Node14 -> Node17 [color="midnightblue",fontsize="10",style="solid"];
+  Node17 [label="thermostat",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#aa28090f2d59ec6e36525dd17cf21dc58",tooltip=" "];
+  Node14 -> Node18 [color="midnightblue",fontsize="10",style="solid"];
+  Node18 [label="ToggleDigitalIOPort",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#a92c4579a209bbd8bc56592f8c2958895",tooltip="Toggle digital IO port."];
+}
