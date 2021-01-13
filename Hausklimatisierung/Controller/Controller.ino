@@ -130,11 +130,14 @@ int             lcdmode; ///< used for deciding what to show on the display
 double          dHET; ///<Heat exchanger transfer
 double          dHEA; ///<Heat exchanger amount
 
+double          dEnergy; //heating energy
+
+
 bool            bHeatingOn=0;                 //Overwrite system value for Heating
 bool            bACOn=0;
 
 double          dCO2; //should be <1000
-
+bool            systemOn=1;                 //activation switch
 
 //! Banner and version number
 const char      szBanner[] = "# House Air Conditioner Controller V3.04";
@@ -250,12 +253,12 @@ void ReglerHeizung(){ //double variable for radiator is being defined
   
   //PAnteil
   double tFehler = (soll-nTOffset)-cTemp;
-  int pAnteil = 10;
+  int pAnteil = 13;
   //Serial.println(tFehler);
   //IAnteil
   
   double iIntegral = (t1+t2);
-  double iAnteil = 2;
+  double iAnteil = 3;
   //Serial.println(iIntegral*iAnteil);
 
 
@@ -341,7 +344,7 @@ void HEControllerHeat(){
   t2=tempHistory.dequeue();
   
   //PAnteil
-  double tFehler = (soll-nTOffset)-cTemp;
+  double tFehler = (soll)-cTemp;
   int pAnteil = 10;
   //Serial.println(tFehler);
   //IAnteil
@@ -389,7 +392,7 @@ double cTemp = dIndoorTemperature;
   if(dHEA < 0){
     dHEA = 0;
   }
-dHET = dHEA; 
+
 }
 
 
@@ -431,12 +434,12 @@ void thermostat(){ //negative Counter means summer
 void logic(){
 
 double dTolerance=3;
-
-if((dIndoorTemperature < soll) and Tcounter > 0 or (nWinter == 1 and Tcounter >7)){
+if(systemOn){
+if((dIndoorTemperature < soll+dTolerance) and Tcounter > 0 or (nWinter == 1 and Tcounter >7)){
   ReglerHeizung();
   lcdmode=1;
   if(dIndoorTemperature < dOutdoorTemperature){
-    HEControllerHeat();
+    HEControllerHeat(); //pure freshair exchange
   }else{
     dHEA=0; //heat exchanger amount
     dHET=0; //heat transfer
@@ -445,11 +448,11 @@ if((dIndoorTemperature < soll) and Tcounter > 0 or (nWinter == 1 and Tcounter >7
   dHeating = 0;
 }
 
-if((dIndoorTemperature > soll) and Tcounter < 0 or (nWinter == 0 and Tcounter < -7)){
+if((dIndoorTemperature > soll-dTolerance) and Tcounter < 0 or (nWinter == 0 and Tcounter < -7)){
   ACController();
   lcdmode=0;
   if(dIndoorTemperature > dOutdoorTemperature){
-    HEControllerCool();
+    HEControllerCool(); //pure freshair exchange
   }else{
     dHEA=0; //heat exchanger amount
     dHET=0; //heat transfer
@@ -457,9 +460,11 @@ if((dIndoorTemperature > soll) and Tcounter < 0 or (nWinter == 0 and Tcounter < 
 }else{
   dAC = 0;
 }
+}
 
-
-
+if(dCO2 > 1000){  //Emergency mode
+  dHEA = 100;
+}
 
   
 }
@@ -508,15 +513,19 @@ bool CreateNextSteadyCommand(char szCommand[]) //for automatic output, the value
     break;
   // more cases for other requests or settings 
   case 5:                                       // request warnings
+    if(systemOn){
     strcpy(szCommand, "H=");                // build command
     itoa(dHeating, szCommand+2, 10);
+    }
     break;
   case 6:                                       // request winter setting
     strcpy(szCommand, "w?");                    // build command
     break;
   case 7:                                       // send AC setting
+    if(systemOn){
     strcpy(szCommand, "F=");                // build command
     itoa(dAC, szCommand+2, 10);
+    }
     break;
   case 8:                                       // request outside temperature
     strcpy(szCommand, "O?");                    // build command
@@ -525,15 +534,22 @@ bool CreateNextSteadyCommand(char szCommand[]) //for automatic output, the value
     strcpy(szCommand, "o?");                    // build command
     break;
   case 10:                                       // send Heat exchanger amount setting
+    if(systemOn){
     strcpy(szCommand, "E=");                // build command
     itoa(dHEA, szCommand+2, 10);
+    }
     break;
    case 11:                                       // send Heat exchanger amount setting
+    if(systemOn){
     strcpy(szCommand, "e=");                // build command
     itoa(dHET, szCommand+2, 10);
+    }
     break;
   case 12:                                       // request outside humidity
     strcpy(szCommand, "C?");                    // build command
+    break;
+    case 13:                                       // request outside humidity
+    strcpy(szCommand, "K?");                    // build command
     break;
   
   default:
@@ -581,7 +597,10 @@ bool InterpreteResponse(char szResponse[]) //saving responses in local variables
       return true;
     case 'C':                                   // got a fresh CO2 value
       dCO2 = atoi(szResponse+2);           
-      return true;       
+      return true; 
+       case 'k':                                   // got a fresh CO2 value
+      dEnergy = atoi(szResponse+2);           
+      return true;      
     // more cases may follow //understand responses for manual questions
     }
   }
@@ -613,15 +632,39 @@ void ShowData()
     Serial.print("I=");
   Serial.println(dIndoorTemperature);
   Serial.print(" ");
-
+if ( bVerbose )
+    Serial.print("O=");
+  Serial.print(dOutdoorTemperature);
+  Serial.print(" ");
   
+//
+//if ( bVerbose )
+//    Serial.print("HEA=");
+//  Serial.print(dHEA);
+//  Serial.print(" ");
+//if ( bVerbose )
+//    Serial.print("HET=");
+//  Serial.print(dHEA);
+//  Serial.print(" ");  
+//if ( bVerbose )
+//    Serial.print("HEA=");
+//  Serial.print(dHEA);
+//  Serial.print(" ");
+//  if ( bVerbose )
+//    Serial.print("H=");
+//  Serial.print(dHeating);
+//  Serial.print(" ");
+//  if ( bVerbose )
+//    Serial.print("dAC=");
+//  Serial.print(dHEA);
+//  Serial.print(" ");
 }
 
 //! Function Task_10ms called every 10 msec
 void Task_10ms()  //no delays allowed in automatisation
 {
   ;                                              // nothing to do so far
-SaveTemps();          //Saving current temp every 10ms
+
 //SaveHumidity();        //Saving current indoor humidity every 10ms
 }
 
@@ -696,7 +739,7 @@ void Task_100ms() //most important, has to be done under 100ms
 //ACController();
 //HEController();
 logic();
-
+SaveTemps();          //Saving current temp every 10ms
 }
 
 
@@ -748,9 +791,13 @@ lcd.print((int)dAC);
 lcd.print("%");
 }
 
-lcd.print(" h=");
-lcd.print((int)dIndoorHumidity);
-lcd.print("%");
+//lcd.print(" h=");
+//lcd.print((int)dIndoorHumidity);
+//lcd.print("%");
+
+lcd.print(" k=");
+lcd.print((int)dEnergy);
+
   
 lcd.print(" W=");
 lcd.print(nWarnings);
