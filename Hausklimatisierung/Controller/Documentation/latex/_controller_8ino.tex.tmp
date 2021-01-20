@@ -35,6 +35,8 @@ void \mbox{\hyperlink{_controller_8ino_afd15f02b5b76c27ce9d24b1202353803}{H\+E\+
 \item 
 void \mbox{\hyperlink{_controller_8ino_aa28090f2d59ec6e36525dd17cf21dc58}{thermostat}} ()
 \item 
+void \mbox{\hyperlink{_controller_8ino_a7d06701ac073c331c83519e3909b7fce}{schedule}} ()
+\item 
 void \mbox{\hyperlink{_controller_8ino_a891ab028bd00ce90bbf291a355410e1e}{logic}} ()
 \item 
 void \mbox{\hyperlink{_controller_8ino_a314881965417ddb0745f987c175471c3}{sounds}} ()
@@ -105,11 +107,15 @@ double \mbox{\hyperlink{_controller_8ino_a7ef095c53364830a1f31966029a156c5}{d\+H
 \begin{DoxyCompactList}\small\item\em Heat exchanger transfer. \end{DoxyCompactList}\item 
 double \mbox{\hyperlink{_controller_8ino_a6f8d9e3bf345cfe79f66bcb3b1ea227c}{d\+H\+EA}}
 \begin{DoxyCompactList}\small\item\em Heat exchanger amount. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{_controller_8ino_a442353ee679d34020381eae18096064b}{d\+Energy}}
+\item 
 bool \mbox{\hyperlink{_controller_8ino_a1407a9778bed349633e7a263cc741e94}{b\+Heating\+On}} =0
 \item 
 bool \mbox{\hyperlink{_controller_8ino_a7154dde0a61f659f7f2a3b71f53e76b8}{b\+A\+C\+On}} =0
 \item 
 double \mbox{\hyperlink{_controller_8ino_a6b52146dd1f01d495c6f1b9a0455d228}{d\+C\+O2}}
+\item 
+bool \mbox{\hyperlink{_controller_8ino_ac87694ec8e42e3c0d15c3d65e71a9639}{system\+On}} =1
 \item 
 const char \mbox{\hyperlink{_controller_8ino_a2695b485ae7f65013b402aa867bc5955}{sz\+Banner}} \mbox{[}$\,$\mbox{]} = \char`\"{}\# House Air Conditioner Controller V3.\+04\char`\"{}
 \begin{DoxyCompactList}\small\item\em Banner and version number. \end{DoxyCompactList}\item 
@@ -348,6 +354,14 @@ true if a command has been created
 \end{DoxyReturn}
 Here is the caller graph for this function\+:
 % FIG 13
+\mbox{\Hypertarget{_controller_8ino_a7d06701ac073c331c83519e3909b7fce}\label{_controller_8ino_a7d06701ac073c331c83519e3909b7fce}} 
+\index{Controller.ino@{Controller.ino}!schedule@{schedule}}
+\index{schedule@{schedule}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{schedule()}{schedule()}}
+{\footnotesize\ttfamily void schedule (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Since we dont want the house to be hot at night in order to have a good sleep, the Setpoint temperature is set to be lower at night. This also saves energy, since the heating unit does not have to turn on a lot from 10pm to 7am because the outdoor temperature falls to a similar temperature. Here is the caller graph for this function\+:
+% FIG 14
 \mbox{\Hypertarget{_controller_8ino_a4fc01d736fe50cf5b977f755b675f11d}\label{_controller_8ino_a4fc01d736fe50cf5b977f755b675f11d}} 
 \index{Controller.ino@{Controller.ino}!setup@{setup}}
 \index{setup@{setup}!Controller.ino@{Controller.ino}}
@@ -359,7 +373,7 @@ Here is the caller graph for this function\+:
 usual arduino init function 
 
 Here is the call graph for this function\+:
-% FIG 14
+% FIG 15
 \mbox{\Hypertarget{_controller_8ino_afb707179a2ceeebf05387778b0aedeb5}\label{_controller_8ino_afb707179a2ceeebf05387778b0aedeb5}} 
 \index{Controller.ino@{Controller.ino}!ShowData@{ShowData}}
 \index{ShowData@{ShowData}!Controller.ino@{Controller.ino}}
@@ -373,7 +387,7 @@ Show some data values.
 Show some data values
 
 Remember, each character at 9600 Baud requires about 1 msec. Here is the caller graph for this function\+:
-% FIG 15
+% FIG 16
 \mbox{\Hypertarget{_controller_8ino_a314881965417ddb0745f987c175471c3}\label{_controller_8ino_a314881965417ddb0745f987c175471c3}} 
 \index{Controller.ino@{Controller.ino}!sounds@{sounds}}
 \index{sounds@{sounds}!Controller.ino@{Controller.ino}}
@@ -391,9 +405,9 @@ Experimental warning sounds for events like too high C\+O2 Concentration / warni
 Function Task\+\_\+100ms called every 100 msec. 
 
 I²C communication and keyboard input. Here is the call graph for this function\+:
-% FIG 16
-Here is the caller graph for this function\+:
 % FIG 17
+Here is the caller graph for this function\+:
+% FIG 18
 \mbox{\Hypertarget{_controller_8ino_a70040c12b70c4183813492f54c34afc3}\label{_controller_8ino_a70040c12b70c4183813492f54c34afc3}} 
 \index{Controller.ino@{Controller.ino}!Task\_10ms@{Task\_10ms}}
 \index{Task\_10ms@{Task\_10ms}!Controller.ino@{Controller.ino}}
@@ -404,8 +418,6 @@ Here is the caller graph for this function\+:
 
 Function Task\+\_\+10ms called every 10 msec. 
 
-Here is the call graph for this function\+:
-% FIG 18
 Here is the caller graph for this function\+:
 % FIG 19
 \mbox{\Hypertarget{_controller_8ino_acc7e9ffdda03efaa08f8d3b4f372efbf}\label{_controller_8ino_acc7e9ffdda03efaa08f8d3b4f372efbf}} 
@@ -489,6 +501,12 @@ AC level in percentage.
 \index{dCO2@{dCO2}!Controller.ino@{Controller.ino}}
 \doxysubsubsection{\texorpdfstring{dCO2}{dCO2}}
 {\footnotesize\ttfamily double d\+C\+O2}
+
+\mbox{\Hypertarget{_controller_8ino_a442353ee679d34020381eae18096064b}\label{_controller_8ino_a442353ee679d34020381eae18096064b}} 
+\index{Controller.ino@{Controller.ino}!dEnergy@{dEnergy}}
+\index{dEnergy@{dEnergy}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{dEnergy}{dEnergy}}
+{\footnotesize\ttfamily double d\+Energy}
 
 \mbox{\Hypertarget{_controller_8ino_a6f8d9e3bf345cfe79f66bcb3b1ea227c}\label{_controller_8ino_a6f8d9e3bf345cfe79f66bcb3b1ea227c}} 
 \index{Controller.ino@{Controller.ino}!dHEA@{dHEA}}
@@ -696,6 +714,12 @@ needed in order to know if its winter or summer
 
 
 Setpoint temperature, temperature aimed for in all tasks. 
+
+\mbox{\Hypertarget{_controller_8ino_ac87694ec8e42e3c0d15c3d65e71a9639}\label{_controller_8ino_ac87694ec8e42e3c0d15c3d65e71a9639}} 
+\index{Controller.ino@{Controller.ino}!systemOn@{systemOn}}
+\index{systemOn@{systemOn}!Controller.ino@{Controller.ino}}
+\doxysubsubsection{\texorpdfstring{systemOn}{systemOn}}
+{\footnotesize\ttfamily bool system\+On =1}
 
 \mbox{\Hypertarget{_controller_8ino_a2695b485ae7f65013b402aa867bc5955}\label{_controller_8ino_a2695b485ae7f65013b402aa867bc5955}} 
 \index{Controller.ino@{Controller.ino}!szBanner@{szBanner}}

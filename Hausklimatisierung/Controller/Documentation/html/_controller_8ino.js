@@ -13,6 +13,7 @@ var _controller_8ino =
     [ "ReglerHeizung", "_controller_8ino.html#a090aec666da0a428e48e596f9460a5ec", null ],
     [ "SaveHumidity", "_controller_8ino.html#a4de942d9efe53022e129b2760a11efdb", null ],
     [ "SaveTemps", "_controller_8ino.html#a3a410b938064846305d0a0f41b05bd7f", null ],
+    [ "schedule", "_controller_8ino.html#a7d06701ac073c331c83519e3909b7fce", null ],
     [ "setup", "_controller_8ino.html#a4fc01d736fe50cf5b977f755b675f11d", null ],
     [ "ShowData", "_controller_8ino.html#afb707179a2ceeebf05387778b0aedeb5", null ],
     [ "sounds", "_controller_8ino.html#a314881965417ddb0745f987c175471c3", null ],
@@ -26,6 +27,7 @@ var _controller_8ino =
     [ "bVerbose", "_controller_8ino.html#ad0fc9bc4e88662c79c9d563df8cd4097", null ],
     [ "dAC", "_controller_8ino.html#aad943e6144061b3dc9ec2410ac7863f2", null ],
     [ "dCO2", "_controller_8ino.html#a6b52146dd1f01d495c6f1b9a0455d228", null ],
+    [ "dEnergy", "_controller_8ino.html#a442353ee679d34020381eae18096064b", null ],
     [ "dHEA", "_controller_8ino.html#a6f8d9e3bf345cfe79f66bcb3b1ea227c", null ],
     [ "dHeating", "_controller_8ino.html#a2cd2658fd81b2cdccce398b93efa1300", null ],
     [ "dHET", "_controller_8ino.html#a7ef095c53364830a1f31966029a156c5", null ],
@@ -47,6 +49,7 @@ var _controller_8ino =
     [ "nWarnings", "_controller_8ino.html#a3071e858c7958a3a60677921dbbdf9e6", null ],
     [ "nWinter", "_controller_8ino.html#a5c918eefadc81b4a78e0d1660e595d8c", null ],
     [ "soll", "_controller_8ino.html#ad6a8971f459a4f33b495b6bc61c28022", null ],
+    [ "systemOn", "_controller_8ino.html#ac87694ec8e42e3c0d15c3d65e71a9639", null ],
     [ "szBanner", "_controller_8ino.html#a2695b485ae7f65013b402aa867bc5955", null ],
     [ "Tcounter", "_controller_8ino.html#a430c145c8cfac8c25b7619556a8f5bd2", null ],
     [ "tempHistory", "_controller_8ino.html#ad9b836e0035cff045207e8cd18d64665", null ]

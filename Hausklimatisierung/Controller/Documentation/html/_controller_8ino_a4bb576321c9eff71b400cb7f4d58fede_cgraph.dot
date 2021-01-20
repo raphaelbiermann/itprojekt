@@ -23,4 +23,6 @@ digraph "Task_100ms"
   Node9 [label="HEControllerHeat",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#aa4542df6529eb717fdc0a3105fe8a6f2",tooltip=" "];
   Node6 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node10 [label="ReglerHeizung",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#a090aec666da0a428e48e596f9460a5ec",tooltip=" "];
+  Node1 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="SaveTemps",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#a3a410b938064846305d0a0f41b05bd7f",tooltip="Create next steady transmitted command."];
 }

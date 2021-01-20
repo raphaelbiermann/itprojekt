@@ -138,11 +138,55 @@ bool            bACOn=0;
 
 double          dCO2; //should be <1000
 bool            systemOn=1;                 //activation switch
+bool            bDaytime;                   //Boolean for night and day
+
 
 //! Banner and version number
 const char      szBanner[] = "# House Air Conditioner Controller V3.04";
 //! usual Arduino pin 13 LED
 const int       LEDpin = 13;
+
+
+
+//custom chars for lcd display
+
+byte moonChar[] = {
+ B00011,
+  B01111,
+  B01110,
+  B11100,
+  B11100,
+  B01110,
+  B01111,
+  B00011
+};
+
+byte sunChar[] = {
+  B00100,
+  B10101,
+  B01110,
+  B11111,
+  B11111,
+  B01110,
+  B10101,
+  B00100
+};
+
+byte thermometerChar[] = {
+  B00100,
+  B01010,
+  B01010,
+  B01010,
+  B01010,
+  B10001,
+  B10001,
+  B01110
+};
+
+
+
+
+
 
 //! Toggle digital IO port
 /*!
@@ -175,6 +219,11 @@ void setup()
   //Own Additions 
   lcd.init(); //Im Setup wird der LCD gestartet 
 lcd.backlight();
+
+lcd.createChar(0, moonChar);
+lcd.createChar(1, sunChar);
+lcd.createChar(2, thermometerChar);
+
   
 }
 
@@ -420,6 +469,29 @@ void thermostat(){ //negative Counter means summer
   //Serial.println(Tcounter);
 }
 
+/*!
+ * Since we dont want the house to be hot at night in order to have a good sleep, the Setpoint temperature is set to be lower at night.
+ * This also saves energy, since the heating unit does not have to turn on a lot from 10pm to 7am because the outdoor temperature falls 
+ * to a similar temperature.
+ * 
+ * 
+ * 
+ */
+
+
+void schedule(){
+if(dTime < (60*7)){
+  soll = 17;
+  bDaytime=0;
+}else if(dTime < (60*22)){
+  soll = 22;
+  bDaytime=1;
+}else{
+  bDaytime=0;
+  soll=17;
+}
+
+}
 
 
 /*!
@@ -430,6 +502,7 @@ void thermostat(){ //negative Counter means summer
  * unit has to be turned on.
  * 
  */
+
 
 void logic(){
 
@@ -513,19 +586,19 @@ bool CreateNextSteadyCommand(char szCommand[]) //for automatic output, the value
     break;
   // more cases for other requests or settings 
   case 5:                                       // request warnings
-    if(systemOn){
+    
     strcpy(szCommand, "H=");                // build command
     itoa(dHeating, szCommand+2, 10);
-    }
+    
     break;
   case 6:                                       // request winter setting
     strcpy(szCommand, "w?");                    // build command
     break;
   case 7:                                       // send AC setting
-    if(systemOn){
+    
     strcpy(szCommand, "F=");                // build command
     itoa(dAC, szCommand+2, 10);
-    }
+    
     break;
   case 8:                                       // request outside temperature
     strcpy(szCommand, "O?");                    // build command
@@ -534,22 +607,22 @@ bool CreateNextSteadyCommand(char szCommand[]) //for automatic output, the value
     strcpy(szCommand, "o?");                    // build command
     break;
   case 10:                                       // send Heat exchanger amount setting
-    if(systemOn){
+    
     strcpy(szCommand, "E=");                // build command
     itoa(dHEA, szCommand+2, 10);
-    }
+    
     break;
    case 11:                                       // send Heat exchanger amount setting
-    if(systemOn){
+    
     strcpy(szCommand, "e=");                // build command
     itoa(dHET, szCommand+2, 10);
-    }
+    
     break;
-  case 12:                                       // request outside humidity
+  case 12:                                       // request CO2 concentration
     strcpy(szCommand, "C?");                    // build command
     break;
-    case 13:                                       // request outside humidity
-    strcpy(szCommand, "K?");                    // build command
+    case 13:                                       // request energy consumption
+    strcpy(szCommand, "k?");                    // build command
     break;
   
   default:
@@ -592,15 +665,17 @@ bool InterpreteResponse(char szResponse[]) //saving responses in local variables
     case 'O':                                   // got a fresh Outdoor temperature value
       dOutdoorTemperature = atoi(szResponse+2);           
       return true;   
-    case 'o':                                   // got a fresh Outdoor humidity value
+   /* case 'o':                                   // got a fresh Outdoor humidity value
       dOutdoorHumidity = atoi(szResponse+2);           
       return true;
     case 'C':                                   // got a fresh CO2 value
       dCO2 = atoi(szResponse+2);           
       return true; 
-       case 'k':                                   // got a fresh CO2 value
+    case 'k':                                   // got a fresh CO2 value
       dEnergy = atoi(szResponse+2);           
-      return true;      
+      return true; 
+
+           */
     // more cases may follow //understand responses for manual questions
     }
   }
@@ -615,27 +690,27 @@ Remember, each character at 9600 Baud requires about 1 msec.
 */
 void ShowData()
 {                                               // just to show a result
-/* if ( bVerbose )
-    Serial.print("T=");
-  Serial.print(dTime/60);                       // time in hours
-  Serial.print(" ");
- 
-  if ( bVerbose )
-    Serial.print("i=");
-  Serial.print(dIndoorHumidity);
-  Serial.print(" ");
-  if ( bVerbose )
-    Serial.print("W=0x");
-  Serial.print(nWarnings, HEX);
-  Serial.println("");
- */if ( bVerbose )
-    Serial.print("I=");
-  Serial.println(dIndoorTemperature);
-  Serial.print(" ");
+// if ( bVerbose )
+//    Serial.print("T=");
+//  Serial.print(dTime/60);                       // time in hours
+//  Serial.print(" ");
+// 
+// if ( bVerbose )
+//    Serial.print("i=");
+//  Serial.print(dIndoorHumidity);
+//  Serial.print(" ");
+//  if ( bVerbose )
+//    Serial.print("W=0x");
+//  Serial.print(nWarnings, HEX);
+//  Serial.println("");
+// if ( bVerbose )
+//    Serial.print("I=");
+//  Serial.println(dIndoorTemperature);
+  //Serial.print(" ");
 if ( bVerbose )
     Serial.print("O=");
-  Serial.print(dOutdoorTemperature);
-  Serial.print(" ");
+  Serial.println(dOutdoorTemperature);
+//  Serial.print(" ");
   
 //
 //if ( bVerbose )
@@ -758,7 +833,7 @@ void Task_1s() //everything not so often needed
 
   ShowData();                                   // possibly remove later
 
-
+  schedule();
   thermostat();
 //sounds();
 
@@ -769,10 +844,16 @@ lcd.clear();
 
 //1st Row
   lcd.setCursor(0, 0);//Hier wird die Position des ersten Zeichens festgelegt. In diesem Fall bedeutet (0,0) das erste Zeichen in der ersten Zeile. 
-lcd.print("T=");
+lcd.write(2);
 lcd.print(dIndoorTemperature);
 lcd.print("C");
-lcd.setCursor(9,0);
+
+if(!bDaytime){
+lcd.write(0); //output moon
+}else{
+lcd.write(1);  
+}
+
 lcd.print("SP=");
 lcd.print(soll); 
 
@@ -791,16 +872,29 @@ lcd.print((int)dAC);
 lcd.print("%");
 }
 
-//lcd.print(" h=");
-//lcd.print((int)dIndoorHumidity);
-//lcd.print("%");
+lcd.print(" h=");
+lcd.print((int)dIndoorHumidity);
+lcd.print("%");
 
-lcd.print(" k=");
-lcd.print((int)dEnergy);
+//lcd.print(" k=");
+//lcd.print((int)dEnergy);
+//
+//lcd.print(" ");
+//lcd.print((int)(dTime/60));
+
+
+//lcd.print(nWarnings);
+switch (nWarnings){ //error handling
+case 0:
+ // no warnings
+break;
+
+case 1:
+
+break;
 
   
-lcd.print(" W=");
-lcd.print(nWarnings);
+}
 
 
 //Buzzer Management
@@ -819,11 +913,6 @@ Such intervals are often called sampling time.
 */
 void loop() //calling primitive functions, mainly responsible for timing
 {
-
-
-
-
-
 
   
   long  msecCurrentMillis = millis();

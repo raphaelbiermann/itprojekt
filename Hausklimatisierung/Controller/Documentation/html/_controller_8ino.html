@@ -134,6 +134,8 @@ Functions</h2></td></tr>
 <tr class="separator:afd15f02b5b76c27ce9d24b1202353803"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa28090f2d59ec6e36525dd17cf21dc58"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_controller_8ino.html#aa28090f2d59ec6e36525dd17cf21dc58">thermostat</a> ()</td></tr>
 <tr class="separator:aa28090f2d59ec6e36525dd17cf21dc58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d06701ac073c331c83519e3909b7fce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_controller_8ino.html#a7d06701ac073c331c83519e3909b7fce">schedule</a> ()</td></tr>
+<tr class="separator:a7d06701ac073c331c83519e3909b7fce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a891ab028bd00ce90bbf291a355410e1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_controller_8ino.html#a891ab028bd00ce90bbf291a355410e1e">logic</a> ()</td></tr>
 <tr class="separator:a891ab028bd00ce90bbf291a355410e1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a314881965417ddb0745f987c175471c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_controller_8ino.html#a314881965417ddb0745f987c175471c3">sounds</a> ()</td></tr>
@@ -232,12 +234,16 @@ Variables</h2></td></tr>
 <tr class="memitem:a6f8d9e3bf345cfe79f66bcb3b1ea227c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_controller_8ino.html#a6f8d9e3bf345cfe79f66bcb3b1ea227c">dHEA</a></td></tr>
 <tr class="memdesc:a6f8d9e3bf345cfe79f66bcb3b1ea227c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Heat exchanger amount.  <a href="_controller_8ino.html#a6f8d9e3bf345cfe79f66bcb3b1ea227c">More...</a><br /></td></tr>
 <tr class="separator:a6f8d9e3bf345cfe79f66bcb3b1ea227c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a442353ee679d34020381eae18096064b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_controller_8ino.html#a442353ee679d34020381eae18096064b">dEnergy</a></td></tr>
+<tr class="separator:a442353ee679d34020381eae18096064b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1407a9778bed349633e7a263cc741e94"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_controller_8ino.html#a1407a9778bed349633e7a263cc741e94">bHeatingOn</a> =0</td></tr>
 <tr class="separator:a1407a9778bed349633e7a263cc741e94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7154dde0a61f659f7f2a3b71f53e76b8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_controller_8ino.html#a7154dde0a61f659f7f2a3b71f53e76b8">bACOn</a> =0</td></tr>
 <tr class="separator:a7154dde0a61f659f7f2a3b71f53e76b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b52146dd1f01d495c6f1b9a0455d228"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_controller_8ino.html#a6b52146dd1f01d495c6f1b9a0455d228">dCO2</a></td></tr>
 <tr class="separator:a6b52146dd1f01d495c6f1b9a0455d228"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac87694ec8e42e3c0d15c3d65e71a9639"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_controller_8ino.html#ac87694ec8e42e3c0d15c3d65e71a9639">systemOn</a> =1</td></tr>
+<tr class="separator:ac87694ec8e42e3c0d15c3d65e71a9639"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2695b485ae7f65013b402aa867bc5955"><td class="memItemLeft" align="right" valign="top">const char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_controller_8ino.html#a2695b485ae7f65013b402aa867bc5955">szBanner</a> [] = &quot;# House Air Conditioner Controller V3.04&quot;</td></tr>
 <tr class="memdesc:a2695b485ae7f65013b402aa867bc5955"><td class="mdescLeft">&#160;</td><td class="mdescRight">Banner and version number.  <a href="_controller_8ino.html#a2695b485ae7f65013b402aa867bc5955">More...</a><br /></td></tr>
 <tr class="separator:a2695b485ae7f65013b402aa867bc5955"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -649,6 +655,29 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a7d06701ac073c331c83519e3909b7fce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d06701ac073c331c83519e3909b7fce">&#9670;&nbsp;</a></span>schedule()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void schedule </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Since we dont want the house to be hot at night in order to have a good sleep, the Setpoint temperature is set to be lower at night. This also saves energy, since the heating unit does not have to turn on a lot from 10pm to 7am because the outdoor temperature falls to a similar temperature. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="_controller_8ino_a7d06701ac073c331c83519e3909b7fce_icgraph.png" border="0" usemap="#a_controller_8ino_a7d06701ac073c331c83519e3909b7fce_icgraph" alt=""/></div>
+</div>
+
+</div>
+</div>
 <a id="a4fc01d736fe50cf5b977f755b675f11d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4fc01d736fe50cf5b977f755b675f11d">&#9670;&nbsp;</a></span>setup()</h2>
 
@@ -763,11 +792,6 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Function Task_10ms called every 10 msec. </p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="_controller_8ino_a70040c12b70c4183813492f54c34afc3_cgraph.png" border="0" usemap="#a_controller_8ino_a70040c12b70c4183813492f54c34afc3_cgraph" alt=""/></div>
-</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -930,6 +954,20 @@ Here is the caller graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">double dCO2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a442353ee679d34020381eae18096064b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a442353ee679d34020381eae18096064b">&#9670;&nbsp;</a></span>dEnergy</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double dEnergy</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1271,6 +1309,20 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="ac87694ec8e42e3c0d15c3d65e71a9639"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac87694ec8e42e3c0d15c3d65e71a9639">&#9670;&nbsp;</a></span>systemOn</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool systemOn =1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a2695b485ae7f65013b402aa867bc5955"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2695b485ae7f65013b402aa867bc5955">&#9670;&nbsp;</a></span>szBanner</h2>
 
@@ -1320,55 +1372,58 @@ Here is the caller graph for this function:</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="a_controller_8ino_html_a9f0f16962255937cbc323045fc01be17"><div class="ttname"><a href="_controller_8ino.html#a9f0f16962255937cbc323045fc01be17">I2C_FREQUENCY</a></div><div class="ttdeci">const long I2C_FREQUENCY</div><div class="ttdoc">standard 100KHz for I²C</div><div class="ttdef"><b>Definition:</b> Controller.ino:101</div></div>
-<div class="ttc" id="a_controller_8ino_html_a891ab028bd00ce90bbf291a355410e1e"><div class="ttname"><a href="_controller_8ino.html#a891ab028bd00ce90bbf291a355410e1e">logic</a></div><div class="ttdeci">void logic()</div><div class="ttdef"><b>Definition:</b> Controller.ino:431</div></div>
-<div class="ttc" id="a_controller_8ino_html_a90328c9dde97401383a88ad666622063"><div class="ttname"><a href="_controller_8ino.html#a90328c9dde97401383a88ad666622063">FilterLocalCommands</a></div><div class="ttdeci">bool FilterLocalCommands(char szCommand[])</div><div class="ttdoc">Filter local commands.</div><div class="ttdef"><b>Definition:</b> Controller.ino:213</div></div>
+<div class="ttc" id="a_controller_8ino_html_a891ab028bd00ce90bbf291a355410e1e"><div class="ttname"><a href="_controller_8ino.html#a891ab028bd00ce90bbf291a355410e1e">logic</a></div><div class="ttdeci">void logic()</div><div class="ttdef"><b>Definition:</b> Controller.ino:455</div></div>
+<div class="ttc" id="a_controller_8ino_html_a90328c9dde97401383a88ad666622063"><div class="ttname"><a href="_controller_8ino.html#a90328c9dde97401383a88ad666622063">FilterLocalCommands</a></div><div class="ttdeci">bool FilterLocalCommands(char szCommand[])</div><div class="ttdoc">Filter local commands.</div><div class="ttdef"><b>Definition:</b> Controller.ino:216</div></div>
 <div class="ttc" id="a_controller_8ino_html_ad0fc9bc4e88662c79c9d563df8cd4097"><div class="ttname"><a href="_controller_8ino.html#ad0fc9bc4e88662c79c9d563df8cd4097">bVerbose</a></div><div class="ttdeci">bool bVerbose</div><div class="ttdoc">local verbose flag</div><div class="ttdef"><b>Definition:</b> Controller.ino:108</div></div>
-<div class="ttc" id="a_controller_8ino_html_a1407a9778bed349633e7a263cc741e94"><div class="ttname"><a href="_controller_8ino.html#a1407a9778bed349633e7a263cc741e94">bHeatingOn</a></div><div class="ttdeci">bool bHeatingOn</div><div class="ttdef"><b>Definition:</b> Controller.ino:133</div></div>
-<div class="ttc" id="a_controller_8ino_html_a090aec666da0a428e48e596f9460a5ec"><div class="ttname"><a href="_controller_8ino.html#a090aec666da0a428e48e596f9460a5ec">ReglerHeizung</a></div><div class="ttdeci">void ReglerHeizung()</div><div class="ttdef"><b>Definition:</b> Controller.ino:244</div></div>
+<div class="ttc" id="a_controller_8ino_html_a1407a9778bed349633e7a263cc741e94"><div class="ttname"><a href="_controller_8ino.html#a1407a9778bed349633e7a263cc741e94">bHeatingOn</a></div><div class="ttdeci">bool bHeatingOn</div><div class="ttdef"><b>Definition:</b> Controller.ino:136</div></div>
+<div class="ttc" id="a_controller_8ino_html_a090aec666da0a428e48e596f9460a5ec"><div class="ttname"><a href="_controller_8ino.html#a090aec666da0a428e48e596f9460a5ec">ReglerHeizung</a></div><div class="ttdeci">void ReglerHeizung()</div><div class="ttdef"><b>Definition:</b> Controller.ino:247</div></div>
 <div class="ttc" id="a_controller_8ino_html_a430c145c8cfac8c25b7619556a8f5bd2"><div class="ttname"><a href="_controller_8ino.html#a430c145c8cfac8c25b7619556a8f5bd2">Tcounter</a></div><div class="ttdeci">int Tcounter</div><div class="ttdoc">Counter used in thermostat function in order to enable a soft switch between radiator and ac.</div><div class="ttdef"><b>Definition:</b> Controller.ino:127</div></div>
 <div class="ttc" id="a_controller_8ino_html_a625d658de5fc8402b1f646c4bf4decc7"><div class="ttname"><a href="_controller_8ino.html#a625d658de5fc8402b1f646c4bf4decc7">dOutdoorTemperature</a></div><div class="ttdeci">double dOutdoorTemperature</div><div class="ttdoc">outdoor temperature for comparing with indoor temperature</div><div class="ttdef"><b>Definition:</b> Controller.ino:125</div></div>
 <div class="ttc" id="a_controller_8ino_html_a5bf8233d173fda02920f536243bc9dd5"><div class="ttname"><a href="_controller_8ino.html#a5bf8233d173fda02920f536243bc9dd5">msecPreviousMillis</a></div><div class="ttdeci">unsigned long msecPreviousMillis</div><div class="ttdoc">for 10 msec detection</div><div class="ttdef"><b>Definition:</b> Controller.ino:91</div></div>
 <div class="ttc" id="a_controller_8ino_html_adc774ee2beace907193615671b407a3f"><div class="ttname"><a href="_controller_8ino.html#adc774ee2beace907193615671b407a3f">I2C_PLANT_ADDR</a></div><div class="ttdeci">const int I2C_PLANT_ADDR</div><div class="ttdoc">Address for I²C slave.</div><div class="ttdef"><b>Definition:</b> Controller.ino:99</div></div>
-<div class="ttc" id="a_controller_8ino_html_a4bb576321c9eff71b400cb7f4d58fede"><div class="ttname"><a href="_controller_8ino.html#a4bb576321c9eff71b400cb7f4d58fede">Task_100ms</a></div><div class="ttdeci">void Task_100ms()</div><div class="ttdoc">Function Task_100ms called every 100 msec.</div><div class="ttdef"><b>Definition:</b> Controller.ino:632</div></div>
+<div class="ttc" id="a_controller_8ino_html_a4bb576321c9eff71b400cb7f4d58fede"><div class="ttname"><a href="_controller_8ino.html#a4bb576321c9eff71b400cb7f4d58fede">Task_100ms</a></div><div class="ttdeci">void Task_100ms()</div><div class="ttdoc">Function Task_100ms called every 100 msec.</div><div class="ttdef"><b>Definition:</b> Controller.ino:698</div></div>
 <div class="ttc" id="a_controller_8ino_html_a6f8d9e3bf345cfe79f66bcb3b1ea227c"><div class="ttname"><a href="_controller_8ino.html#a6f8d9e3bf345cfe79f66bcb3b1ea227c">dHEA</a></div><div class="ttdeci">double dHEA</div><div class="ttdoc">Heat exchanger amount.</div><div class="ttdef"><b>Definition:</b> Controller.ino:131</div></div>
-<div class="ttc" id="a_controller_8ino_html_aef8d57dbdb05a99caac118882b35d56c"><div class="ttname"><a href="_controller_8ino.html#aef8d57dbdb05a99caac118882b35d56c">CheckIfTypedAvailable</a></div><div class="ttdeci">bool CheckIfTypedAvailable(char szCommand[], int nCommandLengthMax)</div><div class="ttdoc">Check if a command has been typed.</div><div class="ttdef"><b>Definition:</b> Controller.ino:186</div></div>
-<div class="ttc" id="a_controller_8ino_html_a3a410b938064846305d0a0f41b05bd7f"><div class="ttname"><a href="_controller_8ino.html#a3a410b938064846305d0a0f41b05bd7f">SaveTemps</a></div><div class="ttdeci">void SaveTemps()</div><div class="ttdoc">Create next steady transmitted command.</div><div class="ttdef"><b>Definition:</b> Controller.ino:240</div></div>
-<div class="ttc" id="a_controller_8ino_html_a82504a11fb254521fd47f38bc9140370"><div class="ttname"><a href="_controller_8ino.html#a82504a11fb254521fd47f38bc9140370">LEDpin</a></div><div class="ttdeci">const int LEDpin</div><div class="ttdoc">usual Arduino pin 13 LED</div><div class="ttdef"><b>Definition:</b> Controller.ino:142</div></div>
+<div class="ttc" id="a_controller_8ino_html_aef8d57dbdb05a99caac118882b35d56c"><div class="ttname"><a href="_controller_8ino.html#aef8d57dbdb05a99caac118882b35d56c">CheckIfTypedAvailable</a></div><div class="ttdeci">bool CheckIfTypedAvailable(char szCommand[], int nCommandLengthMax)</div><div class="ttdoc">Check if a command has been typed.</div><div class="ttdef"><b>Definition:</b> Controller.ino:189</div></div>
+<div class="ttc" id="a_controller_8ino_html_a3a410b938064846305d0a0f41b05bd7f"><div class="ttname"><a href="_controller_8ino.html#a3a410b938064846305d0a0f41b05bd7f">SaveTemps</a></div><div class="ttdeci">void SaveTemps()</div><div class="ttdoc">Create next steady transmitted command.</div><div class="ttdef"><b>Definition:</b> Controller.ino:243</div></div>
+<div class="ttc" id="a_controller_8ino_html_a82504a11fb254521fd47f38bc9140370"><div class="ttname"><a href="_controller_8ino.html#a82504a11fb254521fd47f38bc9140370">LEDpin</a></div><div class="ttdeci">const int LEDpin</div><div class="ttdoc">usual Arduino pin 13 LED</div><div class="ttdef"><b>Definition:</b> Controller.ino:145</div></div>
 <div class="ttc" id="a_controller_8ino_html_a9e49ee13da0fb0395a25a3003409bf58"><div class="ttname"><a href="_controller_8ino.html#a9e49ee13da0fb0395a25a3003409bf58">dTime</a></div><div class="ttdeci">double dTime</div><div class="ttdoc">simulation time in min</div><div class="ttdef"><b>Definition:</b> Controller.ino:104</div></div>
-<div class="ttc" id="a_controller_8ino_html_aa4542df6529eb717fdc0a3105fe8a6f2"><div class="ttname"><a href="_controller_8ino.html#aa4542df6529eb717fdc0a3105fe8a6f2">HEControllerHeat</a></div><div class="ttdeci">void HEControllerHeat()</div><div class="ttdef"><b>Definition:</b> Controller.ino:335</div></div>
-<div class="ttc" id="a_controller_8ino_html_afd15f02b5b76c27ce9d24b1202353803"><div class="ttname"><a href="_controller_8ino.html#afd15f02b5b76c27ce9d24b1202353803">HEControllerCool</a></div><div class="ttdeci">void HEControllerCool()</div><div class="ttdef"><b>Definition:</b> Controller.ino:369</div></div>
-<div class="ttc" id="a_controller_8ino_html_a4de942d9efe53022e129b2760a11efdb"><div class="ttname"><a href="_controller_8ino.html#a4de942d9efe53022e129b2760a11efdb">SaveHumidity</a></div><div class="ttdeci">void SaveHumidity()</div><div class="ttdef"><b>Definition:</b> Controller.ino:321</div></div>
+<div class="ttc" id="a_controller_8ino_html_aa4542df6529eb717fdc0a3105fe8a6f2"><div class="ttname"><a href="_controller_8ino.html#aa4542df6529eb717fdc0a3105fe8a6f2">HEControllerHeat</a></div><div class="ttdeci">void HEControllerHeat()</div><div class="ttdef"><b>Definition:</b> Controller.ino:338</div></div>
+<div class="ttc" id="a_controller_8ino_html_afd15f02b5b76c27ce9d24b1202353803"><div class="ttname"><a href="_controller_8ino.html#afd15f02b5b76c27ce9d24b1202353803">HEControllerCool</a></div><div class="ttdeci">void HEControllerCool()</div><div class="ttdef"><b>Definition:</b> Controller.ino:372</div></div>
+<div class="ttc" id="a_controller_8ino_html_a4de942d9efe53022e129b2760a11efdb"><div class="ttname"><a href="_controller_8ino.html#a4de942d9efe53022e129b2760a11efdb">SaveHumidity</a></div><div class="ttdeci">void SaveHumidity()</div><div class="ttdef"><b>Definition:</b> Controller.ino:324</div></div>
 <div class="ttc" id="a_controller_8ino_html_ae084e1bc8ccb35ea289ba0ca4972ea6d"><div class="ttname"><a href="_controller_8ino.html#ae084e1bc8ccb35ea289ba0ca4972ea6d">lcd</a></div><div class="ttdeci">LiquidCrystal_I2C lcd(0x27, 16, 2)</div><div class="ttdoc">initialising display with i2c adress 0x27, 16 characters, 2 rows</div></div>
 <div class="ttc" id="a_controller_8ino_html_a6d4fd5facb822ead7e6e65d5d40977cf"><div class="ttname"><a href="_controller_8ino.html#a6d4fd5facb822ead7e6e65d5d40977cf">nCount10msec</a></div><div class="ttdeci">int nCount10msec</div><div class="ttdoc">counter for 10 msec up to 100 msec</div><div class="ttdef"><b>Definition:</b> Controller.ino:93</div></div>
-<div class="ttc" id="a_controller_8ino_html_afb707179a2ceeebf05387778b0aedeb5"><div class="ttname"><a href="_controller_8ino.html#afb707179a2ceeebf05387778b0aedeb5">ShowData</a></div><div class="ttdeci">void ShowData()</div><div class="ttdoc">Show some data values.</div><div class="ttdef"><b>Definition:</b> Controller.ino:597</div></div>
+<div class="ttc" id="a_controller_8ino_html_afb707179a2ceeebf05387778b0aedeb5"><div class="ttname"><a href="_controller_8ino.html#afb707179a2ceeebf05387778b0aedeb5">ShowData</a></div><div class="ttdeci">void ShowData()</div><div class="ttdoc">Show some data values.</div><div class="ttdef"><b>Definition:</b> Controller.ino:639</div></div>
 <div class="ttc" id="a_controller_8ino_html_a62325a1f2084f7e9c44ab036c06a46c6"><div class="ttname"><a href="_controller_8ino.html#a62325a1f2084f7e9c44ab036c06a46c6">dIndoorTemperature</a></div><div class="ttdeci">double dIndoorTemperature</div><div class="ttdoc">indoor temperature in °C</div><div class="ttdef"><b>Definition:</b> Controller.ino:105</div></div>
-<div class="ttc" id="a_controller_8ino_html_afe461d27b9c48d5921c00d521181f12f"><div class="ttname"><a href="_controller_8ino.html#afe461d27b9c48d5921c00d521181f12f">loop</a></div><div class="ttdeci">void loop()</div><div class="ttdoc">Usual arduino steadily called function.</div><div class="ttdef"><b>Definition:</b> Controller.ino:773</div></div>
-<div class="ttc" id="a_controller_8ino_html_a6b52146dd1f01d495c6f1b9a0455d228"><div class="ttname"><a href="_controller_8ino.html#a6b52146dd1f01d495c6f1b9a0455d228">dCO2</a></div><div class="ttdeci">double dCO2</div><div class="ttdef"><b>Definition:</b> Controller.ino:136</div></div>
-<div class="ttc" id="a_controller_8ino_html_a70040c12b70c4183813492f54c34afc3"><div class="ttname"><a href="_controller_8ino.html#a70040c12b70c4183813492f54c34afc3">Task_10ms</a></div><div class="ttdeci">void Task_10ms()</div><div class="ttdoc">Function Task_10ms called every 10 msec.</div><div class="ttdef"><b>Definition:</b> Controller.ino:621</div></div>
+<div class="ttc" id="a_controller_8ino_html_afe461d27b9c48d5921c00d521181f12f"><div class="ttname"><a href="_controller_8ino.html#afe461d27b9c48d5921c00d521181f12f">loop</a></div><div class="ttdeci">void loop()</div><div class="ttdoc">Usual arduino steadily called function.</div><div class="ttdef"><b>Definition:</b> Controller.ino:850</div></div>
+<div class="ttc" id="a_controller_8ino_html_a6b52146dd1f01d495c6f1b9a0455d228"><div class="ttname"><a href="_controller_8ino.html#a6b52146dd1f01d495c6f1b9a0455d228">dCO2</a></div><div class="ttdeci">double dCO2</div><div class="ttdef"><b>Definition:</b> Controller.ino:139</div></div>
+<div class="ttc" id="a_controller_8ino_html_a70040c12b70c4183813492f54c34afc3"><div class="ttname"><a href="_controller_8ino.html#a70040c12b70c4183813492f54c34afc3">Task_10ms</a></div><div class="ttdeci">void Task_10ms()</div><div class="ttdoc">Function Task_10ms called every 10 msec.</div><div class="ttdef"><b>Definition:</b> Controller.ino:687</div></div>
 <div class="ttc" id="a_controller_8ino_html_a7ad25723a2644496babaf1a09edca79d"><div class="ttname"><a href="_controller_8ino.html#a7ad25723a2644496babaf1a09edca79d">humiditysp</a></div><div class="ttdeci">int humiditysp</div><div class="ttdoc">setpoint for optimal humidity (should be 40-60%)</div><div class="ttdef"><b>Definition:</b> Controller.ino:114</div></div>
-<div class="ttc" id="a_controller_8ino_html_ab10f597b51a01881bc3bfda2edc9daa2"><div class="ttname"><a href="_controller_8ino.html#ab10f597b51a01881bc3bfda2edc9daa2">ACController</a></div><div class="ttdeci">void ACController()</div><div class="ttdef"><b>Definition:</b> Controller.ino:282</div></div>
+<div class="ttc" id="a_controller_8ino_html_ab10f597b51a01881bc3bfda2edc9daa2"><div class="ttname"><a href="_controller_8ino.html#ab10f597b51a01881bc3bfda2edc9daa2">ACController</a></div><div class="ttdeci">void ACController()</div><div class="ttdef"><b>Definition:</b> Controller.ino:285</div></div>
 <div class="ttc" id="a_controller_8ino_html_a42b9218ab3ccd5fad8f4822fb8c5c821"><div class="ttname"><a href="_controller_8ino.html#a42b9218ab3ccd5fad8f4822fb8c5c821">humidityHistory</a></div><div class="ttdeci">ArduinoQueue&lt; int &gt; humidityHistory</div><div class="ttdef"><b>Definition:</b> Controller.ino:119</div></div>
 <div class="ttc" id="a_controller_8ino_html_aad943e6144061b3dc9ec2410ac7863f2"><div class="ttname"><a href="_controller_8ino.html#aad943e6144061b3dc9ec2410ac7863f2">dAC</a></div><div class="ttdeci">double dAC</div><div class="ttdoc">AC level in percentage.</div><div class="ttdef"><b>Definition:</b> Controller.ino:124</div></div>
 <div class="ttc" id="a_controller_8ino_html_a8bcd73eee3bb6d3d5213c2238983d99f"><div class="ttname"><a href="_controller_8ino.html#a8bcd73eee3bb6d3d5213c2238983d99f">dOutdoorHumidity</a></div><div class="ttdeci">double dOutdoorHumidity</div><div class="ttdoc">outdoor humidity for exchanging</div><div class="ttdef"><b>Definition:</b> Controller.ino:126</div></div>
 <div class="ttc" id="a_controller_8ino_html_ae782d5485075ca7387b32a20b1595a1f"><div class="ttname"><a href="_controller_8ino.html#ae782d5485075ca7387b32a20b1595a1f">nTOffset</a></div><div class="ttdeci">double nTOffset</div><div class="ttdoc">Difference between actual endtemp and setpoint.</div><div class="ttdef"><b>Definition:</b> Controller.ino:116</div></div>
 <div class="ttc" id="a_controller_8ino_html_ad9b836e0035cff045207e8cd18d64665"><div class="ttname"><a href="_controller_8ino.html#ad9b836e0035cff045207e8cd18d64665">tempHistory</a></div><div class="ttdeci">ArduinoQueue&lt; int &gt; tempHistory</div><div class="ttdef"><b>Definition:</b> Controller.ino:118</div></div>
 <div class="ttc" id="a_controller_8ino_html_a3071e858c7958a3a60677921dbbdf9e6"><div class="ttname"><a href="_controller_8ino.html#a3071e858c7958a3a60677921dbbdf9e6">nWarnings</a></div><div class="ttdeci">int nWarnings</div><div class="ttdoc">warning bits</div><div class="ttdef"><b>Definition:</b> Controller.ino:107</div></div>
-<div class="ttc" id="a_controller_8ino_html_acc7e9ffdda03efaa08f8d3b4f372efbf"><div class="ttname"><a href="_controller_8ino.html#acc7e9ffdda03efaa08f8d3b4f372efbf">Task_1s</a></div><div class="ttdeci">void Task_1s()</div><div class="ttdoc">Function Task_1s called every 1 sec.</div><div class="ttdef"><b>Definition:</b> Controller.ino:712</div></div>
+<div class="ttc" id="a_controller_8ino_html_acc7e9ffdda03efaa08f8d3b4f372efbf"><div class="ttname"><a href="_controller_8ino.html#acc7e9ffdda03efaa08f8d3b4f372efbf">Task_1s</a></div><div class="ttdeci">void Task_1s()</div><div class="ttdoc">Function Task_1s called every 1 sec.</div><div class="ttdef"><b>Definition:</b> Controller.ino:778</div></div>
 <div class="ttc" id="a_controller_8ino_html_ad6a8971f459a4f33b495b6bc61c28022"><div class="ttname"><a href="_controller_8ino.html#ad6a8971f459a4f33b495b6bc61c28022">soll</a></div><div class="ttdeci">double soll</div><div class="ttdoc">Setpoint temperature, temperature aimed for in all tasks.</div><div class="ttdef"><b>Definition:</b> Controller.ino:115</div></div>
-<div class="ttc" id="a_controller_8ino_html_aa28090f2d59ec6e36525dd17cf21dc58"><div class="ttname"><a href="_controller_8ino.html#aa28090f2d59ec6e36525dd17cf21dc58">thermostat</a></div><div class="ttdeci">void thermostat()</div><div class="ttdef"><b>Definition:</b> Controller.ino:403</div></div>
-<div class="ttc" id="a_controller_8ino_html_a314881965417ddb0745f987c175471c3"><div class="ttname"><a href="_controller_8ino.html#a314881965417ddb0745f987c175471c3">sounds</a></div><div class="ttdeci">void sounds()</div><div class="ttdef"><b>Definition:</b> Controller.ino:470</div></div>
+<div class="ttc" id="a_controller_8ino_html_aa28090f2d59ec6e36525dd17cf21dc58"><div class="ttname"><a href="_controller_8ino.html#aa28090f2d59ec6e36525dd17cf21dc58">thermostat</a></div><div class="ttdeci">void thermostat()</div><div class="ttdef"><b>Definition:</b> Controller.ino:406</div></div>
+<div class="ttc" id="a_controller_8ino_html_a314881965417ddb0745f987c175471c3"><div class="ttname"><a href="_controller_8ino.html#a314881965417ddb0745f987c175471c3">sounds</a></div><div class="ttdeci">void sounds()</div><div class="ttdef"><b>Definition:</b> Controller.ino:496</div></div>
+<div class="ttc" id="a_controller_8ino_html_ac87694ec8e42e3c0d15c3d65e71a9639"><div class="ttname"><a href="_controller_8ino.html#ac87694ec8e42e3c0d15c3d65e71a9639">systemOn</a></div><div class="ttdeci">bool systemOn</div><div class="ttdef"><b>Definition:</b> Controller.ino:140</div></div>
 <div class="ttc" id="a_controller_8ino_html_a2cd2658fd81b2cdccce398b93efa1300"><div class="ttname"><a href="_controller_8ino.html#a2cd2658fd81b2cdccce398b93efa1300">dHeating</a></div><div class="ttdeci">int dHeating</div><div class="ttdoc">percentage for radiator heat</div><div class="ttdef"><b>Definition:</b> Controller.ino:117</div></div>
 <div class="ttc" id="a_controller_8ino_html_a6bb05a2ac6752c4e89e9fdc2153b963e"><div class="ttname"><a href="_controller_8ino.html#a6bb05a2ac6752c4e89e9fdc2153b963e">lcdmode</a></div><div class="ttdeci">int lcdmode</div><div class="ttdoc">used for deciding what to show on the display</div><div class="ttdef"><b>Definition:</b> Controller.ino:128</div></div>
-<div class="ttc" id="a_controller_8ino_html_a3005755a1cc32c4a6537fc8c5c0fa3cb"><div class="ttname"><a href="_controller_8ino.html#a3005755a1cc32c4a6537fc8c5c0fa3cb">InterpreteResponse</a></div><div class="ttdeci">bool InterpreteResponse(char szResponse[])</div><div class="ttdoc">Interpret an I²C response from the plant.</div><div class="ttdef"><b>Definition:</b> Controller.ino:555</div></div>
-<div class="ttc" id="a_controller_8ino_html_a7154dde0a61f659f7f2a3b71f53e76b8"><div class="ttname"><a href="_controller_8ino.html#a7154dde0a61f659f7f2a3b71f53e76b8">bACOn</a></div><div class="ttdeci">bool bACOn</div><div class="ttdef"><b>Definition:</b> Controller.ino:134</div></div>
-<div class="ttc" id="a_controller_8ino_html_a2695b485ae7f65013b402aa867bc5955"><div class="ttname"><a href="_controller_8ino.html#a2695b485ae7f65013b402aa867bc5955">szBanner</a></div><div class="ttdeci">const char szBanner[]</div><div class="ttdoc">Banner and version number.</div><div class="ttdef"><b>Definition:</b> Controller.ino:140</div></div>
-<div class="ttc" id="a_controller_8ino_html_a92c4579a209bbd8bc56592f8c2958895"><div class="ttname"><a href="_controller_8ino.html#a92c4579a209bbd8bc56592f8c2958895">ToggleDigitalIOPort</a></div><div class="ttdeci">void ToggleDigitalIOPort(int nPin)</div><div class="ttdoc">Toggle digital IO port.</div><div class="ttdef"><b>Definition:</b> Controller.ino:150</div></div>
+<div class="ttc" id="a_controller_8ino_html_a3005755a1cc32c4a6537fc8c5c0fa3cb"><div class="ttname"><a href="_controller_8ino.html#a3005755a1cc32c4a6537fc8c5c0fa3cb">InterpreteResponse</a></div><div class="ttdeci">bool InterpreteResponse(char szResponse[])</div><div class="ttdoc">Interpret an I²C response from the plant.</div><div class="ttdef"><b>Definition:</b> Controller.ino:592</div></div>
+<div class="ttc" id="a_controller_8ino_html_a7154dde0a61f659f7f2a3b71f53e76b8"><div class="ttname"><a href="_controller_8ino.html#a7154dde0a61f659f7f2a3b71f53e76b8">bACOn</a></div><div class="ttdeci">bool bACOn</div><div class="ttdef"><b>Definition:</b> Controller.ino:137</div></div>
+<div class="ttc" id="a_controller_8ino_html_a2695b485ae7f65013b402aa867bc5955"><div class="ttname"><a href="_controller_8ino.html#a2695b485ae7f65013b402aa867bc5955">szBanner</a></div><div class="ttdeci">const char szBanner[]</div><div class="ttdoc">Banner and version number.</div><div class="ttdef"><b>Definition:</b> Controller.ino:143</div></div>
+<div class="ttc" id="a_controller_8ino_html_a7d06701ac073c331c83519e3909b7fce"><div class="ttname"><a href="_controller_8ino.html#a7d06701ac073c331c83519e3909b7fce">schedule</a></div><div class="ttdeci">void schedule()</div><div class="ttdef"><b>Definition:</b> Controller.ino:433</div></div>
+<div class="ttc" id="a_controller_8ino_html_a92c4579a209bbd8bc56592f8c2958895"><div class="ttname"><a href="_controller_8ino.html#a92c4579a209bbd8bc56592f8c2958895">ToggleDigitalIOPort</a></div><div class="ttdeci">void ToggleDigitalIOPort(int nPin)</div><div class="ttdoc">Toggle digital IO port.</div><div class="ttdef"><b>Definition:</b> Controller.ino:153</div></div>
 <div class="ttc" id="a_controller_8ino_html_a5feafbc5e3579057d55fe2fae408063a"><div class="ttname"><a href="_controller_8ino.html#a5feafbc5e3579057d55fe2fae408063a">nCount100msec</a></div><div class="ttdeci">int nCount100msec</div><div class="ttdoc">counter for 100 msec up to 1sec</div><div class="ttdef"><b>Definition:</b> Controller.ino:95</div></div>
 <div class="ttc" id="a_controller_8ino_html_abef2741815dd29248096b646738fb238"><div class="ttname"><a href="_controller_8ino.html#abef2741815dd29248096b646738fb238">dIndoorHumidity</a></div><div class="ttdeci">double dIndoorHumidity</div><div class="ttdoc">indoor humidity in %</div><div class="ttdef"><b>Definition:</b> Controller.ino:106</div></div>
-<div class="ttc" id="a_controller_8ino_html_a4fc01d736fe50cf5b977f755b675f11d"><div class="ttname"><a href="_controller_8ino.html#a4fc01d736fe50cf5b977f755b675f11d">setup</a></div><div class="ttdeci">void setup()</div><div class="ttdoc">usual arduino init function</div><div class="ttdef"><b>Definition:</b> Controller.ino:157</div></div>
+<div class="ttc" id="a_controller_8ino_html_a4fc01d736fe50cf5b977f755b675f11d"><div class="ttname"><a href="_controller_8ino.html#a4fc01d736fe50cf5b977f755b675f11d">setup</a></div><div class="ttdeci">void setup()</div><div class="ttdoc">usual arduino init function</div><div class="ttdef"><b>Definition:</b> Controller.ino:160</div></div>
 <div class="ttc" id="a_controller_8ino_html_a5c918eefadc81b4a78e0d1660e595d8c"><div class="ttname"><a href="_controller_8ino.html#a5c918eefadc81b4a78e0d1660e595d8c">nWinter</a></div><div class="ttdeci">int nWinter</div><div class="ttdoc">needed in order to know if its winter or summer</div><div class="ttdef"><b>Definition:</b> Controller.ino:123</div></div>
 <div class="ttc" id="a_controller_8ino_html_a7ef095c53364830a1f31966029a156c5"><div class="ttname"><a href="_controller_8ino.html#a7ef095c53364830a1f31966029a156c5">dHET</a></div><div class="ttdeci">double dHET</div><div class="ttdoc">Heat exchanger transfer.</div><div class="ttdef"><b>Definition:</b> Controller.ino:130</div></div>
-<div class="ttc" id="a_controller_8ino_html_a573a9b79ee6a7e720f5ecc4bbfcb0c87"><div class="ttname"><a href="_controller_8ino.html#a573a9b79ee6a7e720f5ecc4bbfcb0c87">CreateNextSteadyCommand</a></div><div class="ttdeci">bool CreateNextSteadyCommand(char szCommand[])</div><div class="ttdef"><b>Definition:</b> Controller.ino:490</div></div>
+<div class="ttc" id="a_controller_8ino_html_a573a9b79ee6a7e720f5ecc4bbfcb0c87"><div class="ttname"><a href="_controller_8ino.html#a573a9b79ee6a7e720f5ecc4bbfcb0c87">CreateNextSteadyCommand</a></div><div class="ttdeci">bool CreateNextSteadyCommand(char szCommand[])</div><div class="ttdef"><b>Definition:</b> Controller.ino:516</div></div>
+<div class="ttc" id="a_controller_8ino_html_a442353ee679d34020381eae18096064b"><div class="ttname"><a href="_controller_8ino.html#a442353ee679d34020381eae18096064b">dEnergy</a></div><div class="ttdeci">double dEnergy</div><div class="ttdef"><b>Definition:</b> Controller.ino:133</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

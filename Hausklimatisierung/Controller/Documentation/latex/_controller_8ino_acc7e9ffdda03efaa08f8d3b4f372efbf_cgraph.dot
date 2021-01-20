@@ -8,9 +8,11 @@ digraph "Task_1s"
   Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
   Node2 [label="lcd",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#ae084e1bc8ccb35ea289ba0ca4972ea6d",tooltip="initialising display with i2c adress 0x27, 16 characters, 2 rows"];
   Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
-  Node3 [label="ShowData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#afb707179a2ceeebf05387778b0aedeb5",tooltip="Show some data values."];
+  Node3 [label="schedule",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#a7d06701ac073c331c83519e3909b7fce",tooltip=" "];
   Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid"];
-  Node4 [label="thermostat",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#aa28090f2d59ec6e36525dd17cf21dc58",tooltip=" "];
+  Node4 [label="ShowData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#afb707179a2ceeebf05387778b0aedeb5",tooltip="Show some data values."];
   Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid"];
-  Node5 [label="ToggleDigitalIOPort",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#a92c4579a209bbd8bc56592f8c2958895",tooltip="Toggle digital IO port."];
+  Node5 [label="thermostat",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#aa28090f2d59ec6e36525dd17cf21dc58",tooltip=" "];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid"];
+  Node6 [label="ToggleDigitalIOPort",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_controller_8ino.html#a92c4579a209bbd8bc56592f8c2958895",tooltip="Toggle digital IO port."];
 }
