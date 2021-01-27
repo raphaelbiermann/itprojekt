@@ -145,6 +145,14 @@ bool            bDaytime;                   //Boolean for night and day
 const char      szBanner[] = "# House Air Conditioner Controller V3.04";
 //! usual Arduino pin 13 LED
 const int       LEDpin = 13;
+const int       UpButtonPin = 2; //! pin for button to increase temperature
+const int       DownButtonPin = 3; //! pin for button to decrease temperature
+int             DownButtonState=0;
+int             UpButtonState=0;
+
+bool            userInput=0;
+bool             toneOn;
+int             toneCounter;
 
 
 
@@ -204,6 +212,8 @@ void ToggleDigitalIOPort(int nPin)
 void setup()
 {
   pinMode(LEDpin, OUTPUT);                      // init arduino LED pin as an output
+  pinMode(DownButtonPin, INPUT);
+  pinMode(UpButtonPin, INPUT);
 
   Serial.begin(115200);                         // set up serial port for 9600 Baud
 #if defined (__AVR_ATmega32U4__)
@@ -262,14 +272,31 @@ Work on local commands which should not be transfered to the house.
 \param szCommand command to check
 \returns true if a command was a local command
 */
+char s1[2]; 
+
 bool FilterLocalCommands(char szCommand[])
 {
-  if ( szCommand[0] == 'v' )
+  if ( szCommand[0] == 'v' ) //verbose off and on
   {
     if ( szCommand[1] == '=' )
       bVerbose = ( szCommand[2] == '1' );
     return true;
   }
+   if ( szCommand[0] == 's' )
+  {
+    if ( szCommand[1] == '=' )
+
+      userInput=1;   //manual overwrite of setpoint temperature
+      s1[0]=szCommand[2]; //temporary char for saving the temperature value
+      s1[1]=szCommand[3];
+      
+      soll=atof(s1); //convert string to double
+      
+      
+    return true;
+  }
+  
+  
   return false;
 }
 
@@ -410,8 +437,16 @@ if(dHEA > 100){ //limiter
     dHEA = 0;
   }
   
-    
+   
 }
+
+
+
+
+
+  
+
+
 
 /*!
  * The Heat Exchanger is useful when the outside temperature is desired inside the house
@@ -440,7 +475,9 @@ double cTemp = dIndoorTemperature;
   }
   if(dHEA < 0){
     dHEA = 0;
+    
   }
+  
 
 }
 
@@ -480,19 +517,25 @@ void thermostat(){ //negative Counter means summer
 
 
 void schedule(){
+
+if(dTime < 20){
+userInput = 0;
+}
+
+if (userInput == 0){ //if no useroverwrite of temperature, continue schedule.
 if(dTime < (60*7)){
-  soll = 17;
+  soll = 22;
   bDaytime=0;
 }else if(dTime < (60*22)){
   soll = 22;
   bDaytime=1;
 }else{
   bDaytime=0;
-  soll=17;
+  soll=22;
 }
 
 }
-
+}
 
 /*!
  * Basic logic for what to do: 
@@ -510,9 +553,10 @@ double dTolerance=3;
 if(systemOn){
 if((dIndoorTemperature < soll+dTolerance) and Tcounter > 0 or (nWinter == 1 and Tcounter >7)){
   ReglerHeizung();
+  HEControllerHeat(); //pure air exchange
   lcdmode=1;
   if(dIndoorTemperature < dOutdoorTemperature){
-    HEControllerHeat(); //pure freshair exchange
+    HEControllerHeat();
   }else{
     dHEA=0; //heat exchanger amount
     dHET=0; //heat transfer
@@ -527,16 +571,18 @@ if((dIndoorTemperature > soll-dTolerance) and Tcounter < 0 or (nWinter == 0 and 
   if(dIndoorTemperature > dOutdoorTemperature){
     HEControllerCool(); //pure freshair exchange
   }else{
-    dHEA=0; //heat exchanger amount
-    dHET=0; //heat transfer
+    dHEA=0; //heat exchanger amount 
+    dHET=0; //heat transfer 
   }
 }else{
   dAC = 0;
 }
 }
 
-if(dCO2 > 1000){  //Emergency mode
+if((dCO2 > 900) or (dIndoorHumidity > 60) or (dIndoorHumidity < 30)){  //Emergency mode
   dHEA = 100;
+  
+  dHET = 100;
 }
 
   
@@ -545,16 +591,36 @@ if(dCO2 > 1000){  //Emergency mode
  /*! 
   * Experimental warning sounds for events like too high CO2 Concentration / warning bits
 */
+
+int lcdWarning;
 void sounds(){
-  int millis1;
-  //tone(8, 150);
-//Serial.println(dCO2);
-//CO2 Warning
-if(dCO2 > 100){
-  tone(8, 300);
-}else{
-  noTone(8);
+
+toneCounter++;
+
+
+if((dCO2 > 1000)){ //noise for one second (100*10ms)
+lcdWarning=1;
+if(toneCounter < 100){
+
+  tone(4, 500);
 }
+else{
+  noTone(4);
+  
+}
+}else{
+  lcdWarning=0;
+}
+if(toneCounter > 200){
+  toneCounter = 0;
+}
+
+  
+//if(dCO2 > 100){
+//  tone(4, 300);
+//}else{
+//  noTone(4);
+//}
 }
 
 
@@ -665,7 +731,7 @@ bool InterpreteResponse(char szResponse[]) //saving responses in local variables
     case 'O':                                   // got a fresh Outdoor temperature value
       dOutdoorTemperature = atoi(szResponse+2);           
       return true;   
-   /* case 'o':                                   // got a fresh Outdoor humidity value
+    case 'o':                                   // got a fresh Outdoor humidity value
       dOutdoorHumidity = atoi(szResponse+2);           
       return true;
     case 'C':                                   // got a fresh CO2 value
@@ -675,7 +741,7 @@ bool InterpreteResponse(char szResponse[]) //saving responses in local variables
       dEnergy = atoi(szResponse+2);           
       return true; 
 
-           */
+          
     // more cases may follow //understand responses for manual questions
     }
   }
@@ -688,6 +754,13 @@ Show some data values
 
 Remember, each character at 9600 Baud requires about 1 msec.
 */
+
+
+
+
+
+
+
 void ShowData()
 {                                               // just to show a result
 // if ( bVerbose )
@@ -706,10 +779,23 @@ void ShowData()
 // if ( bVerbose )
 //    Serial.print("I=");
 //  Serial.println(dIndoorTemperature);
-  //Serial.print(" ");
-if ( bVerbose )
-    Serial.print("O=");
-  Serial.println(dOutdoorTemperature);
+//  Serial.print(" ");
+
+//if ( bVerbose )
+//    Serial.print("E=");
+//  Serial.println(dEnergy);
+//  Serial.print(" ");  
+//  if ( bVerbose )
+//    Serial.print("o=");
+//  Serial.println(dOutdoorHumidity);
+//  Serial.print(" ");  
+    if ( bVerbose )
+    Serial.print("C=");
+  Serial.println(dCO2);
+  Serial.print(" ");  
+//if ( bVerbose )
+//    Serial.print("O=");
+//  Serial.println(dOutdoorTemperature);
 //  Serial.print(" ");
   
 //
@@ -738,9 +824,12 @@ if ( bVerbose )
 //! Function Task_10ms called every 10 msec
 void Task_10ms()  //no delays allowed in automatisation
 {
-  ;                                              // nothing to do so far
+                                             // nothing to do so far
 
 //SaveHumidity();        //Saving current indoor humidity every 10ms
+sounds();
+
+  
 }
 
 //! Function Task_100ms called every 100 msec
@@ -815,6 +904,13 @@ void Task_100ms() //most important, has to be done under 100ms
 //HEController();
 logic();
 SaveTemps();          //Saving current temp every 10ms
+
+
+
+
+
+
+
 }
 
 
@@ -829,12 +925,32 @@ This allows to use the integrated Arduino serial plotter or an external software
 */
 void Task_1s() //everything not so often needed
 {
+  
+ 
+  
+  
   ToggleDigitalIOPort(LEDpin);                  // toggle output to LED
 
   ShowData();                                   // possibly remove later
 
   schedule();
   thermostat();
+
+
+DownButtonState = digitalRead(DownButtonPin);
+  UpButtonState = digitalRead(UpButtonPin);
+
+if(DownButtonState ==HIGH){
+  soll--;
+  userInput = 1;
+}
+
+if(UpButtonState == HIGH){
+  soll++;
+  userInput = 1;
+}
+
+  
 //sounds();
 
 //LCD Management
@@ -844,14 +960,20 @@ lcd.clear();
 
 //1st Row
   lcd.setCursor(0, 0);//Hier wird die Position des ersten Zeichens festgelegt. In diesem Fall bedeutet (0,0) das erste Zeichen in der ersten Zeile. 
-lcd.write(2);
+if(lcdWarning==1){
+  lcd.print("High CO2!");
+  lcd.print(" C=");
+  lcd.print(dCO2);
+  lcd.print("ppm");
+}else{
+lcd.write(2); //thermometer icon
 lcd.print(dIndoorTemperature);
 lcd.print("C");
 
 if(!bDaytime){
 lcd.write(0); //output moon
 }else{
-lcd.write(1);  
+lcd.write(1);  //output sun
 }
 
 lcd.print("SP=");
@@ -872,6 +994,12 @@ lcd.print((int)dAC);
 lcd.print("%");
 }
 
+
+//lcd.print(" C=");
+//lcd.print((int) dCO2);
+//lcd.print("%");
+
+
 lcd.print(" h=");
 lcd.print((int)dIndoorHumidity);
 lcd.print("%");
@@ -882,7 +1010,7 @@ lcd.print("%");
 //lcd.print(" ");
 //lcd.print((int)(dTime/60));
 
-
+}
 //lcd.print(nWarnings);
 switch (nWarnings){ //error handling
 case 0:
@@ -890,6 +1018,7 @@ case 0:
 break;
 
 case 1:
+
 
 break;
 
@@ -913,6 +1042,8 @@ Such intervals are often called sampling time.
 */
 void loop() //calling primitive functions, mainly responsible for timing
 {
+
+ 
 
   
   long  msecCurrentMillis = millis();
