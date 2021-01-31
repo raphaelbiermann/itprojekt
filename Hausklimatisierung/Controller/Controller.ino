@@ -192,7 +192,16 @@ byte thermometerChar[] = {
 };
 
 
-
+byte dropChar[] = {
+  B00100,
+  B00100,
+  B01010,
+  B01010,
+  B10001,
+  B10001,
+  B10001,
+  B01110
+};
 
 
 
@@ -233,7 +242,7 @@ lcd.backlight();
 lcd.createChar(0, moonChar);
 lcd.createChar(1, sunChar);
 lcd.createChar(2, thermometerChar);
-
+lcd.createChar(3, dropChar);
   
 }
 
@@ -1000,7 +1009,7 @@ lcd.print("%");
 //lcd.print("%");
 
 
-lcd.print(" h=");
+lcd.write(3); //drop of water icon
 lcd.print((int)dIndoorHumidity);
 lcd.print("%");
 
