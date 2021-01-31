@@ -1,17 +1,55 @@
 Logbuch
 
-Davor
+04.11.
 -Quelltext zum Verständnis durchkommentiert
--
+
+08.11.
+-Anfangen mit Heizung: Sollwertvorgabe
+-Ideen zur Entwicklung überlegt (Display?, Bedienung?)
+
 
 11.11.20
--Heizungssteuerung anfangen
+-Heizungssteuerung anfangen, Anfang funktioniert
 --Lineare Heizungssteuerung führt zu einer Sinus Schwingung der Indoor Temperatur
 --Lösung für Heizungssteuerung suchen!
 
 18.11.20
--Sinusschwingung der Indoortemperatur durch einen PI Regler beseitigt
+-PI Regler für Heizung eingeführt. Funktioniert schon sehr gut (mit Offset)
+-Sinusartige Schwingung der Indoortemperatur beseitigt
 --Ausblick: PI Regler auch für die anderen Elemente einsetzen!
 
-16.12.20
+25.11.20
+-Dokumentation? Doxygen
+
+02.12.20
+-Umluftkühlung funktioniert auch mit invertiertem PI Regler der Heizungssteuerung
+-Display funktioniert
+-Fritzing Dokumentation angefangen
+-Fotos
+
+09.12.20
+-Sounds angefangen, überarbeiten!
+-Wärmetauscher angefangen, für Frischluft ohne Energieverlust!
+
+12.12.20
+-Winter Sommer Steuerung schlecht! Besser ist eine Logik, die auch in kalten Nächten im Sommer mal die Heizung anmacht.
+-Logik mit Toleranzen umgesetzt
+
+23.12.20
+± 1° Toleranz für Temperaturregelung anvisiert
+
+06.01.20
+Bugfixes, Dokumentation
+
+20.01.20
+-Graphen dokumentieren
+-Benutzerdefinierte Symbole auf LCD Display
+
+27.01.20
+-Knöpfe für Interaktion
+-Bugfixes
+-Überarbeitung des Frischluftaustausches
+-Sounds
+
+
 

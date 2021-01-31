@@ -51,7 +51,7 @@ USB/COM port to the I²C port and displays the outcome from a connected house si
 <tr><td> E=n </td><td> heat exchanger amount setting in % </td></tr>
 <tr><td> e=n </td><td> heat exchanger transfer setting in % </td></tr>
 <tr><td> P=n </td><td> no of persons </td></tr>
-<tr><td> S=n </td><td> temperature setpoint </td></tr>
+<tr><td> S=n </td><td> temperature setpoint, not used </td></tr>
 <tr><td> w=x </td><td> winter or summer </td></tr>
 <tr><td> f=x </td><td> fixed outside state </td></tr>
 <tr><td> T? </td><td> get simulation time in seconds </td></tr>
@@ -64,13 +64,15 @@ USB/COM port to the I²C port and displays the outcome from a connected house si
 <tr><td> o? </td><td> outside humidity </td></tr>
 <tr><td> C? </td><td> amount of CO2 </td></tr>
 <tr><td> k? </td><td> heating energy tally </td></tr>
-<tr><td> S? </td><td> get temperature setpoint </td></tr> //similar to soll, defined in plant
+<tr><td> S? </td><td> get temperature setpoint, not used! </td></tr> //similar to soll, defined in plant
 <tr><td> w? </td><td> get winter or summer setting </td></tr> //w is boolean variable for winter, 1 is winter, 0 summer
 <tr><td> W? </td><td> get warning if any </td></tr>
 <tr><td> f? </td><td> get fixed outside state </td></tr>
 <tr><td> R </td><td> (re)init </td></tr>
 <tr><td> V=x </td><td> verbose on/off for the house </td></tr>
 <tr><td> v=x </td><td> verbose on/off for the controller </td></tr>
+<tr><td> s=n </td><td> edit setpoint temperature inside controller </td></tr>
+
 </table>
 */
 
@@ -533,14 +535,14 @@ userInput = 0;
 
 if (userInput == 0){ //if no useroverwrite of temperature, continue schedule.
 if(dTime < (60*7)){
-  soll = 22;
+  soll = 17;
   bDaytime=0;
 }else if(dTime < (60*22)){
-  soll = 22;
+  soll = 21;
   bDaytime=1;
 }else{
   bDaytime=0;
-  soll=22;
+  soll=17;
 }
 
 }
@@ -588,7 +590,7 @@ if((dIndoorTemperature > soll-dTolerance) and Tcounter < 0 or (nWinter == 0 and 
 }
 }
 
-if((dCO2 > 900) or (dIndoorHumidity > 60) or (dIndoorHumidity < 30)){  //Emergency mode
+if((dCO2 > 900) or (dIndoorHumidity > 60) or (dIndoorHumidity < 30)){  //! improving air quality without ruining the indoor temperature
   dHEA = 100;
   
   dHET = 100;
@@ -607,7 +609,9 @@ void sounds(){
 toneCounter++;
 
 
-if((dCO2 > 1000)){ //noise for one second (100*10ms)
+
+
+if((dCO2 > 1000 or nWarnings == 2)){ //noise for one second (100*10ms) //CO2 above max ratings
 lcdWarning=1;
 if(toneCounter < 100){
 
@@ -620,8 +624,44 @@ else{
 }else{
   lcdWarning=0;
 }
+
+if(nWarnings == 1){ //noise for one second (100*10ms) //freezing inside house
+lcdWarning=2;
+if(toneCounter < 100){
+
+  tone(4, 500);
+}
+else{
+  noTone(4);
+  
+}
+}else{
+  lcdWarning=0;
+}
+
+
+if(nWarnings == 4){ //noise for one second (100*10ms) //above 45°C
+lcdWarning=3;
+if(toneCounter < 100){
+
+  tone(4, 500);
+}
+else{
+  noTone(4);
+  
+}
+
+
+}else{
+  lcdWarning=0;
+}
+
 if(toneCounter > 200){
   toneCounter = 0;
+}
+
+if(dCO2 < 1000 and nWarnings == 0){ //avoid continuous tone
+  noTone(4);  
 }
 
   
@@ -935,7 +975,7 @@ This allows to use the integrated Arduino serial plotter or an external software
 void Task_1s() //everything not so often needed
 {
   
- 
+ Serial.println(nWarnings);
   
   
   ToggleDigitalIOPort(LEDpin);                  // toggle output to LED
@@ -975,6 +1015,16 @@ if(lcdWarning==1){
   lcd.print(dCO2);
   lcd.print("ppm");
 }else{
+  if(lcdWarning==2){
+    lcd.print("It's freezing! ");
+    lcd.write(2);
+    lcd.print(dIndoorTemperature);
+  }else{
+if(lcdWarning==4){
+    lcd.print("It's too hot! ");
+    lcd.write(2);
+    lcd.print(dIndoorTemperature);
+  }else{
 lcd.write(2); //thermometer icon
 lcd.print(dIndoorTemperature);
 lcd.print("C");
@@ -1038,6 +1088,8 @@ break;
 //Buzzer Management
 
 
+}
+}
 }
 
 //! Usual arduino steadily called function
