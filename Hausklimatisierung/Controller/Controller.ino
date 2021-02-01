@@ -149,13 +149,13 @@ const char      szBanner[] = "# House Air Conditioner Controller V3.04";
 const int       LEDpin = 13;
 const int       UpButtonPin = 2; //! pin for button to increase temperature
 const int       DownButtonPin = 3; //! pin for button to decrease temperature
-int             DownButtonState=0;
-int             UpButtonState=0;
+bool             DownButtonState=0; //button pressed?
+bool             UpButtonState=0;  //button pressed?
 
-bool            userInput=0;
-bool             toneOn;
-int             toneCounter;
-
+bool            userInput=0; //has there been a custom temperature change?
+bool             toneOn; //is a tone playing?
+int             toneCounter; //for the duration of the sound
+int             lcdWarning; //what warning is to be shown on the display?
 
 
 //custom chars for lcd display
@@ -603,7 +603,7 @@ if((dCO2 > 900) or (dIndoorHumidity > 60) or (dIndoorHumidity < 30)){  //! impro
   * Experimental warning sounds for events like too high CO2 Concentration / warning bits
 */
 
-int lcdWarning;
+
 void sounds(){
 
 toneCounter++;
@@ -1058,7 +1058,7 @@ lcd.print("%");
 //lcd.print((int) dCO2);
 //lcd.print("%");
 
-
+lcd.print(" ");
 lcd.write(3); //drop of water icon
 lcd.print((int)dIndoorHumidity);
 lcd.print("%");
