@@ -119,9 +119,9 @@ bool            bVerbose = true;                ///< local verbose flag
 
 int             humiditysp = 50;                      ///<setpoint for optimal humidity (should be 40-60%)             
 double          soll = 20.0;                    ///<Setpoint temperature, temperature aimed for in all tasks
-double          nTOffset=-3.5;                   ///<Difference between actual endtemp and setpoint
-int             dHeating;                       ///<percentage for radiator heat
-ArduinoQueue<int> tempHistory;
+double          dTOffset=-3.5;                   ///<Difference between actual endtemp and setpoint
+int             nHeating;                       ///<percentage for radiator heat
+ArduinoQueue<int> tempHistory;                  ///< Queue for FIFO reading of past temperatures, easy saving because of dynamic dimension of queue.
 ArduinoQueue<int> humidityHistory;
 
 
@@ -340,7 +340,7 @@ void ReglerHeizung(){ //double variable for radiator is being defined
   t2=tempHistory.dequeue();
   
   //PAnteil
-  double tFehler = (soll-nTOffset)-cTemp;
+  double tFehler = (soll-dTOffset)-cTemp;
   int pAnteil = 13;
   //Serial.println(tFehler);
   //IAnteil
@@ -350,12 +350,12 @@ void ReglerHeizung(){ //double variable for radiator is being defined
   //Serial.println(iIntegral*iAnteil);
 
 
-  dHeating = pAnteil * tFehler + iAnteil * iIntegral;
-  if(dHeating > 100){ //limiter
-    dHeating = 100;
+  nHeating = pAnteil * tFehler + iAnteil * iIntegral;
+  if(nHeating > 100){ //limiter
+    nHeating = 100;
   }
-  if(dHeating < 0){
-    dHeating = 0;
+  if(nHeating < 0){
+    nHeating = 0;
   }
 
  
@@ -574,7 +574,7 @@ if((dIndoorTemperature < soll+dTolerance) and Tcounter > 0 or (nWinter == 1 and 
     dHET=0; //heat transfer
   }
 }else{
-  dHeating = 0;
+  nHeating = 0;
 }
 
 if((dIndoorTemperature > soll-dTolerance) and Tcounter < 0 or (nWinter == 0 and Tcounter < -7)){
@@ -602,6 +602,7 @@ if((dCO2 > 900) or (dIndoorHumidity > 60) or (dIndoorHumidity < 30)){  //! impro
 
  /*! 
   * Experimental warning sounds for events like too high CO2 Concentration / warning bits
+  * Also added some corresponding display information.
 */
 
 
@@ -704,7 +705,7 @@ bool CreateNextSteadyCommand(char szCommand[]) //for automatic output, the value
   case 5:                                       // request warnings
     
     strcpy(szCommand, "H=");                // build command
-    itoa(dHeating, szCommand+2, 10);
+    itoa(nHeating, szCommand+2, 10);
     
     break;
   case 6:                                       // request winter setting
@@ -864,7 +865,7 @@ void ShowData()
 //  Serial.print(" ");
 //  if ( bVerbose )
 //    Serial.print("H=");
-//  Serial.print(dHeating);
+//  Serial.print(nHeating);
 //  Serial.print(" ");
 //  if ( bVerbose )
 //    Serial.print("dAC=");
@@ -1045,7 +1046,7 @@ lcd.setCursor(0, 1); // In diesem Fall bedeutet (0,1) das erste Zeichen in der z
 
 if(lcdmode == 1){ 
 lcd.print("H="); 
-lcd.print(dHeating);
+lcd.print(nHeating);
 lcd.print("%");
 }
 if(lcdmode == 0){
