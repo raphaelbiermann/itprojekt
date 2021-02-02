@@ -1,5 +1,7 @@
 Logbuch
 
+Zu jedem Termin wird ein Überblick über die Implementationen der letzten Woche gegeben.
+
 04.11.
 -Quelltext zum Verständnis durchkommentiert
 

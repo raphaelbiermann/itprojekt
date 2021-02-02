@@ -1,0 +1,62 @@
+Projektbeschreibung
+
+SVN für Cloud - arbeit an gleichem Dokument möglich
+
+oberer ARD - Simulation des Hauses
+
+Leute heizen, Isolierung nicht optimal, Feuchtigkeit, Frischlufteinlassen - Austausch, Mischen, Wärmeaustausch (warm -> kalt), Wärmetauscherhaushalt,
+
+Heizung einschalten, Wärmetauscher fördern lassen, Wirkungsgrad einstellen muss selber in Software im unteren Arduino eingestellt werden.
+
+Arduino NANO
+Prozessor Old Bootloader?
+COM Ports können verschieden sein.
+
+Zahlen am Ausgang COM Port
+Im Kommando Feld
+bspw
+V=1 Verbose?
+
+ohne Buchstaben kann mit Excel bspw Grafik erstellt werden
+Buchstaben als Bezeichnung erscheinen
+
+Party Modus, Feuchtigkeit - noch nicht realisiert
+
+Regelung
+Dummy soweit
+noch keine Regelung enthalten
+
+H Heizung (in Prozent)
+über Kommando in Regel Arduino im COM
+Änderung der Luftfeuchtigkeit
+Warme Luft kann mehr Wasser aufnehmen
+Gleiche Wassermenge wird bei wärmerer Luft weniger
+Thermodynamik!
+
+Fehlermeldung am Ende?
+
+Ideen:
+
+
+LED Fading bei kritischen Situationen wie CO2 Überkonzentration / Frost
+Display
+Alarmsirene
+Internet
+
+
+
+Variable Heizung an aus?
+Switch case abfrage
+
+Neue Routine Regelung
+In task 100 oder 1s am ende oder am Anfang
+
+
+
+
+Erklärungen:
+Team Work:
+Github vereint SVN und Diffs wie bspw. WinMerge: Änderungen am Code können auf die Zeile überprüft werden, wenn der Code am Ende zusammengeführt wird.
+
+
+
