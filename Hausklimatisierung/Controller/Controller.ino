@@ -18,6 +18,8 @@ Arduinos for Plant (top) and controller (below).
 
 ![Plant and controller below](../../UNO2UNO_I2C.png)
 
+![Plant and controller with final addons](../../fritzingfinal.png)
+
 When using multiple I2C slaves note that
 Master.SendRequest(...)
 serves only one slave at a time.
@@ -38,6 +40,8 @@ Aug  2018 Dr. Haase  minor improvements
 Jan 2020  Dr. Haase  redesigned for better C/C++ coding
 Mai 2020  Dr. Haase  party mode
 Aug 2020  Dr. Haase  complete redesign
+
+Nov 2020 Jaeschke, Biermann implementation of full 
 </pre>
 */
 
@@ -71,7 +75,7 @@ USB/COM port to the I²C port and displays the outcome from a connected house si
 <tr><td> R </td><td> (re)init </td></tr>
 <tr><td> V=x </td><td> verbose on/off for the house </td></tr>
 <tr><td> v=x </td><td> verbose on/off for the controller </td></tr>
-<tr><td> s=n </td><td> edit setpoint temperature inside controller </td></tr>
+<tr><td> s=n </td><td> edit setpoint temperature inside controller </td></tr> //New extra command for setting the Setpoint over Command Prompt.
 
 </table>
 */
@@ -132,15 +136,12 @@ int             lcdmode; ///< used for deciding what to show on the display
 double          dHET; ///<Heat exchanger transfer
 double          dHEA; ///<Heat exchanger amount
 
-double          dEnergy; //heating energy
+double          dEnergy; ///< total heating energy sum
 
 
-bool            bHeatingOn=0;                 //Overwrite system value for Heating
-bool            bACOn=0;
-
-double          dCO2; //should be <1000
-bool            systemOn=1;                 //activation switch
-bool            bDaytime;                   //Boolean for night and day
+double          dCO2; ///< Indoor CO2 value. Should be <1000 for decent air quality.
+bool            systemOn=1;                 ///< activation switch for the system. Not used for anything right now. Could be used for vacation mode (normally you wouldn't turn off the system tho, because e.g freezing danger. Rather set low standard temp (winter)).
+bool            bDaytime;                   ///< Boolean for night and day
 
 
 //! Banner and version number
@@ -680,7 +681,7 @@ if(dCO2 < 1000 and nWarnings == 0){ //avoid continuous tone
 
 
 
-bool CreateNextSteadyCommand(char szCommand[]) //for automatic output, the values have to be requested first, this function is called every 100ms 
+bool CreateNextSteadyCommand(char szCommand[]) //for automatic output, the values have to be requested and sent first, this function is called every 100ms 
 {
   *szCommand = 0;                               // initially empty
  
