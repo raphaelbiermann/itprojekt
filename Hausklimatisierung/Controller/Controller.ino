@@ -683,7 +683,7 @@ if(dCO2 < 1000 and nWarnings == 0){ //avoid continuous tone
 bool CreateNextSteadyCommand(char szCommand[]) //for automatic output, the values have to be requested first, this function is called every 100ms 
 {
   *szCommand = 0;                               // initially empty
-
+ 
   static int   nIndex = 0;                      // index walking through requests
   switch ( ++nIndex )
   {
@@ -744,6 +744,7 @@ bool CreateNextSteadyCommand(char szCommand[]) //for automatic output, the value
     nIndex = 0;                                 // start over
     break;
   }
+  
   return ( *szCommand != 0 );                   // return true if command buffer not empty
 }
 
@@ -838,10 +839,10 @@ void ShowData()
 //    Serial.print("o=");
 //  Serial.println(dOutdoorHumidity);
 //  Serial.print(" ");  
-    if ( bVerbose )
-    Serial.print("C=");
-  Serial.println(dCO2);
-  Serial.print(" ");  
+//    if ( bVerbose )
+//    Serial.print("C=");
+//  Serial.println(dCO2);
+//  Serial.print(" ");  
 //if ( bVerbose )
 //    Serial.print("O=");
 //  Serial.println(dOutdoorTemperature);
