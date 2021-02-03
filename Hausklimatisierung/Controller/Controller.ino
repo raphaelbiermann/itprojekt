@@ -121,7 +121,7 @@ int             humiditysp = 50;                      ///<setpoint for optimal h
 double          soll = 20.0;                    ///<Setpoint temperature, temperature aimed for in all tasks
 double          dTOffset=-3.5;                   ///<Difference between actual endtemp and setpoint
 int             nHeating;                       ///<percentage for radiator heat
-ArduinoQueue<int> tempHistory;                  ///< Queue for FIFO reading of past temperatures, easy saving because of dynamic dimension of queue.
+ArduinoQueue<double> tempHistory;                  ///< Queue for FIFO reading of past temperatures, easy saving because of dynamic dimension of queue.
 ArduinoQueue<int> humidityHistory;
 
 
@@ -148,20 +148,21 @@ bool            bDaytime;                   ///< Boolean for night and day
 const char      szBanner[] = "# House Air Conditioner Controller V3.04";
 //! usual Arduino pin 13 LED
 const int       LEDpin = 13;
-const int       UpButtonPin = 2; //! pin for button to increase temperature
-const int       DownButtonPin = 3; //! pin for button to decrease temperature
-bool             DownButtonState=0; //button pressed?
-bool             UpButtonState=0;  //button pressed?
+const int       UpButtonPin = 2; ///< pin for button to increase temperature
+const int       DownButtonPin = 3; ///< pin for button to decrease temperature
+bool             DownButtonState=0; ///< button pressed?
+bool             UpButtonState=0;  ///< button pressed?
 
-bool            userInput=0; //has there been a custom temperature change?
-bool             toneOn; //is a tone playing?
-int             toneCounter; //for the duration of the sound
-int             lcdWarning; //what warning is to be shown on the display?
+bool            userInput=0; ///<has there been a custom setpoint temperature change?
+bool             toneOn; ///<is a tone playing?
+int             toneCounter; //&<for the duration of the sound
+int             lcdWarning; ///<what warning is to be shown on the display?
+
+char            s1[2]; ///< String for saving value of custom setpoint value from command prompt 
 
 
-//custom chars for lcd display
 
-byte moonChar[] = {
+byte moonChar[] = { ///<custom chars for lcd display
  B00011,
   B01111,
   B01110,
@@ -172,7 +173,7 @@ byte moonChar[] = {
   B00011
 };
 
-byte sunChar[] = {
+byte sunChar[] = {  ///<custom chars for lcd display
   B00100,
   B10101,
   B01110,
@@ -183,7 +184,7 @@ byte sunChar[] = {
   B00100
 };
 
-byte thermometerChar[] = {
+byte thermometerChar[] = {  ///<custom chars for lcd display
   B00100,
   B01010,
   B01010,
@@ -195,7 +196,7 @@ byte thermometerChar[] = {
 };
 
 
-byte dropChar[] = {
+byte dropChar[] = { ///<custom chars for lcd display
   B00100,
   B00100,
   B01010,
@@ -284,7 +285,7 @@ Work on local commands which should not be transfered to the house.
 \param szCommand command to check
 \returns true if a command was a local command
 */
-char s1[2]; 
+
 
 bool FilterLocalCommands(char szCommand[])
 {
@@ -312,21 +313,6 @@ bool FilterLocalCommands(char szCommand[])
   return false;
 }
 
-//! Create next steady transmitted command
-/*!
-Create next of steadily transmitted requests or commands to the plant.
-
-Assume the buffer is large enough for all automatically created commands.
-
-The state machine here may be expanded to support more commands.
-Commands are created to cyclically transmit and/or request values to or from the plant.
-
-Please note the state value nIndex has to be static to remain in existence after leaving the function.
-The index is incremented in every call and reset to zero after all commands have been generated once.
-
-\param szCommand storage for a typed command
-\returns true if a command has been created
-*/
 
 void SaveTemps(){
   tempHistory.enqueue((soll)-dIndoorTemperature); //last temperature differences are documented
@@ -335,22 +321,27 @@ void SaveTemps(){
 void ReglerHeizung(){ //double variable for radiator is being defined 
   double cTemp = dIndoorTemperature; 
   
-  int tDiff, t1, t2;
+  double tDiff, t1, t2;
   t1=tempHistory.dequeue(); 
   t2=tempHistory.dequeue();
   
   //PAnteil
-  double tFehler = (soll-dTOffset)-cTemp;
-  int pAnteil = 13;
-  //Serial.println(tFehler);
-  //IAnteil
+  double tFehler = (soll-dTOffset)-cTemp; //offset so nHeating is not directly zero after temperature is higher than setpoint
+  int pAnteil = 18;
+  
+  //!IAnteil
   
   double iIntegral = (t1+t2);
-  double iAnteil = 3;
+  double iAnteil = 5;
   //Serial.println(iIntegral*iAnteil);
 
-
   nHeating = pAnteil * tFehler + iAnteil * iIntegral;
+
+if(Tcounter < 10){ //cold nights in summer dont demand as high heating as winter
+  nHeating = nHeating / 3;
+}
+
+  
   if(nHeating > 100){ //limiter
     nHeating = 100;
   }
@@ -372,20 +363,27 @@ void ReglerHeizung(){ //double variable for radiator is being defined
 
 void ACController(){
 double cTemp = dIndoorTemperature; 
-   int tDiff, t1, t2;
-  t1=tempHistory.dequeue(); 
-  t2=tempHistory.dequeue();
+   double tDiff, t1, t2;
+  t1=tempHistory.dequeue(); //< Temperature error 1
+  t2=tempHistory.dequeue(); //< Temperature error 2
   
   //PAnteil
   double tFehler = -((soll)-cTemp);
-  int pAnteil = 20;
+  int pAnteil = 30;
   //Serial.println(tFehler);
   //IAnteil
   
-  double iIntegral = -(t1+t2);
-  double iAnteil = 11;
+  double iIntegral = (-t1-t2); //summing the temperature errors
+  double iAnteil =8;
+//Serial.println(iIntegral*iAnteil);
+
   
   dAC = pAnteil * tFehler + iAnteil * iIntegral;
+if(Tcounter > -10){ //dont cool as much in eventual winter because of high sensitivity
+  dAC = dAC/3;
+}
+
+  
   if(dAC > 100){ //limiter
     dAC = 100;
   }
@@ -427,7 +425,7 @@ void HEControllerHeat(){
 
  double cTemp = dIndoorTemperature; 
   
-  int tDiff, t1, t2;
+  double tDiff, t1, t2;
   t1=tempHistory.dequeue(); 
   t2=tempHistory.dequeue();
   
@@ -468,7 +466,7 @@ if(dHEA > 100){ //limiter
 void HEControllerCool(){
 
 double cTemp = dIndoorTemperature; 
-   int tDiff, t1, t2;
+   double tDiff, t1, t2;
   t1=tempHistory.dequeue(); 
   t2=tempHistory.dequeue();
   
@@ -503,7 +501,7 @@ double cTemp = dIndoorTemperature;
 
 void thermostat(){ //negative Counter means summer
   
-  if(dIndoorTemperature < soll-1){ //tolerance frame
+  if(dIndoorTemperature < soll-1){ //tolerance frame where active unit should stay active
     Tcounter++;
   }
   if(dIndoorTemperature > soll+1){
@@ -536,14 +534,14 @@ userInput = 0;
 
 if (userInput == 0){ //if no useroverwrite of temperature, continue schedule.
 if(dTime < (60*7)){
-  soll = 17;
+  soll = 21;
   bDaytime=0;
 }else if(dTime < (60*22)){
   soll = 21;
   bDaytime=1;
 }else{
   bDaytime=0;
-  soll=17;
+  soll=21;
 }
 
 }
@@ -563,7 +561,7 @@ void logic(){
 
 double dTolerance=3;
 if(systemOn){
-if((dIndoorTemperature < soll+dTolerance) and Tcounter > 0 or (nWinter == 1 and Tcounter >7)){
+if(((dIndoorTemperature < soll+dTolerance) and Tcounter > 0) or (nWinter == 1 and Tcounter >7)){ 
   ReglerHeizung();
   HEControllerHeat(); //pure air exchange
   lcdmode=1;
@@ -577,7 +575,7 @@ if((dIndoorTemperature < soll+dTolerance) and Tcounter > 0 or (nWinter == 1 and 
   nHeating = 0;
 }
 
-if((dIndoorTemperature > soll-dTolerance) and Tcounter < 0 or (nWinter == 0 and Tcounter < -7)){
+if(((dIndoorTemperature > soll-dTolerance) and Tcounter < 0) or (nWinter == 0 and Tcounter < -7)){
   ACController();
   lcdmode=0;
   if(dIndoorTemperature > dOutdoorTemperature){
@@ -614,7 +612,6 @@ toneCounter++;
 
 
 if((dCO2 > 1000 or nWarnings == 2)){ //noise for one second (100*10ms) //CO2 above max ratings
-lcdWarning=1;
 if(toneCounter < 100){
 
   tone(4, 500);
@@ -623,12 +620,9 @@ else{
   noTone(4);
   
 }
-}else{
-  lcdWarning=0;
 }
 
 if(nWarnings == 1){ //noise for one second (100*10ms) //freezing inside house
-lcdWarning=2;
 if(toneCounter < 100){
 
   tone(4, 500);
@@ -637,9 +631,8 @@ else{
   noTone(4);
   
 }
-}else{
-  lcdWarning=0;
 }
+
 
 
 if(nWarnings == 4){ //noise for one second (100*10ms) //above 45°C
@@ -652,10 +645,6 @@ else{
   noTone(4);
   
 }
-
-
-}else{
-  lcdWarning=0;
 }
 
 if(toneCounter > 200){
@@ -676,11 +665,21 @@ if(dCO2 < 1000 and nWarnings == 0){ //avoid continuous tone
 
 
   
+//! Create next steady transmitted command
+/*!
+Create next of steadily transmitted requests or commands to the plant.
 
+Assume the buffer is large enough for all automatically created commands.
 
+The state machine here may be expanded to support more commands.
+Commands are created to cyclically transmit and/or request values to or from the plant.
 
+Please note the state value nIndex has to be static to remain in existence after leaving the function.
+The index is incremented in every call and reset to zero after all commands have been generated once.
 
-
+\param szCommand storage for a typed command
+\returns true if a command has been created
+*/
 
 bool CreateNextSteadyCommand(char szCommand[]) //for automatic output, the values have to be requested and sent first, this function is called every 100ms 
 {
@@ -828,10 +827,10 @@ void ShowData()
 //    Serial.print("W=0x");
 //  Serial.print(nWarnings, HEX);
 //  Serial.println("");
-// if ( bVerbose )
-//    Serial.print("I=");
-//  Serial.println(dIndoorTemperature);
-//  Serial.print(" ");
+if ( bVerbose )
+    Serial.print("I=");
+  Serial.println(dIndoorTemperature);
+  Serial.print(" ");
 
 //if ( bVerbose )
 //    Serial.print("E=");
@@ -880,7 +879,7 @@ void Task_10ms()  //no delays allowed in automatisation
 
 //SaveHumidity();        //Saving current indoor humidity every 10ms
 sounds();
-
+ 
   
 }
 
@@ -954,8 +953,9 @@ void Task_100ms() //most important, has to be done under 100ms
 //ReglerHeizung(); //Calling radiator for temperature response
 //ACController();
 //HEController();
+SaveTemps();          //Saving current temp every 100ms
 logic();
-SaveTemps();          //Saving current temp every 10ms
+
 
 
 
@@ -978,8 +978,8 @@ This allows to use the integrated Arduino serial plotter or an external software
 void Task_1s() //everything not so often needed
 {
   
- Serial.println(nWarnings);
-  
+ //Serial.println(nWarnings);
+ 
   
   ToggleDigitalIOPort(LEDpin);                  // toggle output to LED
 
@@ -1012,22 +1012,41 @@ lcd.clear();
 
 //1st Row
   lcd.setCursor(0, 0);//Hier wird die Position des ersten Zeichens festgelegt. In diesem Fall bedeutet (0,0) das erste Zeichen in der ersten Zeile. 
-if(lcdWarning==1){
+
+switch (nWarnings){
+  case 2:
+  
   lcd.print("High CO2!");
+  lcd.setCursor(0, 1);
+  lcd.print(" C=");
+  lcd.print(dCO2);
+  lcd.print("ppm");
+
+  break;
+ case 1:
+
+    lcd.print("It's freezing! ");
+    lcd.setCursor(0, 1);
+    lcd.write(2);
+    lcd.print(dIndoorTemperature);
+  break;
+case 4:
+    lcd.print("It's too hot! ");
+    lcd.setCursor(0, 1);
+    lcd.write(2);
+    lcd.print(dIndoorTemperature);
+    break;
+
+default:
+
+if(dCO2>1000){
+  lcd.print("High CO2!");
+  lcd.setCursor(0, 1);
   lcd.print(" C=");
   lcd.print(dCO2);
   lcd.print("ppm");
 }else{
-  if(lcdWarning==2){
-    lcd.print("It's freezing! ");
-    lcd.write(2);
-    lcd.print(dIndoorTemperature);
-  }else{
-if(lcdWarning==4){
-    lcd.print("It's too hot! ");
-    lcd.write(2);
-    lcd.print(dIndoorTemperature);
-  }else{
+
 lcd.write(2); //thermometer icon
 lcd.print(dIndoorTemperature);
 lcd.print("C");
@@ -1073,18 +1092,7 @@ lcd.print("%");
 //lcd.print((int)(dTime/60));
 
 }
-//lcd.print(nWarnings);
-switch (nWarnings){ //error handling
-case 0:
- // no warnings
-break;
 
-case 1:
-
-
-break;
-
-  
 }
 
 
@@ -1092,8 +1100,8 @@ break;
 
 
 }
-}
-}
+
+
 
 //! Usual arduino steadily called function
 /*!
