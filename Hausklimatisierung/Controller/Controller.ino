@@ -450,14 +450,14 @@ void HEControllerHeat(){
   iIntegralHEH=0;
  }
   
-  nHeating = pAnteil * tFehler + iIntegralHEH;
+  dHEA = pAnteil * tFehler + iIntegralHEH;
   
-  if(nHeating > 100){ //limiter
-    nHeating = 100;
+  if(dHEA > 100){ //limiter
+    dHEA = 100;
   }
-  if(nHeating < 0){
-    nHeating = 0;
-  } 
+  if(dHEA < 0){
+    dHEA = 0;
+  }
 }
 
 
@@ -494,16 +494,18 @@ double cTemp = dIndoorTemperature;
  }
   
   
-  dAC = pAnteil * tFehler + iIntegralHEC;
+  dHEA = pAnteil * tFehler + iIntegralHEC;
 
 
   
-  if(dAC > 100){ //limiter
-    dAC = 100;
+  if(dHEA > 100){ //limiter
+    dHEA = 100;
   }
-  if(dAC < 0){
-    dAC = 0;
+  if(dHEA < 0){
+    dHEA = 0;
   }
+
+
 
 }
 
@@ -580,13 +582,13 @@ void logic(){
 
 double dTolerance=3;
 
-if(systemOn){
-if(Tcounter > 0){ 
+if(systemOn){ //if on switch pressed
+if(Tcounter > 0){  //if heating is suggested
   ReglerHeizung();
   iIntegralAC=0; //Reset of other values
   iIntegralHEC=0;
-  lcdmode=1;
-  if(soll < dOutdoorTemperature){
+  lcdmode=1; //shows Radiator Setting on screen
+  if(soll < dOutdoorTemperature){ //if its warmer outside then we can let in air
     HEControllerHeat();
   }else{
     dHEA=0; //heat exchanger amount
