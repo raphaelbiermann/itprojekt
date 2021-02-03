@@ -87,7 +87,6 @@ USB/COM port to the I²C port and displays the outcome from a connected house si
 // include I²C connection
 #include "I2C_Master.h" //prepared i2c protocol for string exchange
 #include "string.h"
-#include "ArduinoQueue.h" //loaded datastructure queue for saving stamps
 #include "LiquidCrystal_I2C.h"  //loaded i2c protocol for display
 LiquidCrystal_I2C lcd(0x27, 16, 2); ///<initialising display with i2c adress 0x27, 16 characters, 2 rows
 
@@ -119,11 +118,7 @@ bool            bVerbose = true;                ///< local verbose flag
 
 int             humiditysp = 50;                      ///<setpoint for optimal humidity (should be 40-60%)             
 double          soll = 20.0;                    ///<Setpoint temperature, temperature aimed for in all tasks
-double          dTOffset=-3.5;                   ///<Difference between actual endtemp and setpoint
 int             nHeating;                       ///<percentage for radiator heat
-ArduinoQueue<int> tempHistory;                  ///< Queue for FIFO reading of past temperatures, easy saving because of dynamic dimension of queue.
-ArduinoQueue<int> humidityHistory;
-
 
 
 int             nWinter=0; ///< needed in order to know if its winter or summer
@@ -313,32 +308,26 @@ bool FilterLocalCommands(char szCommand[])
   return false;
 }
 
-
-void SaveTemps(){
-  tempHistory.enqueue((soll)-dIndoorTemperature); //last temperature differences are documented
-}
-
+double iIntegralH;
 void ReglerHeizung(){ //double variable for radiator is being defined 
   double cTemp = dIndoorTemperature; 
-  
-  int tDiff, t1, t2;
-  t1=tempHistory.dequeue(); 
-  t2=tempHistory.dequeue();
-  
   //PAnteil
-  double tFehler = (soll-dTOffset)-cTemp; //offset so nHeating is not directly zero after temperature is higher than setpoint
-  int pAnteil = 18;
+  double tFehler = (soll)-cTemp; //offset so nHeating is not directly zero after temperature is higher than setpoint
+  int pAnteil = 5;
   
   //!IAnteil
+  double iAnteil = 0.1;
+   iIntegralH+= (soll-cTemp)*iAnteil;
+
+ if(iIntegralH>100){ //limiter
+  iIntegralH=100;
+ }
+
+ if(iIntegralH < 0){
+  iIntegralH=0;
+ }
   
-  double iIntegral = (t1+t2);
-  double iAnteil = 6;
-  //Serial.println(iIntegral*iAnteil);
-
-  nHeating = pAnteil * tFehler + iAnteil * iIntegral;
-
-
-
+  nHeating = pAnteil * tFehler + iIntegralH;
   
   if(nHeating > 100){ //limiter
     nHeating = 100;
@@ -346,10 +335,6 @@ void ReglerHeizung(){ //double variable for radiator is being defined
   if(nHeating < 0){
     nHeating = 0;
   }
-
-if(Tcounter < 17){
-  nHeating = (nHeating /5); //limit heating in eventual summer because of sensitivity (small Tcounter means that there have been high temperatures before)
-}
 
 }
 
@@ -361,27 +346,27 @@ if(Tcounter < 17){
  *
  * 
  */
-
+double iIntegralAC;
 void ACController(){
 double cTemp = dIndoorTemperature; 
-   double tDiff, t1, t2;
-  t1=tempHistory.dequeue(); //< Temperature error 1
-  t2=tempHistory.dequeue(); //< Temperature error 2
-  
   //PAnteil
-  double tFehler = -((soll-1)-cTemp);
-  int pAnteil = 20;
+  double tFehler = -((soll)-cTemp);
+  int pAnteil = 5;
   //Serial.println(tFehler);
   //IAnteil
-  
-  double iIntegral = (-t1-t2); //summing the temperature errors
-  double iAnteil =11;
+  double iAnteil = 0.1;
+   iIntegralAC+= -(soll-cTemp)*iAnteil;
 
-  
-//Serial.println(iIntegral*iAnteil);
+ if(iIntegralAC>100){ //limiter
+  iIntegralAC=100;
+ }
 
+ if(iIntegralAC < 0){
+  iIntegralAC=0;
+ }
   
-  dAC = pAnteil * tFehler + iAnteil * iIntegral;
+  
+  dAC = pAnteil * tFehler + iIntegralAC;
 
 
   
@@ -392,27 +377,10 @@ double cTemp = dIndoorTemperature;
     dAC = 0;
   }
 
-if(Tcounter > -17){
-  dAC = (dAC /5); //limit heating in eventual summer because of sensitivity (small Tcounter means that there have been high temperatures before)
-}
+//if(Tcounter > -17){
+//  dAC = (dAC /5); //limit heating in eventual summer because of sensitivity (small Tcounter means that there have been high temperatures before)
+//}
 
-}
-
-
-
-
-
-
-
-
-  
-
-
-/*!for future drying or moisturising air
- * 
- */
-void SaveHumidity(){  //saves current humidity
-  humidityHistory.enqueue(dIndoorHumidity);
 }
 
 
@@ -424,37 +392,35 @@ void SaveHumidity(){  //saves current humidity
  * 
  * Heat exchanger amount (airflow) and heat exchanger transfer (heat) are set to the same level.
  */
-
+double iIntegralHEH;
 void HEControllerHeat(){
 
  double cTemp = dIndoorTemperature; 
   
-  double tDiff, t1, t2;
-  t1=tempHistory.dequeue(); 
-  t2=tempHistory.dequeue();
-  
   //PAnteil
   double tFehler = (soll)-cTemp;
-  int pAnteil = 10;
+  int pAnteil = 5;
   //Serial.println(tFehler);
   //IAnteil
-  
-  double iIntegral = (t1+t2);
-  double iAnteil = 2;
+  double iAnteil = 0.1;
+   iIntegralHEH+= (soll-cTemp)*iAnteil;
 
-dHEA = tFehler * pAnteil + iIntegral*iAnteil;
+ if(iIntegralHEH>100){ //limiter
+  iIntegralHEH=100;
+ }
 
-if(dHEA > 100){ //limiter
-    dHEA = 100;
-  }
-  if(dHEA < 0){
-    dHEA = 0;
-  }
+ if(iIntegralHEH < 0){
+  iIntegralHEH=0;
+ }
   
-if(Tcounter < 10){
-  dHEA = (dHEA /5); //limit heating in eventual summer because of sensitivity (small Tcounter means that there have been high temperatures before)
-}
-   
+  nHeating = pAnteil * tFehler + iIntegralHEH;
+  
+  if(nHeating > 100){ //limiter
+    nHeating = 100;
+  }
+  if(nHeating < 0){
+    nHeating = 0;
+  } 
 }
 
 
@@ -470,35 +436,37 @@ if(Tcounter < 10){
  * This function uses the heat exchanger as a substitude to the air conditioner when the outside temperature is lower.
  */
 
+double iIntegralHEC;
 void HEControllerCool(){
 
 double cTemp = dIndoorTemperature; 
-   double tDiff, t1, t2;
-  t1=tempHistory.dequeue(); 
-  t2=tempHistory.dequeue();
-  
   //PAnteil
   double tFehler = -((soll)-cTemp);
-  int pAnteil = 20;
+  int pAnteil = 5;
   //Serial.println(tFehler);
   //IAnteil
+  double iAnteil = 0.1;
+   iIntegralHEC+= -(soll-cTemp)*iAnteil;
+
+ if(iIntegralHEC>100){ //limiter
+  iIntegralHEC=100;
+ }
+
+ if(iIntegralHEC < 0){
+  iIntegralHEC=0;
+ }
   
-  double iIntegral = (t1+t2);
-  double iAnteil = 8;
   
-  dHEA = pAnteil * tFehler + iAnteil * iIntegral;
-   if(dHEA > 100){ //limiter
-    dHEA = 100;
-  }
-  if(dHEA < 0){
-    dHEA = 0;
-    
-  }
+  dAC = pAnteil * tFehler + iIntegralHEC;
 
 
-if(Tcounter > -10){
-  dHEA = (dHEA /5); //limit heating in eventual summer because of sensitivity (small Tcounter means that there have been high temperatures before)
-}
+  
+  if(dAC > 100){ //limiter
+    dAC = 100;
+  }
+  if(dAC < 0){
+    dAC = 0;
+  }
 
 }
 
@@ -516,17 +484,17 @@ void thermostat(){ //negative Counter means summer
 if(dIndoorTemperature > soll+1){
   Tcounter--;
 }
-if(dIndoorTemperature < soll-0.5){
+if(dIndoorTemperature < soll-1){
   Tcounter++;
 }
 
   
   
-  if(Tcounter > 20){
-    Tcounter = 20;
+  if(Tcounter > 25){ //Vibrating only allowed for max 20s
+    Tcounter = 25;
   }
-  if (Tcounter < -20){
-    Tcounter = -20;
+  if (Tcounter < -25){
+    Tcounter = -25;
   }
   //Serial.println(Tcounter);
 }
@@ -549,14 +517,14 @@ userInput = 0;
 
 if (userInput == 0){ //if no useroverwrite of temperature, continue schedule.
 if(dTime < (60*7)){
-  soll = 17;
+  soll = 21;
   bDaytime=0;
 }else if(dTime < (60*22)){
   soll = 21;
   bDaytime=1;
 }else{
   bDaytime=0;
-  soll=17;
+  soll=21;
 }
 
 }
@@ -579,9 +547,10 @@ double dTolerance=3;
 if(systemOn){
 if(((dIndoorTemperature < soll+dTolerance) and Tcounter > 0) or (nWinter == 1 and Tcounter >7)){ 
   ReglerHeizung();
-  HEControllerHeat(); //pure air exchange
+  iIntegralAC=0;
+  iIntegralHEC=0;
   lcdmode=1;
-  if(dIndoorTemperature < dOutdoorTemperature){
+  if(soll < dOutdoorTemperature){
     HEControllerHeat();
   }else{
     dHEA=0; //heat exchanger amount
@@ -593,8 +562,10 @@ if(((dIndoorTemperature < soll+dTolerance) and Tcounter > 0) or (nWinter == 1 an
 
 if(((dIndoorTemperature > soll-dTolerance) and Tcounter < 0) or (nWinter == 0 and Tcounter < -7)){
   ACController();
+  iIntegralH=0;
+  iIntegralHEH=0;
   lcdmode=0;
-  if(dIndoorTemperature > dOutdoorTemperature){
+  if(soll > dOutdoorTemperature){
     HEControllerCool(); //pure freshair exchange
   }else{
     dHEA=0; //heat exchanger amount 
@@ -910,7 +881,7 @@ void Task_100ms() //most important, has to be done under 100ms
   static bool  bOperatesCommand = false;        // flag tells if request is under way
 
 
-SaveTemps();          //Saving current temp every 100ms
+//SaveTemps();          //Saving current temp every 100ms
 
 
   if ( ! bOperatesCommand )                     // if not busy at working on a current command
