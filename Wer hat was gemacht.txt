@@ -1,0 +1,15 @@
+Selim Jaeschke
+-Logik
+	-Welche Einheit soll wann angeschaltet werden?
+		-Funktionsweise Wärmetauscher, Heizung
+	-Counter - Einschwingpuffer als Problemlösung
+-Dokumentation
+
+Raphael Biermann
+-PI Regler
+-Display
+-Sounds
+-Zeitschema
+-Dokumentation
+
+	

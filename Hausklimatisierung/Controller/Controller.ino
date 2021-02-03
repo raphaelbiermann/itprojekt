@@ -351,6 +351,13 @@ bool FilterLocalCommands(char szCommand[])
 }
 
 
+/*!
+ * Main controller. Consists of proportional and integral part.
+ * The amount of heat is calculated using the temperature error.
+ * Summing up the errors over time in the integral part helps getting rid of swinging state.
+ * All other controllers build up from this one.
+ */
+
 void ReglerHeizung(){ //double variable for radiator is being defined 
   double cTemp = dIndoorTemperature; //save current temperature
   //PAnteil

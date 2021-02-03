@@ -169,6 +169,10 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
   <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a696f1227af84fad2f0fd60ab174051c9"><param name="Name" value="lcdTask"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
+  <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a96d7c1b4916910813accf1ec383876c5"><param name="Name" value="lcdWarning"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
@@ -456,6 +460,7 @@
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#ae5e567a2bf232449f9beb4aa667ffe08"><param name="Name" value="iIntegralHEC"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#ae006a3d23063966558547ecba8f5f563"><param name="Name" value="iIntegralHEH"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#ae084e1bc8ccb35ea289ba0ca4972ea6d"><param name="Name" value="lcd"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a696f1227af84fad2f0fd60ab174051c9"><param name="Name" value="lcdTask"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a96d7c1b4916910813accf1ec383876c5"><param name="Name" value="lcdWarning"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a6bb05a2ac6752c4e89e9fdc2153b963e"><param name="Name" value="lcdmode"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a891ab028bd00ce90bbf291a355410e1e"><param name="Name" value="logic"></OBJECT>
