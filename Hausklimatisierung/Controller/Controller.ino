@@ -121,7 +121,7 @@ int             humiditysp = 50;                      ///<setpoint for optimal h
 double          soll = 20.0;                    ///<Setpoint temperature, temperature aimed for in all tasks
 double          dTOffset=-3.5;                   ///<Difference between actual endtemp and setpoint
 int             nHeating;                       ///<percentage for radiator heat
-ArduinoQueue<double> tempHistory;                  ///< Queue for FIFO reading of past temperatures, easy saving because of dynamic dimension of queue.
+ArduinoQueue<int> tempHistory;                  ///< Queue for FIFO reading of past temperatures, easy saving because of dynamic dimension of queue.
 ArduinoQueue<int> humidityHistory;
 
 
@@ -130,7 +130,7 @@ int             nWinter=0; ///< needed in order to know if its winter or summer
 double          dAC; ///< AC level in percentage
 double          dOutdoorTemperature; ///< outdoor temperature for comparing with indoor temperature
 double          dOutdoorHumidity; ///< outdoor humidity for exchanging
-int             Tcounter = 0; ///< Counter used in thermostat function in order to enable a soft switch between radiator and ac
+double             Tcounter = 0; ///< Counter used in thermostat function in order to enable a soft switch between radiator and ac
 int             lcdmode; ///< used for deciding what to show on the display
 
 double          dHET; ///<Heat exchanger transfer
@@ -240,7 +240,7 @@ void setup()
   I2C_Master_Setup(I2C_FREQUENCY);              // start I²C master //100000L frequency
 
   //Own Additions 
-  lcd.init(); //Im Setup wird der LCD gestartet 
+  lcd.init(); //starting lcd
 lcd.backlight();
 
 lcd.createChar(0, moonChar);
@@ -321,7 +321,7 @@ void SaveTemps(){
 void ReglerHeizung(){ //double variable for radiator is being defined 
   double cTemp = dIndoorTemperature; 
   
-  double tDiff, t1, t2;
+  int tDiff, t1, t2;
   t1=tempHistory.dequeue(); 
   t2=tempHistory.dequeue();
   
@@ -332,14 +332,12 @@ void ReglerHeizung(){ //double variable for radiator is being defined
   //!IAnteil
   
   double iIntegral = (t1+t2);
-  double iAnteil = 5;
+  double iAnteil = 6;
   //Serial.println(iIntegral*iAnteil);
 
   nHeating = pAnteil * tFehler + iAnteil * iIntegral;
 
-if(Tcounter < 10){ //cold nights in summer dont demand as high heating as winter
-  nHeating = nHeating / 3;
-}
+
 
   
   if(nHeating > 100){ //limiter
@@ -349,7 +347,10 @@ if(Tcounter < 10){ //cold nights in summer dont demand as high heating as winter
     nHeating = 0;
   }
 
- 
+if(Tcounter < 17){
+  nHeating = (nHeating /5); //limit heating in eventual summer because of sensitivity (small Tcounter means that there have been high temperatures before)
+}
+
 }
 
 /*!
@@ -368,20 +369,20 @@ double cTemp = dIndoorTemperature;
   t2=tempHistory.dequeue(); //< Temperature error 2
   
   //PAnteil
-  double tFehler = -((soll)-cTemp);
-  int pAnteil = 30;
+  double tFehler = -((soll-1)-cTemp);
+  int pAnteil = 20;
   //Serial.println(tFehler);
   //IAnteil
   
   double iIntegral = (-t1-t2); //summing the temperature errors
-  double iAnteil =8;
+  double iAnteil =11;
+
+  
 //Serial.println(iIntegral*iAnteil);
 
   
   dAC = pAnteil * tFehler + iAnteil * iIntegral;
-if(Tcounter > -10){ //dont cool as much in eventual winter because of high sensitivity
-  dAC = dAC/3;
-}
+
 
   
   if(dAC > 100){ //limiter
@@ -391,6 +392,9 @@ if(Tcounter > -10){ //dont cool as much in eventual winter because of high sensi
     dAC = 0;
   }
 
+if(Tcounter > -17){
+  dAC = (dAC /5); //limit heating in eventual summer because of sensitivity (small Tcounter means that there have been high temperatures before)
+}
 
 }
 
@@ -447,6 +451,9 @@ if(dHEA > 100){ //limiter
     dHEA = 0;
   }
   
+if(Tcounter < 10){
+  dHEA = (dHEA /5); //limit heating in eventual summer because of sensitivity (small Tcounter means that there have been high temperatures before)
+}
    
 }
 
@@ -472,7 +479,7 @@ double cTemp = dIndoorTemperature;
   
   //PAnteil
   double tFehler = -((soll)-cTemp);
-  int pAnteil = 30;
+  int pAnteil = 20;
   //Serial.println(tFehler);
   //IAnteil
   
@@ -487,26 +494,34 @@ double cTemp = dIndoorTemperature;
     dHEA = 0;
     
   }
-  
+
+
+if(Tcounter > -10){
+  dHEA = (dHEA /5); //limit heating in eventual summer because of sensitivity (small Tcounter means that there have been high temperatures before)
+}
 
 }
 
 
 /*!
  * Works similar to a thermostat with a heat sensitive bending metal. Since the AC should not just turn on after the temperature rises above a certain level,
- * we need a counter to give each unit a margin, in which it can operate without turning off.
+ * we need a counter to give each unit a margin, in which it can operate without being turned off.
  * 
  */
 
 
 void thermostat(){ //negative Counter means summer
+
+
+if(dIndoorTemperature > soll+1){
+  Tcounter--;
+}
+if(dIndoorTemperature < soll-0.5){
+  Tcounter++;
+}
+
   
-  if(dIndoorTemperature < soll-1){ //tolerance frame where active unit should stay active
-    Tcounter++;
-  }
-  if(dIndoorTemperature > soll+1){
-    Tcounter--;
-  }
+  
   if(Tcounter > 20){
     Tcounter = 20;
   }
@@ -534,14 +549,14 @@ userInput = 0;
 
 if (userInput == 0){ //if no useroverwrite of temperature, continue schedule.
 if(dTime < (60*7)){
-  soll = 21;
+  soll = 17;
   bDaytime=0;
 }else if(dTime < (60*22)){
   soll = 21;
   bDaytime=1;
 }else{
   bDaytime=0;
-  soll=21;
+  soll=17;
 }
 
 }
@@ -560,6 +575,7 @@ if(dTime < (60*7)){
 void logic(){
 
 double dTolerance=3;
+
 if(systemOn){
 if(((dIndoorTemperature < soll+dTolerance) and Tcounter > 0) or (nWinter == 1 and Tcounter >7)){ 
   ReglerHeizung();
@@ -878,8 +894,8 @@ void Task_10ms()  //no delays allowed in automatisation
                                              // nothing to do so far
 
 //SaveHumidity();        //Saving current indoor humidity every 10ms
+
 sounds();
- 
   
 }
 
@@ -894,7 +910,7 @@ void Task_100ms() //most important, has to be done under 100ms
   static bool  bOperatesCommand = false;        // flag tells if request is under way
 
 
-
+SaveTemps();          //Saving current temp every 100ms
 
 
   if ( ! bOperatesCommand )                     // if not busy at working on a current command
@@ -953,7 +969,7 @@ void Task_100ms() //most important, has to be done under 100ms
 //ReglerHeizung(); //Calling radiator for temperature response
 //ACController();
 //HEController();
-SaveTemps();          //Saving current temp every 100ms
+
 logic();
 
 
