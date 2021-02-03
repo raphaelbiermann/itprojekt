@@ -516,14 +516,14 @@ userInput = 0;
 }
 
 if (userInput == 0){ //if no useroverwrite of temperature, continue schedule.
-if(dTime < (60*7)){
-  soll = 21;
+if(dTime < (60*7)){ //low temperature until 6am
+  soll = 17;
   bDaytime=0;
-}else if(dTime < (60*22)){
-  soll = 21;
+}else if(dTime < (60*22)){ //high temperature from 6am to 10pm
+  soll = 20;
   bDaytime=1;
-}else{
-  bDaytime=0;
+}else{ //low temperature from 10pm to 0am.
+  bDaytime=17;
   soll=21;
 }
 
@@ -547,7 +547,7 @@ double dTolerance=3;
 if(systemOn){
 if(((dIndoorTemperature < soll+dTolerance) and Tcounter > 0) or (nWinter == 1 and Tcounter >7)){ 
   ReglerHeizung();
-  iIntegralAC=0;
+  iIntegralAC=0; //Reset of other values
   iIntegralHEC=0;
   lcdmode=1;
   if(soll < dOutdoorTemperature){
