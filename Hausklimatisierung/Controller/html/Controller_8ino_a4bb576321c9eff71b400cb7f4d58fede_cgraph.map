@@ -1,0 +1,14 @@
+<map id="Task_100ms" name="Task_100ms">
+<area shape="rect" id="node1" title="Function Task_100ms called every 100 msec." alt="" coords="5,157,101,184"/>
+<area shape="rect" id="node2" href="$Controller_8ino.html#aef8d57dbdb05a99caac118882b35d56c" title="Check if a command has been typed." alt="" coords="167,5,318,32"/>
+<area shape="rect" id="node3" href="$Controller_8ino.html#a573a9b79ee6a7e720f5ecc4bbfcb0c87" title="Create next steady transmitted command." alt="" coords="149,56,336,83"/>
+<area shape="rect" id="node4" href="$Controller_8ino.html#a90328c9dde97401383a88ad666622063" title="Filter local commands." alt="" coords="169,107,317,133"/>
+<area shape="rect" id="node5" href="$I2C__Master_8cpp.html#a6c4bf6970b964fcbf8134fee4223f124" title="Get text response for last request." alt="" coords="179,157,306,184"/>
+<area shape="rect" id="node6" href="$I2C__Master_8cpp.html#ac7bd9aac8f7d5ccc9b1538a93dc038db" title="Send request to slave." alt="" coords="179,208,306,235"/>
+<area shape="rect" id="node7" href="$Controller_8ino.html#a3005755a1cc32c4a6537fc8c5c0fa3cb" title="Interpret an I²C response from the plant." alt="" coords="175,259,310,285"/>
+<area shape="rect" id="node8" href="$Controller_8ino.html#a891ab028bd00ce90bbf291a355410e1e" title=" " alt="" coords="218,309,267,336"/>
+<area shape="rect" id="node9" href="$Controller_8ino.html#ab10f597b51a01881bc3bfda2edc9daa2" title=" " alt="" coords="398,233,493,260"/>
+<area shape="rect" id="node10" href="$Controller_8ino.html#afd15f02b5b76c27ce9d24b1202353803" title=" " alt="" coords="385,284,506,311"/>
+<area shape="rect" id="node11" href="$Controller_8ino.html#aa4542df6529eb717fdc0a3105fe8a6f2" title=" " alt="" coords="384,335,507,361"/>
+<area shape="rect" id="node12" href="$Controller_8ino.html#a090aec666da0a428e48e596f9460a5ec" title=" " alt="" coords="392,385,499,412"/>
+</map>

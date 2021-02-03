@@ -1,0 +1,4 @@
+<map id="Task_10ms" name="Task_10ms">
+<area shape="rect" id="node1" title="Function Task_10ms called every 10 msec." alt="" coords="100,5,189,32"/>
+<area shape="rect" id="node2" href="$Controller_8ino.html#afe461d27b9c48d5921c00d521181f12f" title="Usual arduino steadily called function." alt="" coords="5,5,52,32"/>
+</map>

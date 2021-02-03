@@ -1,0 +1,6 @@
+<map id="lcd" name="lcd">
+<area shape="rect" id="node1" title="initialising display with i2c adress 0x27, 16 characters, 2 rows" alt="" coords="219,31,257,57"/>
+<area shape="rect" id="node2" href="$Controller_8ino.html#a4fc01d736fe50cf5b977f755b675f11d" title="usual arduino init function" alt="" coords="108,5,163,32"/>
+<area shape="rect" id="node3" href="$Controller_8ino.html#acc7e9ffdda03efaa08f8d3b4f372efbf" title="Function Task_1s called every 1 sec." alt="" coords="100,56,171,83"/>
+<area shape="rect" id="node4" href="$Controller_8ino.html#afe461d27b9c48d5921c00d521181f12f" title="Usual arduino steadily called function." alt="" coords="5,56,52,83"/>
+</map>

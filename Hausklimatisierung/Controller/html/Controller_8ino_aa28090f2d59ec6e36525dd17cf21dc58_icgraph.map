@@ -1,0 +1,5 @@
+<map id="thermostat" name="thermostat">
+<area shape="rect" id="node1" title=" " alt="" coords="219,5,303,32"/>
+<area shape="rect" id="node2" href="$Controller_8ino.html#acc7e9ffdda03efaa08f8d3b4f372efbf" title="Function Task_1s called every 1 sec." alt="" coords="100,5,171,32"/>
+<area shape="rect" id="node3" href="$Controller_8ino.html#afe461d27b9c48d5921c00d521181f12f" title="Usual arduino steadily called function." alt="" coords="5,5,52,32"/>
+</map>

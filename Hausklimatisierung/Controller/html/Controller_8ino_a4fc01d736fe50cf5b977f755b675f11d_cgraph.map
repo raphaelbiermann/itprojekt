@@ -1,0 +1,5 @@
+<map id="setup" name="setup">
+<area shape="rect" id="node1" title="usual arduino init function" alt="" coords="5,31,60,57"/>
+<area shape="rect" id="node2" href="$I2C__Master_8cpp.html#acf0a16d34f1f7fd20e9dcabc3971bfb7" title="I²C master setup." alt="" coords="108,5,237,32"/>
+<area shape="rect" id="node3" href="$Controller_8ino.html#ae084e1bc8ccb35ea289ba0ca4972ea6d" title="initialising display with i2c adress 0x27, 16 characters, 2 rows" alt="" coords="153,56,192,83"/>
+</map>

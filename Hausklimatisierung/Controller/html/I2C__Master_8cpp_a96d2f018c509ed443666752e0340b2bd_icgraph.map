@@ -1,0 +1,4 @@
+<map id="I2C_Master_Steady" name="I2C_Master_Steady">
+<area shape="rect" id="node1" title="I²C master steady call." alt="" coords="100,5,236,32"/>
+<area shape="rect" id="node2" href="$Controller_8ino.html#afe461d27b9c48d5921c00d521181f12f" title="Usual arduino steadily called function." alt="" coords="5,5,52,32"/>
+</map>

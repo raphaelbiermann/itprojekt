@@ -1,3 +1,42 @@
+/*! \mainpage IT Project Air Conditioning by Selim Jaeschke and Raphael Biermann
+ *
+ * \section intro_sec Welcome!
+ *
+ *  This is the documentation to the project code file of our project!
+ *  We built an air conditioning controller unit that will work flawless in your house.
+ *  
+ *  Note that you have to connect more Arduino modules according to the Fritzing diagram on the mainpage of Controller
+ *  in order to use this program to its full extend.
+ *  
+ * \section intro_sec What does this unit provide?
+ * -PI controlled Heating
+ * 
+ * -PI controlled Cooling
+ * 
+ * -Efficient fresh air exchange with heat-exchanger
+ * 
+ * -Temperature timetable for the perfect temperature at every time of the day
+ * 
+ * -Display to show current data, active modules and warnings
+ * 
+ * -buttons for custom settings
+ * 
+ * -Alarm sounds to corresponding display warnings
+ *
+ * You can find more notes and diagrams in the project folders.
+ *
+ *\section Usage
+ *You can type a custom setpoint value for the temperature using s=x.
+ *
+ *Note that we saved setpoint values inside the controller instead of the simulation to reduce lag.
+ *
+ *Hold down Buttons to change values.
+ *
+ *Enjoy!
+ *
+ */
+
+
 /*! mainpage Controller
 @file Controller.ino
 Simple house air conditioner Controller.
@@ -155,7 +194,10 @@ int             lcdWarning; ///<what warning is to be shown on the display?
 
 char            s1[2]; ///< String for saving value of custom setpoint value from command prompt 
 
-
+double iIntegralH; ///< Integral part of PI Controller for Radiator
+double iIntegralAC;///< Integral part of PI Controller for Cooling
+double iIntegralHEH; ///< Integral part of PI Controller for Heat exchanger in heating mode
+double iIntegralHEC; ///< Integral part of PI Controller for Heat exchanger in cooling mode
 
 byte moonChar[] = { ///<custom chars for lcd display
  B00011,
@@ -308,16 +350,16 @@ bool FilterLocalCommands(char szCommand[])
   return false;
 }
 
-double iIntegralH;
+
 void ReglerHeizung(){ //double variable for radiator is being defined 
-  double cTemp = dIndoorTemperature; 
+  double cTemp = dIndoorTemperature; //save current temperature
   //PAnteil
   double tFehler = (soll)-cTemp; //offset so nHeating is not directly zero after temperature is higher than setpoint
-  int pAnteil = 5;
+  int pAnteil = 5; //proportional coefficient
   
   //!IAnteil
-  double iAnteil = 0.1;
-   iIntegralH+= (soll-cTemp)*iAnteil;
+  double iAnteil = 0.1; //integral coefficient
+   iIntegralH+= (soll-cTemp)*iAnteil; //calculating the integral
 
  if(iIntegralH>100){ //limiter
   iIntegralH=100;
@@ -327,9 +369,9 @@ void ReglerHeizung(){ //double variable for radiator is being defined
   iIntegralH=0;
  }
   
-  nHeating = pAnteil * tFehler + iIntegralH;
+  nHeating = pAnteil * tFehler + iIntegralH; //summing integral and proportional part of controller
   
-  if(nHeating > 100){ //limiter
+  if(nHeating > 100){ //limiter, nHeating is allowed to be max 100%
     nHeating = 100;
   }
   if(nHeating < 0){
@@ -343,10 +385,12 @@ void ReglerHeizung(){ //double variable for radiator is being defined
  * It's basically a copy of the radiator function with inverted heat analysis in order to get a higher AC level in percentage when the temperature inside is higher than
  * the setpoint.
  * 
+ * Since it is a copy, look up into "ReglerHeizung" function to see what this function does exactly
+ * 
  *
  * 
  */
-double iIntegralAC;
+
 void ACController(){
 double cTemp = dIndoorTemperature; 
   //PAnteil
@@ -364,12 +408,9 @@ double cTemp = dIndoorTemperature;
  if(iIntegralAC < 0){
   iIntegralAC=0;
  }
-  
-  
+   
   dAC = pAnteil * tFehler + iIntegralAC;
 
-
-  
   if(dAC > 100){ //limiter
     dAC = 100;
   }
@@ -377,22 +418,18 @@ double cTemp = dIndoorTemperature;
     dAC = 0;
   }
 
-//if(Tcounter > -17){
-//  dAC = (dAC /5); //limit heating in eventual summer because of sensitivity (small Tcounter means that there have been high temperatures before)
-//}
 
 }
 
 
 /*!
  * The Heat Exchanger is useful when the outside temperature is desired inside the house
- * This function uses the heat exchanger as a substitude to the radiator when the outside temperature is higher.
+ * This function uses the heat exchanger as a support for the radiator when the outside temperature is higher.
  * 
  * Its a straight copy of the radiator function since it should be controlled with the same regulator to achieve the setpoint temperature.
- * 
- * Heat exchanger amount (airflow) and heat exchanger transfer (heat) are set to the same level.
+ * .
  */
-double iIntegralHEH;
+
 void HEControllerHeat(){
 
  double cTemp = dIndoorTemperature; 
@@ -436,7 +473,7 @@ void HEControllerHeat(){
  * This function uses the heat exchanger as a substitude to the air conditioner when the outside temperature is lower.
  */
 
-double iIntegralHEC;
+
 void HEControllerCool(){
 
 double cTemp = dIndoorTemperature; 
@@ -534,7 +571,7 @@ if(dTime < (60*7)){ //low temperature until 6am
  * Basic logic for what to do: 
  * This function decides based on the temperature conditions inside and outside, whether to turn on the radiator or air-conditioner.
  * It relies on Tcounter, which is gives a margin before turning on the AC or radiator in both winter and summer.
- * This is an upgrade considering most thermostat manufacturers actually rely on a winter or summer mode in order to decide, which 
+ * This is an upgrade considering most thermostat manufacturers actually rely on a winter or summer mode in order to decide which 
  * unit has to be turned on.
  * 
  */
@@ -742,6 +779,9 @@ Interpret an I²C response from the plant.
 
 If more command types have been issued in function CreateNextSteadyCommand() the responses from the plant will return here.
 
+Only ask plant for values we really need! Plant crashes occasionally otherwise.
+
+
 \param szResponse storage for a typed command
 \returns true if response has been used
 */
@@ -775,7 +815,7 @@ bool InterpreteResponse(char szResponse[]) //saving responses in local variables
     case 'C':                                   // got a fresh CO2 value
       dCO2 = atoi(szResponse+2);           
       return true; 
-    case 'k':                                   // got a fresh CO2 value
+    case 'k':                                   // got a fresh Energy value
       dEnergy = atoi(szResponse+2);           
       return true; 
 
@@ -955,44 +995,8 @@ logic();
 
 
 
-
-
-//! Function Task_1s called every 1 sec
-/*!
-Use communication verbose flag (-v) to remove all but pure values.
-This allows to use the integrated Arduino serial plotter or an external software like gnuplot.
-*/
-void Task_1s() //everything not so often needed
-{
-  
- //Serial.println(nWarnings);
- 
-  
-  ToggleDigitalIOPort(LEDpin);                  // toggle output to LED
-
-  ShowData();                                   // possibly remove later
-
-  schedule();
-  thermostat();
-
-
-DownButtonState = digitalRead(DownButtonPin);
-  UpButtonState = digitalRead(UpButtonPin);
-
-if(DownButtonState ==HIGH){
-  soll--;
-  userInput = 1;
-}
-
-if(UpButtonState == HIGH){
-  soll++;
-  userInput = 1;
-}
-
-  
-//sounds();
-
-//LCD Management
+void lcdTask(){
+  //LCD Management
 
 
 lcd.clear();
@@ -1081,10 +1085,47 @@ lcd.print("%");
 }
 
 }
+}
 
 
-//Buzzer Management
 
+
+
+
+
+//! Function Task_1s called every 1 sec
+/*!
+Use communication verbose flag (-v) to remove all but pure values.
+This allows to use the integrated Arduino serial plotter or an external software like gnuplot.
+*/
+void Task_1s() //everything not so often needed
+{
+
+
+  
+ //Serial.println(nWarnings);
+ 
+  
+  ToggleDigitalIOPort(LEDpin);                  // toggle output to LED
+
+  ShowData();                                   // possibly remove later
+  lcdTask();
+  schedule();
+  thermostat();
+
+
+DownButtonState = digitalRead(DownButtonPin);
+  UpButtonState = digitalRead(UpButtonPin);
+
+if(DownButtonState ==HIGH){
+  soll--;
+  userInput = 1;
+}
+
+if(UpButtonState == HIGH){
+  soll++;
+  userInput = 1;
+}
 
 }
 

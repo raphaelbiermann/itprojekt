@@ -1,0 +1,8 @@
+<map id="Task_1s" name="Task_1s">
+<area shape="rect" id="node1" title="Function Task_1s called every 1 sec." alt="" coords="5,107,76,133"/>
+<area shape="rect" id="node2" href="$Controller_8ino.html#ae084e1bc8ccb35ea289ba0ca4972ea6d" title="initialising display with i2c adress 0x27, 16 characters, 2 rows" alt="" coords="171,5,210,32"/>
+<area shape="rect" id="node3" href="$Controller_8ino.html#a7d06701ac073c331c83519e3909b7fce" title=" " alt="" coords="153,56,228,83"/>
+<area shape="rect" id="node4" href="$Controller_8ino.html#afb707179a2ceeebf05387778b0aedeb5" title="Show some data values." alt="" coords="150,107,231,133"/>
+<area shape="rect" id="node5" href="$Controller_8ino.html#aa28090f2d59ec6e36525dd17cf21dc58" title=" " alt="" coords="149,157,233,184"/>
+<area shape="rect" id="node6" href="$Controller_8ino.html#a92c4579a209bbd8bc56592f8c2958895" title="Toggle digital IO port." alt="" coords="124,208,257,235"/>
+</map>

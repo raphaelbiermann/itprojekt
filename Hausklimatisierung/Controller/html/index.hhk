@@ -61,14 +61,6 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a4de942d9efe53022e129b2760a11efdb"><param name="Name" value="SaveHumidity"></OBJECT>
-  </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
-  <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a3a410b938064846305d0a0f41b05bd7f"><param name="Name" value="SaveTemps"></OBJECT>
-  </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
-  <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#afb707179a2ceeebf05387778b0aedeb5"><param name="Name" value="ShowData"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
@@ -85,7 +77,7 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a430c145c8cfac8c25b7619556a8f5bd2"><param name="Name" value="Tcounter"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a9dcce936b9c429a98b928dde280d8ee2"><param name="Name" value="Tcounter"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
   <UL>
@@ -101,15 +93,7 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a7154dde0a61f659f7f2a3b71f53e76b8"><param name="Name" value="bACOn"></OBJECT>
-  </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
-  <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a1af4d428e78ccd9d5e10f6403ba16d52"><param name="Name" value="bDaytime"></OBJECT>
-  </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
-  <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a1407a9778bed349633e7a263cc741e94"><param name="Name" value="bHeatingOn"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
   <UL>
@@ -137,10 +121,6 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a2cd2658fd81b2cdccce398b93efa1300"><param name="Name" value="dHeating"></OBJECT>
-  </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
-  <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#abef2741815dd29248096b646738fb238"><param name="Name" value="dIndoorHumidity"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
@@ -165,11 +145,23 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a42b9218ab3ccd5fad8f4822fb8c5c821"><param name="Name" value="humidityHistory"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a7ad25723a2644496babaf1a09edca79d"><param name="Name" value="humiditysp"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a7ad25723a2644496babaf1a09edca79d"><param name="Name" value="humiditysp"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a664b21956f3bcecc42139212bebcf95f"><param name="Name" value="iIntegralAC"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a1252e6489656be1b7d54e58af4576e46"><param name="Name" value="iIntegralH"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#ae5e567a2bf232449f9beb4aa667ffe08"><param name="Name" value="iIntegralHEC"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#ae006a3d23063966558547ecba8f5f563"><param name="Name" value="iIntegralHEH"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
   <UL>
@@ -209,7 +201,7 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#ae782d5485075ca7387b32a20b1595a1f"><param name="Name" value="nTOffset"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a69ed506270fbc6fcedfda0dee7d0a935"><param name="Name" value="nHeating"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
   <UL>
@@ -250,10 +242,6 @@
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a2695b485ae7f65013b402aa867bc5955"><param name="Name" value="szBanner"></OBJECT>
-  </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
-  <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#ad9b836e0035cff045207e8cd18d64665"><param name="Name" value="tempHistory"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html"><param name="Name" value="Controller.ino"></OBJECT>
   <UL>
@@ -441,34 +429,32 @@
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a82504a11fb254521fd47f38bc9140370"><param name="Name" value="LEDpin"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Commands.html"><param name="Name" value="Manual Commands"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a090aec666da0a428e48e596f9460a5ec"><param name="Name" value="ReglerHeizung"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a4de942d9efe53022e129b2760a11efdb"><param name="Name" value="SaveHumidity"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a3a410b938064846305d0a0f41b05bd7f"><param name="Name" value="SaveTemps"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#afb707179a2ceeebf05387778b0aedeb5"><param name="Name" value="ShowData"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a4bb576321c9eff71b400cb7f4d58fede"><param name="Name" value="Task_100ms"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a70040c12b70c4183813492f54c34afc3"><param name="Name" value="Task_10ms"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#acc7e9ffdda03efaa08f8d3b4f372efbf"><param name="Name" value="Task_1s"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a430c145c8cfac8c25b7619556a8f5bd2"><param name="Name" value="Tcounter"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a9dcce936b9c429a98b928dde280d8ee2"><param name="Name" value="Tcounter"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a92c4579a209bbd8bc56592f8c2958895"><param name="Name" value="ToggleDigitalIOPort"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#aaa552660d2ba648bae8c278095f3f57d"><param name="Name" value="UpButtonPin"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#aaaee234feb83277597ca82f625a6fb34"><param name="Name" value="UpButtonState"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a7154dde0a61f659f7f2a3b71f53e76b8"><param name="Name" value="bACOn"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a1af4d428e78ccd9d5e10f6403ba16d52"><param name="Name" value="bDaytime"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a1407a9778bed349633e7a263cc741e94"><param name="Name" value="bHeatingOn"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#ad0fc9bc4e88662c79c9d563df8cd4097"><param name="Name" value="bVerbose"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#aad943e6144061b3dc9ec2410ac7863f2"><param name="Name" value="dAC"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a6b52146dd1f01d495c6f1b9a0455d228"><param name="Name" value="dCO2"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a442353ee679d34020381eae18096064b"><param name="Name" value="dEnergy"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a6f8d9e3bf345cfe79f66bcb3b1ea227c"><param name="Name" value="dHEA"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a7ef095c53364830a1f31966029a156c5"><param name="Name" value="dHET"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a2cd2658fd81b2cdccce398b93efa1300"><param name="Name" value="dHeating"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#abef2741815dd29248096b646738fb238"><param name="Name" value="dIndoorHumidity"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a62325a1f2084f7e9c44ab036c06a46c6"><param name="Name" value="dIndoorTemperature"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a8bcd73eee3bb6d3d5213c2238983d99f"><param name="Name" value="dOutdoorHumidity"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a625d658de5fc8402b1f646c4bf4decc7"><param name="Name" value="dOutdoorTemperature"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a9e49ee13da0fb0395a25a3003409bf58"><param name="Name" value="dTime"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#aba7b77464bacfe56eb97bcc7b6843f50"><param name="Name" value="dropChar"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a42b9218ab3ccd5fad8f4822fb8c5c821"><param name="Name" value="humidityHistory"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a7ad25723a2644496babaf1a09edca79d"><param name="Name" value="humiditysp"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a664b21956f3bcecc42139212bebcf95f"><param name="Name" value="iIntegralAC"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a1252e6489656be1b7d54e58af4576e46"><param name="Name" value="iIntegralH"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#ae5e567a2bf232449f9beb4aa667ffe08"><param name="Name" value="iIntegralHEC"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#ae006a3d23063966558547ecba8f5f563"><param name="Name" value="iIntegralHEH"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#ae084e1bc8ccb35ea289ba0ca4972ea6d"><param name="Name" value="lcd"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a96d7c1b4916910813accf1ec383876c5"><param name="Name" value="lcdWarning"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a6bb05a2ac6752c4e89e9fdc2153b963e"><param name="Name" value="lcdmode"></OBJECT>
@@ -478,13 +464,13 @@
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a5bf8233d173fda02920f536243bc9dd5"><param name="Name" value="msecPreviousMillis"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a5feafbc5e3579057d55fe2fae408063a"><param name="Name" value="nCount100msec"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a6d4fd5facb822ead7e6e65d5d40977cf"><param name="Name" value="nCount10msec"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a69ed506270fbc6fcedfda0dee7d0a935"><param name="Name" value="nHeating"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="I2C__Master_8cpp.html#ab8f8974b30413ce6b55091586d4770f0"><param name="Name" value="nI2CState"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="I2C__Master_8cpp.html#a775005f425e680aa1aa4234692ca6e07"><param name="Name" value="nRequestTime"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="I2C__Master_8cpp.html#a957c9dcc95472a6682de259c47f37263"><param name="Name" value="nResponseLength"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="I2C__Master_8cpp.html#a56aff354e8f4d5c76fd3a7b012357a45"><param name="Name" value="nResponseTime"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="I2C__Master_8cpp.html#a7bd2268dae3fe2d53535a9ace42ea53e"><param name="Name" value="nResponseTimeOut"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="I2C__Master_8cpp.html#a60ca108b0f8cbe881254706493571ca1"><param name="Name" value="nSlaveNoLast"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#ae782d5485075ca7387b32a20b1595a1f"><param name="Name" value="nTOffset"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a3071e858c7958a3a60677921dbbdf9e6"><param name="Name" value="nWarnings"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a5c918eefadc81b4a78e0d1660e595d8c"><param name="Name" value="nWinter"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a6640fa6a0591ff646e32fa1182c31291"><param name="Name" value="s1"></OBJECT>
@@ -496,7 +482,6 @@
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#ac87694ec8e42e3c0d15c3d65e71a9639"><param name="Name" value="systemOn"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#a2695b485ae7f65013b402aa867bc5955"><param name="Name" value="szBanner"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="I2C__Master_8cpp.html#a0b94b27d0104433d51d0e459b9d10033"><param name="Name" value="szResponse"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#ad9b836e0035cff045207e8cd18d64665"><param name="Name" value="tempHistory"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#ab418b27aff579accf1b7d757e6654358"><param name="Name" value="thermometerChar"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#aa28090f2d59ec6e36525dd17cf21dc58"><param name="Name" value="thermostat"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="Controller_8ino.html#aa38b7c22e0cd1ae6eed5cda8e5c146a6"><param name="Name" value="toneCounter"></OBJECT>
