@@ -355,7 +355,7 @@ void ReglerHeizung(){ //double variable for radiator is being defined
   double cTemp = dIndoorTemperature; //save current temperature
   //PAnteil
   double tFehler = (soll)-cTemp; //offset so nHeating is not directly zero after temperature is higher than setpoint
-  int pAnteil = 5; //proportional coefficient
+  int pAnteil = 7; //proportional coefficient
   
   //!IAnteil
   double iAnteil = 0.1; //integral coefficient
@@ -525,9 +525,8 @@ if(dIndoorTemperature < soll-1){
   Tcounter++;
 }
 
-  
-  
-  if(Tcounter > 25){ //Vibrating only allowed for max 20s
+
+  if(Tcounter > 25){ //Vibrating only allowed for max 25s
     Tcounter = 25;
   }
   if (Tcounter < -25){
@@ -557,11 +556,11 @@ if(dTime < (60*7)){ //low temperature until 6am
   soll = 17;
   bDaytime=0;
 }else if(dTime < (60*22)){ //high temperature from 6am to 10pm
-  soll = 20;
+  soll = 21;
   bDaytime=1;
 }else{ //low temperature from 10pm to 0am.
-  bDaytime=17;
-  soll=21;
+  bDaytime=0;
+  soll=17;
 }
 
 }
@@ -582,7 +581,7 @@ void logic(){
 double dTolerance=3;
 
 if(systemOn){
-if(((dIndoorTemperature < soll+dTolerance) and Tcounter > 0) or (nWinter == 1 and Tcounter >7)){ 
+if(Tcounter > 0){ 
   ReglerHeizung();
   iIntegralAC=0; //Reset of other values
   iIntegralHEC=0;
@@ -597,7 +596,7 @@ if(((dIndoorTemperature < soll+dTolerance) and Tcounter > 0) or (nWinter == 1 an
   nHeating = 0;
 }
 
-if(((dIndoorTemperature > soll-dTolerance) and Tcounter < 0) or (nWinter == 0 and Tcounter < -7)){
+if(Tcounter < 0){
   ACController();
   iIntegralH=0;
   iIntegralHEH=0;
